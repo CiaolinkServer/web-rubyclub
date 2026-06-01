@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ruby Club</title>
+    <link rel="stylesheet" href="asset/css/login1.css">
+</head>
+<body class="login1-page">
+    <div class="login1" id="login1-app">
+        <header class="login1-header">
+            <button type="button" class="login1-header__menu" aria-label="Menu">
+                <img src="asset/image/login1/button_menu.png" alt="">
+            </button>
+            <div class="login1-header__logo">
+                <img src="asset/image/login1/logo.png" alt="Ruby Club">
+            </div>
+            <span class="login1-header__domain">RUBYCLUB.COM</span>
+        </header>
+
+        <section class="login1-banner" aria-label="Khuyến mãi">
+            <img class="login1-banner__img" src="asset/image/login1/big_banner.png" alt="Daily Lucky Spin">
+        </section>
+
+        <section class="login1-news" aria-label="Thông báo">
+            <img class="login1-news__bg" src="asset/image/login1/background_news.png" alt="" aria-hidden="true">
+            <div class="login1-news__inner">
+                <img class="login1-news__icon" src="asset/image/login1/icon_loa.png" alt="">
+                <div class="login1-news__track">
+                    <div class="login1-news__marquee">
+                        <span>Link slots machines Link slots machines Link slots machines&nbsp;&nbsp;&nbsp;</span>
+                        <span aria-hidden="true">Link slots machines Link slots machines Link slots machines&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="login1-actions" aria-label="Đăng nhập">
+            <button type="button" class="login1-actions__btn login1-actions__btn--login" id="btn-login">
+                <img class="login1-actions__btn-icon" src="asset/image/login1/icon_login.png" alt="">
+                <span class="login1-actions__btn-label">Login</span>
+            </button>
+            <button type="button" class="login1-actions__btn login1-actions__btn--signin" id="btn-signin">
+                <img class="login1-actions__btn-icon" src="asset/image/login1/icon_signin.png" alt="">
+                <span class="login1-actions__btn-label">Signin</span>
+            </button>
+            <div class="login1-actions__quick">
+                <img class="login1-actions__quick-bg" src="asset/image/login1/background_menu_fake.png" alt="" aria-hidden="true">
+                <nav class="login1-actions__quick-nav" aria-label="Tiện ích">
+                    <button type="button" class="login1-actions__quick-item">
+                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_payback.png" alt="">
+                        <span class="login1-actions__quick-label">Pay back</span>
+                    </button>
+                    <button type="button" class="login1-actions__quick-item">
+                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_vip.png" alt="">
+                        <span class="login1-actions__quick-label">VIP</span>
+                    </button>
+                    <button type="button" class="login1-actions__quick-item">
+                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_apk.png" alt="">
+                        <span class="login1-actions__quick-label">APK</span>
+                    </button>
+                    <button type="button" class="login1-actions__quick-item">
+                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_support.png" alt="">
+                        <span class="login1-actions__quick-label">Support</span>
+                    </button>
+                </nav>
+            </div>
+        </section>
+
+        <div class="login1-body">
+            <aside class="login1-sidebar" aria-label="Danh mục game">
+                <nav class="login1-sidebar__nav">
+                    <button type="button" class="login1-sidebar__item login1-sidebar__item--active">
+                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_gamehot.png" alt="">
+                        <span class="login1-sidebar__label">GAME HOT</span>
+                    </button>
+                    <button type="button" class="login1-sidebar__item">
+                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_slot.png" alt="">
+                        <span class="login1-sidebar__label">SLOTS</span>
+                    </button>
+                    <button type="button" class="login1-sidebar__item">
+                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_casino.png" alt="">
+                        <span class="login1-sidebar__label">CASINO</span>
+                    </button>
+                    <button type="button" class="login1-sidebar__item">
+                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_fisshing.png" alt="">
+                        <span class="login1-sidebar__label">FISHING</span>
+                    </button>
+                    <button type="button" class="login1-sidebar__item">
+                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_sport.png" alt="">
+                        <span class="login1-sidebar__label">SPORT</span>
+                    </button>
+                    <button type="button" class="login1-sidebar__item">
+                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_lottery.png" alt="">
+                        <span class="login1-sidebar__label">LOTTERY</span>
+                    </button>
+                </nav>
+            </aside>
+
+            <section class="login1-games" id="login1-games" aria-label="Danh sách game">
+                <ul class="login1-games__grid">
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Showdown">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_showdown.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Showdown</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="LuckyCat">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_mahjong.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Mahjong Way2</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Maya">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_luckycat.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Lucky Cat</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Super Mahjong">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_maya.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Maya</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_supermahjong.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Super Mahjong</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="assset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_goldencity4.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Golden city 4</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_superking.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Super King</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_golden_city3.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Golden City 3</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_fortune_god.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Fortune God</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_aztec.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">AZTEC</span>
+                        </div>
+                    </li>
+
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_aztec2.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">AZTEC 2</span>
+                        </div>
+                    </li>
+
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_golden_city5.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Golden City 5</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Golden city 4">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_golden_city5.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Golden City 5</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Showdown">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_showdown.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Showdown</span>
+                        </div>
+                    </li>
+                    <li class="login1-game login1-game--stack">
+                        <div class="login1-game__card" aria-label="Maya">
+                            <img class="login1-game__bg" src="asset/image/login1/background_game.png" alt="">
+                            <img class="login1-game__icon" src="asset/image/login1/icon_game_luckycat.png" alt="">
+                            <img class="login1-game__name-bg" src="asset/image/login1/background_name_game.png" alt="">
+                            <span class="login1-game__name">Lucky Cat</span>
+                        </div>
+                    </li>
+
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <footer class="login1-footer" id="login1-footer">
+        <div class="login1-footer__bar">
+            <img class="login1-footer__bg" src="asset/image/login1/background_menu_fake.png" alt="" aria-hidden="true">
+            <nav class="login1-footer__nav" aria-label="Điều hướng chính">
+            <button type="button" class="login1-footer__item login1-footer__item--active" aria-label="Home">
+                <img src="asset/image/login1/button_home.png" alt="Home">
+            </button>
+            <button type="button" class="login1-footer__item" aria-label="Promotion">
+                <img src="asset/image/login1/button_promotion.png" alt="Promotion">
+            </button>
+            <button type="button" class="login1-footer__item login1-footer__item--deposit" aria-label="Deposit Withdrawal">
+                <img src="asset/image/login1/button_withdraw.png" alt="Deposit Withdrawal">
+            </button>
+            <button type="button" class="login1-footer__item" aria-label="Invite Friends">
+                <img src="asset/image/login1/button_invite.png" alt="Invite Friends">
+            </button>
+            <button type="button" class="login1-footer__item" aria-label="Account">
+                <img src="asset/image/login1/button_account.png" alt="Account">
+            </button>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>
