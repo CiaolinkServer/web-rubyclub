@@ -1,0 +1,260 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: auto;
+}
+
+/* ===== Login Page (mobile-first) ===== */
+.login-page {
+    --login-btn-width: min(76vw, 300px);
+    --login-btn-height: calc(var(--login-btn-width) * 73 / 418);
+    --login-btn-radius: 45.5px;
+    --login-btn-gap: clamp(8px, 1.8vh, 14px);
+    --login-gap: clamp(24px, 5vh, 40px);
+    --login-logo-width: min(98vw, 680px);
+    --login-logo-height: min(85dvh, 560px);
+    --login-padding-x: clamp(16px, 5vw, 32px);
+    --login-padding-y: clamp(20px, 5vh, 40px);
+
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26, 90, 110, 0.75) 0%, rgba(13, 45, 58, 0.45) 40%, transparent 72%),
+        radial-gradient(ellipse 120% 90% at 50% 50%, #0c2430 0%, #061018 55%, #020608 100%);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding:
+        max(var(--login-padding-y), env(safe-area-inset-top))
+        max(var(--login-padding-x), env(safe-area-inset-right))
+        max(var(--login-padding-y), env(safe-area-inset-bottom))
+        max(var(--login-padding-x), env(safe-area-inset-left));
+    gap: var(--login-gap);
+}
+
+.login-logo {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--login-logo-width);
+    max-width: 100%;
+}
+
+.login-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 24px rgba(80, 200, 255, 0.25));
+}
+
+.login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: var(--login-btn-gap);
+    width: var(--login-btn-width);
+    max-width: 100%;
+    margin-top: clamp(32px, 10vh, 72px);
+}
+
+.login-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: var(--login-btn-height);
+    padding: 0;
+    border: none;
+    border-radius: var(--login-btn-radius);
+    background: transparent;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    opacity: 1;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.login-btn__bg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: var(--login-btn-radius);
+}
+
+.login-btn__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: clamp(14px, 2.5vw, 20px);
+    line-height: 100%;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: #FFEA09;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .login-btn:hover {
+        transform: scale(1.03);
+        filter: brightness(1.08);
+    }
+}
+
+.login-btn:active {
+    transform: scale(0.98);
+    filter: brightness(0.95);
+}
+
+/* Landscape — thu nút theo chiều cao màn hình (phone xoay ngang width thường > 768px) */
+@media (orientation: landscape) {
+    .login-page {
+        --login-btn-gap: clamp(4px, 1vh, 8px);
+        --login-btn-height: min(44px, calc((76dvh - 16px) / 3));
+        --login-btn-width: min(calc(var(--login-btn-height) * 418 / 73), 220px);
+        --login-gap: clamp(10px, 3vw, 24px);
+        --login-logo-height: min(85dvh, 420px);
+    }
+
+    .login-screen {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: var(--login-gap);
+        padding:
+            max(10px, env(safe-area-inset-top))
+            max(14px, env(safe-area-inset-right))
+            max(10px, env(safe-area-inset-bottom))
+            max(14px, env(safe-area-inset-left));
+    }
+
+    .login-logo {
+        flex: 0 1 52%;
+        width: auto;
+        max-width: 52%;
+    }
+
+    .login-logo img {
+        width: 100%;
+        max-width: min(var(--login-logo-width), 58vw);
+        max-height: var(--login-logo-height);
+    }
+
+    .login-actions {
+        flex: 0 0 auto;
+        width: var(--login-btn-width);
+        max-width: 46%;
+        margin-top: 0;
+    }
+
+    .login-btn__text {
+        font-size: min(13px, calc(var(--login-btn-width) * 0.058));
+        max-width: calc(100% - 10px);
+        letter-spacing: -0.01em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 380px) {
+    .login-page {
+        --login-btn-height: min(38px, calc((74dvh - 12px) / 3));
+        --login-btn-width: min(calc(var(--login-btn-height) * 418 / 73), 190px);
+        --login-btn-gap: 4px;
+        --login-logo-height: min(76dvh, 340px);
+    }
+
+    .login-btn__text {
+        font-size: min(11px, calc(var(--login-btn-width) * 0.056));
+    }
+}
+
+/* Tablet portrait */
+@media (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
+    .login-page {
+        --login-logo-width: min(78vw, 640px);
+        --login-btn-width: min(58vw, 340px);
+    }
+}
+
+/* Tablet / desktop — chỉ portrait hoặc màn lớn */
+@media (min-width: 769px) and (orientation: portrait) {
+    .login-page {
+        --login-logo-width: min(65vw, 720px);
+        --login-btn-width: min(50vw, 340px);
+        --login-btn-height: calc(var(--login-btn-width) * 73 / 418);
+        --login-gap: clamp(28px, 5vh, 48px);
+    }
+}
+
+@media (min-width: 1025px) and (orientation: landscape) and (min-height: 700px) {
+    .login-page {
+        --login-btn-width: 380px;
+        --login-btn-height: 73px;
+        --login-logo-width: min(58vw, 720px);
+        --login-logo-height: min(62vh, 560px);
+    }
+
+    .login-screen {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(40px, 6vw, 80px);
+    }
+
+    .login-logo {
+        flex: 0 1 auto;
+        max-width: 720px;
+        width: auto;
+    }
+
+    .login-actions {
+        flex: 0 0 var(--login-btn-width);
+        width: var(--login-btn-width);
+        max-width: none;
+    }
+
+    .login-btn__text {
+        font-size: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-btn {
+        transition: none;
+    }
+
+    .login-btn:active {
+        transform: none;
+        filter: brightness(0.92);
+    }
+}

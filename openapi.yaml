@@ -1,0 +1,435 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /Cash/Adjustment:
+        post:
+            tags:
+                - CashService
+            operationId: CashService_BalanceAdjustment
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/cash.v1.BalanceAdjustmentRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/cash.v1.BalanceAdjustmentResponse'
+    /Cash/Get:
+        post:
+            tags:
+                - CashService
+            operationId: CashService_GetPlayerWallet
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/cash.v1.GetPlayerWalletRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/cash.v1.GetPlayerWalletResponse'
+    /Cash/TransferInOut:
+        post:
+            tags:
+                - CashService
+            operationId: CashService_BetPayout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/cash.v1.BetPayoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/cash.v1.BetPayoutResponse'
+    /Cash/UpdateBetDetail:
+        post:
+            tags:
+                - CashService
+            operationId: CashService_UpdateBetDetail
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/cash.v1.UpdateBetDetailRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/cash.v1.UpdateBetDetailResponse'
+    /VerifySession:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_VerifySession
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.VerifySessionRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.VerifySessionResponse'
+    /api/v1/auth/google/callback:
+        get:
+            tags:
+                - AuthService
+            operationId: AuthService_GoogleCallback
+            parameters:
+                - name: code
+                  in: query
+                  schema:
+                    type: string
+                - name: state
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.GoogleCallbackResponse'
+    /api/v1/auth/google/login:
+        get:
+            tags:
+                - AuthService
+            operationId: AuthService_GoogleLogin
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.GoogleLoginResponse'
+    /api/v1/auth/launch:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_GetLaunchUrl
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.GetLaunchUrlRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.GetLaunchUrlResponse'
+    /api/v1/user/me:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_GetUser
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.GetMyUserResponse'
+components:
+    schemas:
+        auth.v1.GetLaunchUrlRequest:
+            type: object
+            properties: {}
+        auth.v1.GetLaunchUrlResponse:
+            type: object
+            properties:
+                content:
+                    type: string
+        auth.v1.GoogleCallbackResponse:
+            type: object
+            properties:
+                token:
+                    type: string
+                expiresAt:
+                    type: string
+                    format: date-time
+        auth.v1.GoogleLoginResponse:
+            type: object
+            properties:
+                redirectUrl:
+                    type: string
+        auth.v1.VerifySessionRequest:
+            type: object
+            properties:
+                traceId:
+                    type: string
+                operatorToken:
+                    type: string
+                secretKey:
+                    type: string
+                operatorPlayerSession:
+                    type: string
+                gameId:
+                    type: string
+                ip:
+                    type: string
+                customParameter:
+                    type: string
+                betType:
+                    type: integer
+                    format: int32
+        auth.v1.VerifySessionResponse:
+            type: object
+            properties:
+                playerName:
+                    type: string
+                nickname:
+                    type: string
+                currency:
+                    type: string
+        cash.v1.BalanceAdjustmentRequest:
+            type: object
+            properties:
+                operatorToken:
+                    type: string
+                secretKey:
+                    type: string
+                operatorPlayerSession:
+                    type: string
+                playerName:
+                    type: string
+                currencyCode:
+                    type: string
+                transferAmount:
+                    type: number
+                    format: double
+                realTransferAmount:
+                    type: number
+                    format: double
+                adjustmentId:
+                    type: string
+                adjustmentTransactionId:
+                    type: string
+                adjustmentTime:
+                    type: string
+                transactionType:
+                    type: string
+                betType:
+                    type: integer
+                    format: int32
+                promotionId:
+                    type: integer
+                    format: int32
+                promotionType:
+                    type: integer
+                    format: int32
+                remark:
+                    type: string
+        cash.v1.BalanceAdjustmentResponse:
+            type: object
+            properties:
+                adjustmentAmount:
+                    type: number
+                    format: double
+                balanceBefore:
+                    type: number
+                    format: double
+                balanceAfter:
+                    type: number
+                    format: double
+                updatedTime:
+                    type: string
+                realTransferAmount:
+                    type: number
+                    format: double
+        cash.v1.BetPayoutRequest:
+            type: object
+            properties:
+                traceId:
+                    type: string
+                operatorToken:
+                    type: string
+                secretKey:
+                    type: string
+                operatorPlayerSession:
+                    type: string
+                playerName:
+                    type: string
+                gameId:
+                    type: integer
+                    format: int32
+                parentBetId:
+                    type: string
+                betId:
+                    type: string
+                currencyCode:
+                    type: string
+                betAmount:
+                    type: number
+                    format: double
+                winAmount:
+                    type: number
+                    format: double
+                transferAmount:
+                    type: number
+                    format: double
+                realTransferAmount:
+                    type: number
+                    format: double
+                transactionId:
+                    type: string
+                walletType:
+                    type: string
+                betType:
+                    type: integer
+                    format: int32
+                platform:
+                    type: string
+                createTime:
+                    type: string
+                updatedTime:
+                    type: string
+                isValidateBet:
+                    type: boolean
+                isAdjustment:
+                    type: boolean
+                isParentZeroStake:
+                    type: boolean
+                isFeature:
+                    type: boolean
+                isFeatureKey:
+                    type: boolean
+                isEndRound:
+                    type: boolean
+                freeGameTransactionId:
+                    type: string
+                freeGameName:
+                    type: string
+                freeGameId:
+                    type: integer
+                    format: int32
+                isMinusCount:
+                    type: boolean
+                bonusTransactionId:
+                    type: string
+                bonusName:
+                    type: string
+                bonusId:
+                    type: string
+                bonusBalanceAmount:
+                    type: number
+                    format: double
+                bonusRatioAmount:
+                    type: number
+                    format: double
+        cash.v1.BetPayoutResponse:
+            type: object
+            properties:
+                currencyCode:
+                    type: string
+                balanceAmount:
+                    type: number
+                    format: double
+                updatedTime:
+                    type: string
+                realBalanceAmount:
+                    type: number
+                    format: double
+        cash.v1.GetPlayerWalletRequest:
+            type: object
+            properties:
+                traceId:
+                    type: string
+                operatorToken:
+                    type: string
+                secretKey:
+                    type: string
+                playerName:
+                    type: string
+                operatorPlayerSession:
+                    type: string
+                gameId:
+                    type: integer
+                    format: int32
+        cash.v1.GetPlayerWalletResponse:
+            type: object
+            properties:
+                currencyCode:
+                    type: string
+                balanceAmount:
+                    type: number
+                    format: double
+                updatedTime:
+                    type: string
+        cash.v1.UpdateBetDetailRequest:
+            type: object
+            properties:
+                operatorToken:
+                    type: string
+                secretKey:
+                    type: string
+                betDetails:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/cash.v1.UpdateBetDetailRequest_BetDetail'
+                updatedTime:
+                    type: string
+        cash.v1.UpdateBetDetailRequest_BetDetail:
+            type: object
+            properties:
+                betId:
+                    type: string
+                endTime:
+                    type: string
+        cash.v1.UpdateBetDetailResponse:
+            type: object
+            properties:
+                isSuccess:
+                    type: boolean
+        user.v1.GetMyUserResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.User'
+        user.v1.User:
+            type: object
+            properties:
+                sid:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                balance:
+                    type: number
+                    format: double
+                currency:
+                    type: string
+tags:
+    - name: AuthService
+    - name: CashService
+    - name: UserService
