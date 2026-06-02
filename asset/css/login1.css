@@ -9,23 +9,29 @@
 html,
 body {
     width: 100%;
-    height: auto;
+    height: 100%;
+    overscroll-behavior: none;
 }
 
 .login1-page {
     --login1-max: 402px;
     --login1-sidebar-w: 80px;
     --login1-footer-h: 73px;
-    --login1-deposit-overlap: 39px;
+    --login1-deposit-size: 76px;
+    --login1-deposit-labels-h: 32px;
+    --login1-deposit-overlap: 40px;
+    --login1-footer-label-line: 11px;
+    --login1-footer-label-gap: 3px;
 
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%;
     min-height: 100dvh;
+    max-height: 100dvh;
     background: #000;
     color: #fff;
     font-family: Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .login1 {
@@ -36,6 +42,7 @@ body {
     max-width: var(--login1-max);
     margin: 0 auto;
     min-height: 0;
+    overflow: hidden;
     padding-bottom: calc(var(--login1-footer-h) + var(--login1-deposit-overlap) + env(safe-area-inset-bottom, 0px));
 }
 
@@ -176,6 +183,113 @@ body {
     background: #000;
 }
 
+.login1-actions__auth {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 6px;
+}
+
+.login1-actions--logged-in .login1-actions__auth {
+    display: none;
+}
+
+.login1-actions__user {
+    display: none;
+    flex-shrink: 0;
+}
+
+.login1-actions--logged-in .login1-actions__user {
+    display: flex;
+}
+
+.login1-actions__user-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    width: 142px;
+    height: 46px;
+    padding: 5px 8px;
+    border: 1.5px solid #63defe;
+    border-radius: 9px;
+    background: linear-gradient(180deg, #2e2e2e 0%, #161616 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.login1-actions__user-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    color: #14E8FF;
+}
+
+.login1-actions__balance,
+#login1-balance {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-align: center;
+    color: #14E8FF;
+    -webkit-text-fill-color: #14E8FF;
+}
+
+.login1-actions__refresh {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease;
+}
+
+.login1-actions__refresh img {
+    display: block;
+    width: 12px;
+    height: 12px;
+    max-width: 12px;
+    max-height: 12px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.login1-actions__refresh:active {
+    transform: rotate(-45deg);
+}
+
+.login1-actions__refresh:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.login1-actions__greeting {
+    margin: 0;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: 0;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.login1-actions__greeting span {
+    font-weight: 500;
+}
+
 .login1-actions__btn {
     flex-shrink: 0;
     padding: 0;
@@ -292,10 +406,11 @@ body {
 /* ===== Main: sidebar + games ===== */
 .login1-body {
     display: flex;
-    flex: 1;
+    flex: 1 1 0;
     align-items: stretch;
     gap: 0;
     min-height: 0;
+    overflow: hidden;
     background: #000;
 }
 
@@ -304,8 +419,18 @@ body {
     flex: 0 0 var(--login1-sidebar-w);
     flex-direction: column;
     width: var(--login1-sidebar-w);
+    min-height: 0;
     padding: 4px 0 0;
     line-height: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.login1-sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .login1-sidebar__nav {
@@ -378,7 +503,19 @@ body {
 .login1-games {
     flex: 1;
     min-width: 0;
-    padding: 0 4px 8px 2px;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 4px calc(var(--login1-deposit-overlap) + 12px) 2px;
+}
+
+.login1-games::-webkit-scrollbar {
+    display: none;
 }
 
 .login1-games__grid {
@@ -386,16 +523,21 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 6px 4px;
     list-style: none;
+    padding-bottom: 8px;
 }
 
 .login1-game {
     line-height: 0;
     cursor: pointer;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
     transition: transform 0.15s ease;
 }
 
-.login1-game:hover {
-    transform: scale(1.03);
+@media (hover: hover) {
+    .login1-game:hover {
+        transform: scale(1.03);
+    }
 }
 
 .login1-game > img {
@@ -403,25 +545,39 @@ body {
     width: 100%;
     height: auto;
     object-fit: contain;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .login1-game__card {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
+    touch-action: pan-y;
+    isolation: isolate;
+    cursor: pointer;
+    pointer-events: auto;
 }
 
 .login1-game__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
     display: block;
     width: 100%;
     height: 100%;
     object-fit: fill;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .login1-game__icon {
     position: absolute;
     top: 0;
     left: 50%;
+    z-index: 1;
     transform: translateX(-50%);
     width: 100%;
     height: auto;
@@ -429,6 +585,8 @@ body {
     object-fit: contain;
     object-position: center top;
     pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .login1-game__name-bg {
@@ -436,10 +594,13 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 2;
     width: 100%;
     height: auto;
     object-fit: fill;
     pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .login1-game__name {
@@ -447,13 +608,14 @@ body {
     left: 0;
     right: 0;
     bottom: 6%;
-    z-index: 1;
+    z-index: 3;
     font-size: clamp(8px, 2.6vw, 10px);
     font-weight: 400;
     line-height: 1;
     color: #fff;
     text-align: center;
     pointer-events: none;
+    user-select: none;
 }
 
 /* ===== Footer nav ===== */
@@ -493,43 +655,150 @@ body {
     align-items: flex-end;
     justify-content: space-between;
     height: var(--login1-footer-h);
-    padding: 0 4px 2px;
+    padding: 0 4px 6px;
     overflow: visible;
 }
 
 .login1-footer__item {
+    position: relative;
+    z-index: 1;
     flex: 1 1 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
     min-width: 0;
-    padding: 0;
+    padding: 0 2px 5px;
     border: none;
     background: transparent;
     cursor: pointer;
-    line-height: 0;
+    line-height: 1;
     transition: transform 0.15s ease;
 }
 
-.login1-footer__item img {
+.login1-footer__item:not(.login1-footer__item--deposit) {
+    z-index: 3;
+    align-self: stretch;
+}
+
+/* Một dòng chữ: đẩy icon lên ngang hàng Invite (2 dòng) */
+.login1-footer__item:not(.login1-footer__item--deposit):not(:has(.login1-footer__label + .login1-footer__label)) .login1-footer__label {
+    margin-top: calc(var(--login1-footer-label-line) + var(--login1-footer-label-gap));
+}
+
+.login1-footer__icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    overflow: visible;
+}
+
+.login1-footer__icon {
     display: block;
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    max-height: 76px;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    max-width: 22px;
+    max-height: 22px;
     object-fit: contain;
-    object-position: bottom center;
+}
+
+.login1-footer__badge {
+    position: absolute;
+    top: -10px;
+    right: -24px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 46px;
+    height: 19px;
+    padding: 0 6px 1px;
+    background: url('../image/login1/footer_icon_friend_noti.png') center / 100% 100% no-repeat;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #fff;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.login1-footer__label {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.login1-footer__item--active .login1-footer__label {
+    color: #63defe;
+}
+
+.login1-footer__deposit-visual {
+    position: absolute;
+    left: 50%;
+    bottom: var(--login1-deposit-labels-h);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--login1-deposit-size);
+    height: var(--login1-deposit-size);
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 8px rgba(92, 225, 255, 0.45));
+    transition: transform 0.15s ease;
+    pointer-events: none;
+}
+
+.login1-footer__deposit-bg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.login1-footer__deposit-icon {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 54%;
+    height: 54%;
+    object-fit: contain;
 }
 
 .login1-footer__item--deposit {
-    flex: 1.1 1 0;
+    z-index: 2;
+    flex: 1.15 1 0;
+    align-self: stretch;
+    justify-content: flex-end;
+    gap: 1px;
+    padding: 0 2px 5px;
 }
 
-.login1-footer__item--deposit img {
-    max-height: 112px;
-    transform: none;
-    transform-origin: bottom center;
-    filter: drop-shadow(0 0 8px rgba(92, 225, 255, 0.45));
+.login1-footer__item--deposit .login1-footer__label {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    font-size: 8px;
+    line-height: 1.05;
 }
 
 .login1-footer__item:hover {
@@ -540,8 +809,8 @@ body {
     transform: none;
 }
 
-.login1-footer__item--deposit:hover img {
-    transform: scale(1.05);
+.login1-footer__item--deposit:hover .login1-footer__deposit-visual {
+    transform: translateX(-50%) scale(1.05);
 }
 
 @media (min-width: 403px) {
@@ -567,6 +836,12 @@ body {
         height: 14px;
         max-width: 14px;
         max-height: 14px;
+    }
+
+    .login1-actions__user-card {
+        width: 126px;
+        height: 41px;
+        padding: 4px 7px;
     }
 
     .login1-header__domain {

@@ -1,0 +1,109 @@
+<div class="popuplogin-overlay" id="popuplogin-overlay" aria-hidden="true">
+    <div class="popuplogin" role="dialog" aria-modal="true" aria-labelledby="popuplogin-title">
+        <button type="button" class="popuplogin__close" id="popuplogin-close" aria-label="Đóng">
+            <img src="asset/image/popuplogin/icon_close.png" alt="">
+        </button>
+
+        <header class="popuplogin__header">
+            <img class="popuplogin__logo" src="asset/image/popuplogin/icon_logo.png" alt="Ruby Club" id="popuplogin-title">
+            <p class="popuplogin__domain">
+                <span class="popuplogin__domain-bg" aria-hidden="true"></span>
+                <span class="popuplogin__domain-text">Link dễ nhớ: <strong>RubyClub.com</strong></span>
+            </p>
+        </header>
+
+        <section class="popuplogin__panel" aria-label="Đăng nhập">
+            <div class="popuplogin__panel-bg" aria-hidden="true"></div>
+            <div class="popuplogin__panel-inner">
+                <div class="popuplogin__tabs" role="tablist">
+                    <button type="button" class="popuplogin__tab popuplogin__tab--active" id="popuplogin-tab-login" role="tab" aria-selected="true" aria-controls="popuplogin-panel-login" data-tab="login">
+                        <span class="popuplogin__tab-bg" aria-hidden="true"></span>
+                        <span class="popuplogin__tab-label">Login</span>
+                    </button>
+                    <button type="button" class="popuplogin__tab" id="popuplogin-tab-signin" role="tab" aria-selected="false" aria-controls="popuplogin-panel-signin" data-tab="signin">
+                        <span class="popuplogin__tab-bg" aria-hidden="true"></span>
+                        <span class="popuplogin__tab-label">Signin</span>
+                    </button>
+                </div>
+
+                <div class="popuplogin__forms">
+                <form class="popuplogin__form" id="popuplogin-form-login" role="tabpanel" aria-labelledby="popuplogin-tab-login">
+                    <label class="popuplogin__field">
+                        <span class="popuplogin__field-bg" aria-hidden="true"></span>
+                        <img class="popuplogin__field-icon" src="asset/image/popuplogin/icon_acc.png" alt="">
+                        <input type="text" class="popuplogin__input" name="account" placeholder="Account" autocomplete="username" inputmode="text">
+                    </label>
+                    <label class="popuplogin__field">
+                        <span class="popuplogin__field-bg" aria-hidden="true"></span>
+                        <img class="popuplogin__field-icon" src="asset/image/popuplogin/icon_password.png" alt="">
+                        <input type="password" class="popuplogin__input" id="popuplogin-password" name="password" placeholder="Password" autocomplete="current-password">
+                        <button type="button" class="popuplogin__toggle-pass" id="popuplogin-toggle-pass" aria-label="Hiện mật khẩu">
+                            <img src="asset/image/popuplogin/icon_hide_pass.png" alt="">
+                        </button>
+                    </label>
+                    <button type="button" class="popuplogin__forgot" id="popuplogin-forgot">Forgot password</button>
+                    <button type="submit" class="popuplogin__submit">
+                        <img class="popuplogin__submit-bg" src="asset/image/popuplogin/background_button_login.png" alt="">
+                        <span class="popuplogin__submit-label">Login</span>
+                    </button>
+                </form>
+
+                <form class="popuplogin__form popuplogin__form--hidden" id="popuplogin-form-signin" role="tabpanel" aria-labelledby="popuplogin-tab-signin" aria-hidden="true">
+                    <label class="popuplogin__field">
+                        <span class="popuplogin__field-bg" aria-hidden="true"></span>
+                        <img class="popuplogin__field-icon" src="asset/image/popuplogin/icon_acc.png" alt="">
+                        <input type="text" class="popuplogin__input" name="account" placeholder="Account" autocomplete="username" inputmode="text">
+                    </label>
+                    <label class="popuplogin__field">
+                        <span class="popuplogin__field-bg" aria-hidden="true"></span>
+                        <img class="popuplogin__field-icon" src="asset/image/popuplogin/icon_password.png" alt="">
+                        <input type="password" class="popuplogin__input" name="password" placeholder="Password" autocomplete="new-password">
+                    </label>
+                    <label class="popuplogin__field">
+                        <span class="popuplogin__field-bg" aria-hidden="true"></span>
+                        <img class="popuplogin__field-icon" src="asset/image/popuplogin/icon_password.png" alt="">
+                        <input type="password" class="popuplogin__input" name="confirm_password" placeholder="Confirm Password" autocomplete="new-password">
+                    </label>
+                    <button type="submit" class="popuplogin__submit">
+                        <img class="popuplogin__submit-bg" src="asset/image/popuplogin/background_button_login.png" alt="">
+                        <span class="popuplogin__submit-label">Signin</span>
+                    </button>
+                </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="popuplogin__footer">
+            <button type="button" class="popuplogin__google" id="popuplogin-google">
+                <img class="popuplogin__google-icon" src="asset/image/popuplogin/icon_logo_google.png" alt="">
+                <span>Login with Google</span>
+            </button>
+            <div class="popuplogin__stores">
+                <a class="popuplogin__store" href="#" target="_blank" rel="noopener noreferrer">
+                    <img class="popuplogin__store-icon" src="asset/image/popuplogin/icon_logo_apple.png" alt="">
+                    <span class="popuplogin__store-text">
+                        <small>Download on the</small>
+                        <strong>App Store</strong>
+                    </span>
+                </a>
+                <a class="popuplogin__store" href="#" target="_blank" rel="noopener noreferrer">
+                    <img class="popuplogin__store-icon popuplogin__store-icon--play" src="asset/image/popuplogin/icon_logo_chplay.png" alt="">
+                    <span class="popuplogin__store-text">
+                        <small>GET IT ON</small>
+                        <strong>Google Play</strong>
+                    </span>
+                </a>
+            </div>
+            <div class="popuplogin__utils">
+                <button type="button" class="popuplogin__util" id="popuplogin-free-play">
+                    <img src="asset/image/popuplogin/icon_free_play.png" alt="">
+                    <span>FREE PLAY</span>
+                </button>
+                <button type="button" class="popuplogin__util" id="popuplogin-support">
+                    <img src="asset/image/popuplogin/icon_support.png" alt="">
+                    <span>SUPPORT 24/7</span>
+                </button>
+            </div>
+        </footer>
+    </div>
+</div>

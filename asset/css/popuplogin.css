@@ -1,0 +1,493 @@
+/* ===== Popup Login (Ruby Club) ===== */
+.popuplogin-overlay {
+    --popup-max: 300px;
+    --popup-pad-x: 10px;
+    --popup-pad-y: 6px;
+    --popup-pad-bottom: 12px;
+    --popup-gap: 7px;
+    --popup-radius: 14px;
+    --popup-blue: #4a8fd4;
+    --popup-blue-dark: #1a3d8f;
+    --popup-text: #b8d4f5;
+    --popup-text-active: #0a1a4a;
+    --popup-white: #fff;
+    --popup-green-text: #0a1a10;
+
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+    background: rgba(8, 24, 56, 0.72);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.popuplogin-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.popuplogin {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: var(--popup-max);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--popup-pad-y) var(--popup-pad-x) var(--popup-pad-bottom);
+    background: linear-gradient(180deg, #4185E6 0%, #4955C5 100%);
+    border-radius: var(--popup-radius);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--popup-white);
+}
+
+.popuplogin__close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.popuplogin__close img {
+    display: block;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* ===== Header ===== */
+.popuplogin__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 2px 28px 6px;
+    text-align: center;
+}
+
+.popuplogin__logo {
+    display: block;
+    width: min(78%, 220px);
+    height: auto;
+    object-fit: contain;
+}
+
+.popuplogin__domain {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    min-height: 28px;
+    padding: 0 14px;
+}
+
+.popuplogin__domain-bg {
+    position: absolute;
+    inset: 0;
+    background: url('../image/popuplogin/boder_line.png') center / 100% 100% no-repeat;
+    pointer-events: none;
+}
+
+.popuplogin__domain-text {
+    position: relative;
+    z-index: 1;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--popup-white);
+    white-space: nowrap;
+}
+
+.popuplogin__domain-text strong {
+    color: #ffea09;
+    font-weight: 700;
+}
+
+/* ===== Form panel ===== */
+.popuplogin__panel {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--popup-gap);
+}
+
+.popuplogin__panel-bg {
+    position: absolute;
+    inset: 0;
+    background: url('../image/popuplogin/background_input_area.png') center top / 100% 100% no-repeat;
+    border-radius: 12px;
+    pointer-events: none;
+}
+
+.popuplogin__panel-inner {
+    position: relative;
+    z-index: 1;
+    padding: 10px 11px 12px;
+}
+
+.popuplogin__tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.popuplogin__tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.popuplogin__tab-bg {
+    position: absolute;
+    inset: 0;
+    background: url('../image/popuplogin/background_button_unselect.png') center / 100% 100% no-repeat;
+    pointer-events: none;
+}
+
+.popuplogin__tab--active .popuplogin__tab-bg {
+    background-image: url('../image/popuplogin/background_button_selected.png');
+}
+
+.popuplogin__tab-label {
+    position: relative;
+    z-index: 1;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--popup-text);
+}
+
+.popuplogin__tab--active .popuplogin__tab-label {
+    color: var(--popup-text-active);
+}
+
+/* ===== Form fields (stacked — giữ chiều cao popup khi đổi tab) ===== */
+.popuplogin__forms {
+    display: grid;
+    grid-template-areas: 'stack';
+    align-items: stretch;
+}
+
+.popuplogin__forms > .popuplogin__form {
+    grid-area: stack;
+    align-self: stretch;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.popuplogin__form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.popuplogin__form--hidden {
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 0;
+}
+
+.popuplogin__form:not(.popuplogin__form--hidden) {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 1;
+}
+
+.popuplogin__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 8px 0 8px;
+}
+
+.popuplogin__field-bg {
+    position: absolute;
+    inset: 0;
+    background: url('../image/popuplogin/background_input.png') center / 100% 100% no-repeat;
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.popuplogin__field-icon {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.popuplogin__input {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 6px 6px 8px;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--popup-white);
+    outline: none;
+}
+
+.popuplogin__input::placeholder {
+    color: rgba(184, 212, 245, 0.85);
+    font-weight: 600;
+}
+
+.popuplogin__toggle-pass {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.popuplogin__toggle-pass img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.popuplogin__forgot {
+    align-self: flex-end;
+    margin: -2px 4px 4px 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: 10px;
+    font-style: italic;
+    font-weight: 600;
+    color: #7ec8ff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.popuplogin__submit {
+    position: relative;
+    display: block;
+    width: fit-content;
+    max-width: 92%;
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.popuplogin__submit-bg {
+    display: block;
+    width: auto;
+    height: 30px;
+    max-width: 92%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
+.popuplogin__submit-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    color: #0a0a0a;
+    letter-spacing: 0.01em;
+    pointer-events: none;
+}
+
+.popuplogin__submit:active {
+    transform: scale(0.98);
+    filter: brightness(0.95);
+}
+
+/* ===== Footer actions ===== */
+.popuplogin__footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--popup-gap);
+    width: 100%;
+}
+
+.popuplogin__google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 38px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--popup-white);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--popup-blue-dark);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.popuplogin__google:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.popuplogin__google-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.popuplogin__stores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.popuplogin__store {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 5px 7px;
+    border-radius: 10px;
+    background: var(--popup-white);
+    color: #111;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popuplogin__store-icon {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.popuplogin__store-icon--play {
+    width: 20px;
+    height: 20px;
+}
+
+.popuplogin__store-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.15;
+}
+
+.popuplogin__store-text small {
+    font-size: 7px;
+    font-weight: 600;
+    color: #333;
+}
+
+.popuplogin__store-text strong {
+    font-size: 10px;
+    font-weight: 800;
+    color: #111;
+}
+
+.popuplogin__utils {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.popuplogin__util {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 36px;
+    padding: 4px 6px;
+    border: 2px solid #8ec8ff;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #2d5cb8 0%, #1e4499 100%);
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--popup-white);
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.popuplogin__util img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+@media (max-width: 360px) {
+    .popuplogin-overlay {
+        --popup-max: 280px;
+    }
+
+    .popuplogin__store-text small {
+        font-size: 6px;
+    }
+
+    .popuplogin__store-text strong {
+        font-size: 9px;
+    }
+
+    .popuplogin__util {
+        font-size: 8px;
+    }
+
+    .popuplogin__util img {
+        width: 20px;
+        height: 20px;
+    }
+}
