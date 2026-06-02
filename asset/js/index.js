@@ -1,6 +1,9 @@
 var AUTH_TOKEN_KEY = 'rubyclub_auth_token';
+var AUTH_TOKEN_EXPIRES_KEY = 'rubyclub_auth_token_expires_at';
+var AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
 var USER_DATA_KEY = 'rubyclub_user_data';
 var API_BASE = 'https://rubyclubph.com';
+var authTokenExpiryTimer = null;
 
 
 async function launchGame(btn) {
@@ -55,8 +58,69 @@ async function launchGame(btn) {
     }
 }
 
+function clearAuthToken() {
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(AUTH_TOKEN_EXPIRES_KEY);
+
+    if (authTokenExpiryTimer) {
+        clearTimeout(authTokenExpiryTimer);
+        authTokenExpiryTimer = null;
+    }
+}
+
+function clearAuthSession() {
+    clearAuthToken();
+    sessionStorage.removeItem(USER_DATA_KEY);
+    setLoggedInState(false);
+}
+
+function scheduleAuthTokenExpiry(delayMs) {
+    if (authTokenExpiryTimer) {
+        clearTimeout(authTokenExpiryTimer);
+    }
+
+    if (delayMs <= 0) {
+        return;
+    }
+
+    authTokenExpiryTimer = setTimeout(function () {
+        clearAuthSession();
+    }, delayMs);
+}
+
+function saveAuthToken(token) {
+    var expiresAt = Date.now() + AUTH_TOKEN_TTL_MS;
+
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    localStorage.setItem(AUTH_TOKEN_EXPIRES_KEY, String(expiresAt));
+    scheduleAuthTokenExpiry(AUTH_TOKEN_TTL_MS);
+}
+
 function getAuthToken() {
-    return localStorage.getItem(AUTH_TOKEN_KEY);
+    var token = localStorage.getItem(AUTH_TOKEN_KEY);
+
+    if (!token) {
+        return null;
+    }
+
+    var expiresAt = localStorage.getItem(AUTH_TOKEN_EXPIRES_KEY);
+
+    if (!expiresAt) {
+        expiresAt = String(Date.now() + AUTH_TOKEN_TTL_MS);
+        localStorage.setItem(AUTH_TOKEN_EXPIRES_KEY, expiresAt);
+        scheduleAuthTokenExpiry(AUTH_TOKEN_TTL_MS);
+        return token;
+    }
+
+    var remainingMs = Number(expiresAt) - Date.now();
+
+    if (remainingMs <= 0) {
+        clearAuthSession();
+        return null;
+    }
+
+    scheduleAuthTokenExpiry(remainingMs);
+    return token;
 }
 
 function loadUserFromStorage() {
@@ -155,7 +219,6 @@ async function refreshUserProfile() {
 
     try {
         var data = await fetchUserMe(token);
-        sessionStorage.removeItem('rubyclub_guest');
         saveUserData(data);
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
@@ -163,8 +226,7 @@ async function refreshUserProfile() {
         console.error('Làm mới thông tin user thất bại:', err);
         alert('Không lấy được thông tin tài khoản. Vui lòng thử lại.');
 
-        //delete token
-        localStorage.removeItem(AUTH_TOKEN_KEY);
+        clearAuthToken();
     } finally {
         if (refreshBtn) {
             refreshBtn.disabled = false;
@@ -180,13 +242,12 @@ async function captureTokenFromUrl() {
         return false;
     }
 
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    saveAuthToken(token);
     url.searchParams.delete('token');
     window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
 
     try {
         var data = await fetchUserMe(token);
-        sessionStorage.removeItem('rubyclub_guest');
         saveUserData(data);
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
@@ -194,7 +255,7 @@ async function captureTokenFromUrl() {
     } catch (err) {
         console.error('Lấy thông tin user thất bại:', err);
         alert('Không lấy được thông tin tài khoản. Vui lòng đăng nhập lại.');
-        localStorage.removeItem(AUTH_TOKEN_KEY);
+        clearAuthToken();
         return false;
     }
 }
@@ -203,6 +264,7 @@ async function initLogin1Session() {
     var token = getAuthToken();
 
     if (!token) {
+        sessionStorage.removeItem(USER_DATA_KEY);
         setLoggedInState(false);
         return;
     }
@@ -215,15 +277,13 @@ async function initLogin1Session() {
 
     try {
         var data = await fetchUserMe(token);
-        sessionStorage.removeItem('rubyclub_guest');
         saveUserData(data);
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
     } catch (err) {
         console.error('Không tải được profile:', err);
         if (!cached) {
-            localStorage.removeItem(AUTH_TOKEN_KEY);
-            setLoggedInState(false);
+            clearAuthSession();
         }
     }
 }
@@ -365,5 +425,8 @@ window.Login1 = {
     setLoggedInState: setLoggedInState,
     bindUserToLogin1: bindUserToLogin1,
     normalizeUser: normalizeUser,
-    saveUserData: saveUserData
+    saveUserData: saveUserData,
+    saveAuthToken: saveAuthToken,
+    clearAuthSession: clearAuthSession,
+    getAuthToken: getAuthToken
 };

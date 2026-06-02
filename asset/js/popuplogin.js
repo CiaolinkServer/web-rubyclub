@@ -1,5 +1,7 @@
 var POPUP_API_BASE = 'https://rubyclubph.com';
 var POPUP_AUTH_TOKEN_KEY = 'rubyclub_auth_token';
+var POPUP_AUTH_TOKEN_EXPIRES_KEY = 'rubyclub_auth_token_expires_at';
+var POPUP_AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
 var POPUP_QUICK_PLAY_ID_KEY = 'rubyclub_quick_play_id';
 
 function getPopupOverlay() {
@@ -90,8 +92,14 @@ async function fetchPopupJson(url, options) {
 }
 
 function savePopupAuthToken(token) {
+    if (window.Login1 && window.Login1.saveAuthToken) {
+        window.Login1.saveAuthToken(token);
+        return;
+    }
+
+    var expiresAt = Date.now() + POPUP_AUTH_TOKEN_TTL_MS;
     localStorage.setItem(POPUP_AUTH_TOKEN_KEY, token);
-    sessionStorage.removeItem('rubyclub_guest');
+    localStorage.setItem(POPUP_AUTH_TOKEN_EXPIRES_KEY, String(expiresAt));
 }
 
 async function fetchPopupUserMe(token) {
@@ -246,11 +254,7 @@ async function handlePopupFreePlay(btn) {
 
         if (!deviceId) {
             throw new Error('Không lấy được device id');
-        }else{
-            console.log('Device id:', deviceId);
-            return;
         }
-
         var data = await fetchPopupJson(POPUP_API_BASE + '/api/v1/auth/quick-play', {
             method: 'POST',
             headers: {
@@ -263,7 +267,7 @@ async function handlePopupFreePlay(btn) {
         if (data && data.id) {
             localStorage.setItem(POPUP_QUICK_PLAY_ID_KEY, data.id);
         }
-
+        console.log('Data:', data);
         if (!data || !data.token) {
             throw new Error('Không nhận được token');
         }
