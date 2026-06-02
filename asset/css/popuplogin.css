@@ -1,4 +1,12 @@
 /* ===== Popup Login (Ruby Club) ===== */
+#popuplogin-mount {
+    position: static;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
 .popuplogin-overlay {
     --popup-max: 300px;
     --popup-pad-x: 10px;
@@ -16,21 +24,16 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
     background: rgba(8, 24, 56, 0.72);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
+    pointer-events: auto;
 }
 
 .popuplogin-overlay.is-open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    display: flex;
 }
 
 .popuplogin {

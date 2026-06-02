@@ -8,7 +8,10 @@ async function launchGame(btn) {
 
     if (!token) {
         alert('Vui lòng đăng nhập để chơi game.');
-        window.location.href = '../index.html';
+        if (window.PopupLogin) {
+            window.PopupLogin.switchTab('login');
+            window.PopupLogin.open();
+        }
         return;
     }
 
@@ -225,13 +228,87 @@ async function initLogin1Session() {
     }
 }
 
-function initLogin1Games() {
+function getGameCardAtPoint(x, y) {
     var cards = document.querySelectorAll('.login1-game__card');
 
-    cards.forEach(function (card) {
-        card.addEventListener('click', function () {
+    for (var i = 0; i < cards.length; i++) {
+        var rect = cards[i].getBoundingClientRect();
+
+        if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+            return cards[i];
+        }
+    }
+
+    return null;
+}
+
+function initLogin1Games() {
+    var gamesEl = document.getElementById('login1-games');
+    var TAP_MOVE_THRESHOLD = 12;
+
+    if (!gamesEl) {
+        return;
+    }
+
+    var activePointerId = null;
+    var startX = 0;
+    var startY = 0;
+    var pointerMoved = false;
+
+    function tryLaunchAtPoint(x, y) {
+        var card = getGameCardAtPoint(x, y);
+        if (card) {
             launchGame(card);
-        });
+        }
+    }
+
+    gamesEl.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) {
+            return;
+        }
+
+        activePointerId = e.pointerId;
+        startX = e.clientX;
+        startY = e.clientY;
+        pointerMoved = false;
+    });
+
+    gamesEl.addEventListener(
+        'pointermove',
+        function (e) {
+            if (e.pointerId !== activePointerId) {
+                return;
+            }
+
+            var dx = Math.abs(e.clientX - startX);
+            var dy = Math.abs(e.clientY - startY);
+
+            if (dx > TAP_MOVE_THRESHOLD || dy > TAP_MOVE_THRESHOLD) {
+                pointerMoved = true;
+            }
+        },
+        { passive: true }
+    );
+
+    function finishPointer(e) {
+        if (e.pointerId !== activePointerId) {
+            return;
+        }
+
+        activePointerId = null;
+
+        if (pointerMoved) {
+            return;
+        }
+
+        tryLaunchAtPoint(e.clientX, e.clientY);
+    }
+
+    gamesEl.addEventListener('pointerup', finishPointer);
+    gamesEl.addEventListener('pointercancel', function (e) {
+        if (e.pointerId === activePointerId) {
+            activePointerId = null;
+        }
     });
 }
 

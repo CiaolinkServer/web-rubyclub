@@ -15,6 +15,7 @@ body {
 
 .login1-page {
     --login1-max: 402px;
+    --login1-screen-x: 12px;
     --login1-sidebar-w: 80px;
     --login1-footer-h: 73px;
     --login1-deposit-size: 76px;
@@ -43,6 +44,8 @@ body {
     margin: 0 auto;
     min-height: 0;
     overflow: hidden;
+    padding-left: var(--login1-screen-x);
+    padding-right: var(--login1-screen-x);
     padding-bottom: calc(var(--login1-footer-h) + var(--login1-deposit-overlap) + env(safe-area-inset-bottom, 0px));
 }
 
@@ -501,11 +504,11 @@ body {
 }
 
 .login1-games {
-    flex: 1;
+    flex: 1 1 0;
     min-width: 0;
     min-height: 0;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
@@ -529,7 +532,6 @@ body {
 .login1-game {
     line-height: 0;
     cursor: pointer;
-    touch-action: pan-y;
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.15s ease;
 }
@@ -554,10 +556,9 @@ body {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    touch-action: pan-y;
     isolation: isolate;
     cursor: pointer;
-    pointer-events: auto;
+    touch-action: pan-y;
 }
 
 .login1-game__bg {
@@ -628,7 +629,10 @@ body {
     max-width: var(--login1-max);
     transform: translateX(-50%);
     overflow: visible;
+    padding-left: var(--login1-screen-x);
+    padding-right: var(--login1-screen-x);
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
     pointer-events: none;
 }
 
@@ -710,22 +714,24 @@ body {
 
 .login1-footer__badge {
     position: absolute;
-    top: -10px;
-    right: -24px;
+    top: -8px;
+    right: -32px;
     z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 46px;
-    height: 19px;
-    padding: 0 6px 1px;
+    min-width: 34px;
+    height: 14px;
+    padding: 0 4px;
     background: url('../image/login1/footer_icon_friend_noti.png') center / 100% 100% no-repeat;
     font-family: Inter, Arial, Helvetica, sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: uppercase;
+    color: #FFFF0C;
     white-space: nowrap;
     pointer-events: none;
 }

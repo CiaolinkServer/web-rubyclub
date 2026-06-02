@@ -147,11 +147,122 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.GetLaunchUrlResponse'
+    /api/v1/auth/link-google:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_LinkGoogle
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.LinkGoogleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.LinkGoogleResponse'
+    /api/v1/auth/link-google/callback:
+        get:
+            tags:
+                - AuthService
+            operationId: AuthService_LinkGoogleCallback
+            parameters:
+                - name: code
+                  in: query
+                  schema:
+                    type: string
+                - name: state
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.LinkGoogleCallbackResponse'
+    /api/v1/auth/login:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.LoginResponse'
+    /api/v1/auth/quick-play:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_QuickPlay
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.QuickPlayRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.QuickPlayResponse'
+    /api/v1/auth/register:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.RegisterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.RegisterResponse'
+    /api/v1/auth/register-quick-play:
+        post:
+            tags:
+                - AuthService
+            operationId: AuthService_RegisterQuickPlay
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.RegisterQuickPlayRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.RegisterQuickPlayResponse'
     /api/v1/user/me:
         get:
             tags:
                 - UserService
-            operationId: UserService_GetUser
+            operationId: UserService_GetMyUser
             responses:
                 "200":
                     description: OK
@@ -177,11 +288,81 @@ components:
                 expiresAt:
                     type: string
                     format: date-time
+                redirectUrl:
+                    type: string
         auth.v1.GoogleLoginResponse:
             type: object
             properties:
                 redirectUrl:
                     type: string
+        auth.v1.LinkGoogleCallbackResponse:
+            type: object
+            properties:
+                redirectUrl:
+                    type: string
+        auth.v1.LinkGoogleRequest:
+            type: object
+            properties: {}
+        auth.v1.LinkGoogleResponse:
+            type: object
+            properties:
+                redirectUrl:
+                    type: string
+        auth.v1.LoginRequest:
+            type: object
+            properties:
+                userName:
+                    type: string
+                password:
+                    type: string
+        auth.v1.LoginResponse:
+            type: object
+            properties:
+                token:
+                    type: string
+                expiresAt:
+                    type: string
+                    format: date-time
+        auth.v1.QuickPlayRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        auth.v1.QuickPlayResponse:
+            type: object
+            properties:
+                token:
+                    type: string
+                id:
+                    type: string
+                expiresAt:
+                    type: string
+                    format: date-time
+        auth.v1.RegisterQuickPlayRequest:
+            type: object
+            properties:
+                userName:
+                    type: string
+                password:
+                    type: string
+        auth.v1.RegisterQuickPlayResponse:
+            type: object
+            properties: {}
+        auth.v1.RegisterRequest:
+            type: object
+            properties:
+                userName:
+                    type: string
+                password:
+                    type: string
+        auth.v1.RegisterResponse:
+            type: object
+            properties:
+                token:
+                    type: string
+                expiresAt:
+                    type: string
+                    format: date-time
         auth.v1.VerifySessionRequest:
             type: object
             properties:
