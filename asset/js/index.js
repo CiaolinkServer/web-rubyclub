@@ -8,7 +8,7 @@ async function launchGame(btn) {
 
     if (!token) {
         alert('Vui lòng đăng nhập để chơi game.');
-        window.location.href = '../login1.html';
+        window.location.href = '../index.html';
         return;
     }
 
