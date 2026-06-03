@@ -15,7 +15,7 @@ async function getBrowserFingerprint() {
 
     var fp = await FingerprintJS.load();
     var result = await fp.get();
-    console.log('Browser fingerprint:', result.visitorId);
+    // console.log('Browser fingerprint:', result.visitorId);
     return result.visitorId;
 }
 
@@ -115,9 +115,8 @@ async function fetchPopupUserMe(token) {
 async function applyPopupAuthSession(token) {
     savePopupAuthToken(token);
     var data = await fetchPopupUserMe(token);
-
+    console.log('data quick play ', data);
     if (window.Login1) {
-        window.Login1.saveUserData(data);
         window.Login1.bindUserToLogin1(window.Login1.normalizeUser(data));
         window.Login1.setLoggedInState(true);
     }
@@ -267,7 +266,7 @@ async function handlePopupFreePlay(btn) {
         if (data && data.id) {
             localStorage.setItem(POPUP_QUICK_PLAY_ID_KEY, data.id);
         }
-        console.log('Data:', data);
+        // console.log('Data:', data);
         if (!data || !data.token) {
             throw new Error('Không nhận được token');
         }

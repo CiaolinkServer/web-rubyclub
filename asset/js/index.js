@@ -1,7 +1,6 @@
 var AUTH_TOKEN_KEY = 'rubyclub_auth_token';
 var AUTH_TOKEN_EXPIRES_KEY = 'rubyclub_auth_token_expires_at';
 var AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
-var USER_DATA_KEY = 'rubyclub_user_data';
 var API_BASE = 'https://rubyclubph.com';
 var authTokenExpiryTimer = null;
 
@@ -58,6 +57,10 @@ async function launchGame(btn) {
     }
 }
 
+function downloadAPK() {
+    alert('Tính năng đang phát triển. Vui lòng thử lại sau.');
+}
+
 function clearAuthToken() {
     localStorage.removeItem(AUTH_TOKEN_KEY);
     localStorage.removeItem(AUTH_TOKEN_EXPIRES_KEY);
@@ -70,7 +73,6 @@ function clearAuthToken() {
 
 function clearAuthSession() {
     clearAuthToken();
-    sessionStorage.removeItem(USER_DATA_KEY);
     setLoggedInState(false);
 }
 
@@ -121,22 +123,6 @@ function getAuthToken() {
 
     scheduleAuthTokenExpiry(remainingMs);
     return token;
-}
-
-function loadUserFromStorage() {
-    var raw = sessionStorage.getItem(USER_DATA_KEY);
-    if (!raw) {
-        return null;
-    }
-    try {
-        return JSON.parse(raw);
-    } catch (e) {
-        return null;
-    }
-}
-
-function saveUserData(data) {
-    sessionStorage.setItem(USER_DATA_KEY, JSON.stringify(data));
 }
 
 function normalizeUser(data) {
@@ -219,7 +205,6 @@ async function refreshUserProfile() {
 
     try {
         var data = await fetchUserMe(token);
-        saveUserData(data);
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
     } catch (err) {
@@ -248,7 +233,6 @@ async function captureTokenFromUrl() {
 
     try {
         var data = await fetchUserMe(token);
-        saveUserData(data);
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
         return true;
@@ -264,27 +248,17 @@ async function initLogin1Session() {
     var token = getAuthToken();
 
     if (!token) {
-        sessionStorage.removeItem(USER_DATA_KEY);
         setLoggedInState(false);
         return;
     }
 
-    var cached = loadUserFromStorage();
-    if (cached) {
-        bindUserToLogin1(normalizeUser(cached));
-        setLoggedInState(true);
-    }
-
     try {
         var data = await fetchUserMe(token);
-        saveUserData(data);
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
     } catch (err) {
         console.error('Không tải được profile:', err);
-        if (!cached) {
-            clearAuthSession();
-        }
+        clearAuthSession();
     }
 }
 
@@ -399,6 +373,7 @@ function initPopupLoginButtons() {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
+    
     initPopupLoginButtons();
     document.body.style.overflow = '';
 
@@ -417,6 +392,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             refreshUserProfile();
         });
     }
+
+    var apkBtn = document.getElementById('btn-download-apk');
+    if (apkBtn) {
+        apkBtn.addEventListener('click', function () {
+            downloadAPK();
+        });
+    }
+
+    
 });
 
 window.Login1 = {
@@ -425,8 +409,9 @@ window.Login1 = {
     setLoggedInState: setLoggedInState,
     bindUserToLogin1: bindUserToLogin1,
     normalizeUser: normalizeUser,
-    saveUserData: saveUserData,
     saveAuthToken: saveAuthToken,
     clearAuthSession: clearAuthSession,
     getAuthToken: getAuthToken
 };
+
+window.downloadAPK = downloadAPK;
