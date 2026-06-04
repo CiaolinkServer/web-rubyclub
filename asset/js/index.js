@@ -4,8 +4,64 @@ var AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
 var API_BASE = 'https://rubyclubph.com';
 var authTokenExpiryTimer = null;
 
+var games = [
+    {
+        id: 1,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 2,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 3,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 4,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 5,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 6,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 7,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 8,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    },
+    {
+        id: 9,
+        name: 'Showdown',
+        icon: 'asset/image/icongame/1.png',
+        nameBg: 'asset/image/icongame/background_name_game.png'
+    }
+];
 
-async function launchGame(btn) {
+async function launchGame(card) {
     var token = getAuthToken();
 
     if (!token) {
@@ -16,9 +72,16 @@ async function launchGame(btn) {
         }
         return;
     }
+    console.log("data card "+card.dataset);
+    var gameId = card && card.dataset ? card.dataset.gameId : null;
 
-    if (btn) {
-        btn.disabled = true;
+    if (!gameId) {
+        alert('Không xác định được game.');
+        return;
+    }
+
+    if (card) {
+        card.setAttribute('aria-disabled', 'true');
     }
 
     try {
@@ -29,7 +92,9 @@ async function launchGame(btn) {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token
             },
-            body: JSON.stringify({})
+            body: JSON.stringify({
+                game_id: Number(gameId)
+            })
         });
 
         if (!response.ok) {
@@ -51,8 +116,8 @@ async function launchGame(btn) {
         console.error('Launch game failed:', err);
         alert('Không thể khởi chạy game. Vui lòng thử lại.');
     } finally {
-        if (btn) {
-            btn.disabled = false;
+        if (card) {
+            card.removeAttribute('aria-disabled');
         }
     }
 }
@@ -262,6 +327,39 @@ async function initLogin1Session() {
     }
 }
 
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function renderLogin1Games() {
+    var grid = document.querySelector('.login1-games__grid');
+
+    if (!grid) {
+        return;
+    }
+
+    grid.innerHTML = games.map(function (game) {
+        var bgHtml = game.bg
+            ? '<img class="login1-game__bg" src="' + escapeHtml(game.bg) + '" alt="">'
+            : '';
+
+        return (
+            '<li class="login1-game login1-game--stack">' +
+                '<div class="login1-game__card" aria-label="' + escapeHtml(game.name) + '" data-game-id="' + escapeHtml(game.id) + '">' +
+                    bgHtml +
+                    '<img class="login1-game__icon" src="' + escapeHtml(game.icon) + '" alt="">' +
+                    '<img class="login1-game__name-bg" src="' + escapeHtml(game.nameBg) + '" alt="">' +
+                    '<span class="login1-game__name">' + escapeHtml(game.name) + '</span>' +
+                '</div>' +
+            '</li>'
+        );
+    }).join('');
+}
+
 function getGameCardAtPoint(x, y) {
     var cards = document.querySelectorAll('.login1-game__card');
 
@@ -383,7 +481,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         await initLogin1Session();
     }
 
-    
+    renderLogin1Games();
     initLogin1Games();
 
     var refreshBtn = document.getElementById('login1-refresh-balance');
