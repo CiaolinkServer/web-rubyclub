@@ -1,67 +1,11 @@
 var AUTH_TOKEN_KEY = 'rubyclub_auth_token';
 var AUTH_TOKEN_EXPIRES_KEY = 'rubyclub_auth_token_expires_at';
 var AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
-var API_BASE = 'https://rubyclubph.com';
+var API_BASE = window.RubyClubConfig != null ? window.RubyClubConfig.API_BASE : 'https://rubyclubph.com';
 var authTokenExpiryTimer = null;
 
-var games = [
-    {
-        id: 1,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 2,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 3,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 4,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 5,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 6,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 7,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 8,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    },
-    {
-        id: 9,
-        name: 'Showdown',
-        icon: 'asset/image/icongame/1.png',
-        nameBg: 'asset/image/icongame/background_name_game.png'
-    }
-];
-
 async function launchGame(card) {
+    console.log("data card "+card.dataset.gameId);
     var token = getAuthToken();
 
     if (!token) {
@@ -72,7 +16,7 @@ async function launchGame(card) {
         }
         return;
     }
-    console.log("data card "+card.dataset);
+    
     var gameId = card && card.dataset ? card.dataset.gameId : null;
 
     if (!gameId) {
@@ -351,13 +295,46 @@ function renderLogin1Games() {
             '<li class="login1-game login1-game--stack">' +
                 '<div class="login1-game__card" aria-label="' + escapeHtml(game.name) + '" data-game-id="' + escapeHtml(game.id) + '">' +
                     bgHtml +
-                    '<img class="login1-game__icon" src="' + escapeHtml(game.icon) + '" alt="">' +
-                    '<img class="login1-game__name-bg" src="' + escapeHtml(game.nameBg) + '" alt="">' +
-                    '<span class="login1-game__name">' + escapeHtml(game.name) + '</span>' +
+                    '<img class="login1-game__icon" src="' + 'asset/image/icongame/' + escapeHtml(game.id)+'.png' + '" alt="">' +
+                    '<img class="login1-game__name-bg" src="asset/image/icongame/background_name_game.png" alt="">' +
+                    '<div class="login1-game__name">' +
+                        '<div class="login1-game__name-marquee">' +
+                            '<span class="login1-game__name-text">' + escapeHtml(game.name) + '</span>' +
+                        '</div>' +
+                    '</div>' +
                 '</div>' +
             '</li>'
         );
     }).join('');
+
+    initGameNameMarquees();
+}
+
+function initGameNameMarquees() {
+    var items = document.querySelectorAll('.login1-game__name');
+
+    for (var i = 0; i < items.length; i++) {
+        var wrap = items[i];
+        var marquee = wrap.querySelector('.login1-game__name-marquee');
+        var label = marquee && marquee.querySelector('.login1-game__name-text');
+
+        if (!marquee || !label) {
+            continue;
+        }
+
+        var name = label.textContent;
+        wrap.classList.remove('login1-game__name--scroll');
+        marquee.innerHTML = '<span class="login1-game__name-text">' + escapeHtml(name) + '</span>';
+
+        label = marquee.querySelector('.login1-game__name-text');
+
+        if (label.scrollWidth > wrap.clientWidth) {
+            wrap.classList.add('login1-game__name--scroll');
+            marquee.innerHTML =
+                '<span class="login1-game__name-text">' + escapeHtml(name) + '</span>' +
+                '<span class="login1-game__name-text" aria-hidden="true">' + escapeHtml(name) + '</span>';
+        }
+    }
 }
 
 function getGameCardAtPoint(x, y) {
@@ -484,6 +461,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     renderLogin1Games();
     initLogin1Games();
 
+    if (!window.__login1GameNameResizeBound) {
+        window.__login1GameNameResizeBound = true;
+        var gameNameResizeTimer;
+        window.addEventListener('resize', function () {
+            clearTimeout(gameNameResizeTimer);
+            gameNameResizeTimer = setTimeout(initGameNameMarquees, 150);
+        });
+    }
+
     var refreshBtn = document.getElementById('login1-refresh-balance');
     if (refreshBtn) {
         refreshBtn.addEventListener('click', function () {
@@ -500,6 +486,665 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     
 });
+
+var games = [
+    {
+      "id": 1,
+      "name": "Honey Trap of Diao Chan"
+    },
+    {
+      "id": 2,
+      "name": "Gem Saviour"
+    },
+    {
+      "id": 3,
+      "name": "Fortune Gods"
+    },
+    {
+      "id": 6,
+      "name": "Medusa 2: The Quest of Perseus"
+    },
+    {
+      "id": 7,
+      "name": "Medusa 1: The Curse of Athena"
+    },
+    {
+      "id": 18,
+      "name": "Hood vs Wolf"
+    },
+    {
+      "id": 20,
+      "name": "Reel Love"
+    },
+    {
+      "id": 24,
+      "name": "Win Win Won"
+    },
+    {
+      "id": 25,
+      "name": "Plushie Frenzy"
+    },
+    {
+      "id": 26,
+      "name": "Tree of Fortune"
+    },
+    {
+      "id": 28,
+      "name": "Hotpot"
+    },
+    {
+      "id": 29,
+      "name": "Dragon Legend"
+    },
+    {
+      "id": 33,
+      "name": "Hip Hop Panda"
+    },
+    {
+      "id": 34,
+      "name": "Legend of Hou Yi"
+    },
+    {
+      "id": 35,
+      "name": "Mr. Hallow-Jackpot!"
+    },
+    {
+      "id": 36,
+      "name": "Prosperity Lion"
+    },
+    {
+      "id": 37,
+      "name": "Santa's Gift Rush"
+    },
+    {
+      "id": 38,
+      "name": "Gem Saviour Sword"
+    },
+    {
+      "id": 39,
+      "name": "Piggy Gold"
+    },
+    {
+      "id": 40,
+      "name": "Jungle Delight"
+    },
+    {
+      "id": 41,
+      "name": "Symbols Of Egypt"
+    },
+    {
+      "id": 42,
+      "name": "Ganesha Gold"
+    },
+    {
+      "id": 44,
+      "name": "Emperor's Favour"
+    },
+    {
+      "id": 48,
+      "name": "Double Fortune"
+    },
+    {
+      "id": 50,
+      "name": "Journey to the Wealth"
+    },
+    {
+      "id": 53,
+      "name": "The Great Icescape"
+    },
+    {
+      "id": 54,
+      "name": "Captain's Bounty"
+    },
+    {
+      "id": 57,
+      "name": "Dragon Hatch"
+    },
+    {
+      "id": 58,
+      "name": "Vampire's Charm"
+    },
+    {
+      "id": 59,
+      "name": "Ninja vs Samurai"
+    },
+    {
+      "id": 60,
+      "name": "Leprechaun Riches"
+    },
+    {
+      "id": 61,
+      "name": "Flirting Scholar"
+    },
+    {
+      "id": 62,
+      "name": "Gem Saviour Conquest"
+    },
+    {
+      "id": 63,
+      "name": "Dragon Tiger Luck"
+    },
+    {
+      "id": 64,
+      "name": "Muay Thai Champion"
+    },
+    {
+      "id": 65,
+      "name": "Mahjong Ways"
+    },
+    {
+      "id": 67,
+      "name": "Shaolin Soccer"
+    },
+    {
+      "id": 68,
+      "name": "Fortune Mouse"
+    },
+    {
+      "id": 69,
+      "name": "Bikini Paradise"
+    },
+    {
+      "id": 70,
+      "name": "Candy Burst"
+    },
+    {
+      "id": 71,
+      "name": "Cai Shen Wins"
+    },
+    {
+      "id": 73,
+      "name": "Egypt's Book of Mystery"
+    },
+    {
+      "id": 74,
+      "name": "Mahjong Ways 2"
+    },
+    {
+      "id": 75,
+      "name": "Ganesha Fortune"
+    },
+    {
+      "id": 79,
+      "name": "Dreams of Macau"
+    },
+    {
+      "id": 80,
+      "name": "Circus Delight"
+    },
+    {
+      "id": 82,
+      "name": "Phoenix Rises"
+    },
+    {
+      "id": 83,
+      "name": "Wild Fireworks"
+    },
+    {
+      "id": 84,
+      "name": "Queen of Bounty"
+    },
+    {
+      "id": 85,
+      "name": "Genie's 3 Wishes"
+    },
+    {
+      "id": 86,
+      "name": "Galactic Gems"
+    },
+    {
+      "id": 87,
+      "name": "Treasures of Aztec"
+    },
+    {
+      "id": 88,
+      "name": "Jewels of Prosperity"
+    },
+    {
+      "id": 89,
+      "name": "Lucky Neko"
+    },
+    {
+      "id": 90,
+      "name": "Secrets of Cleopatra"
+    },
+    {
+      "id": 91,
+      "name": "Guardians of Ice & Fire"
+    },
+    {
+      "id": 92,
+      "name": "Thai River Wonders"
+    },
+    {
+      "id": 93,
+      "name": "Opera Dynasty"
+    },
+    {
+      "id": 94,
+      "name": "Bali Vacation"
+    },
+    {
+      "id": 95,
+      "name": "Majestic Treasures"
+    },
+    {
+      "id": 97,
+      "name": "Jack Frost's Winter"
+    },
+    {
+      "id": 98,
+      "name": "Fortune Ox"
+    },
+    {
+      "id": 100,
+      "name": "Candy Superwin"
+    },
+    {
+      "id": 101,
+      "name": "Rise of the Sun God"
+    },
+    {
+      "id": 102,
+      "name": "Mermaid Riches"
+    },
+    {
+      "id": 103,
+      "name": "Crypto Gold"
+    },
+    {
+      "id": 104,
+      "name": "Wild Bandito"
+    },
+    {
+      "id": 105,
+      "name": "Heist Stakes"
+    },
+    {
+      "id": 106,
+      "name": "Ways of the Qilin"
+    },
+    {
+      "id": 107,
+      "name": "Legendary Monkey King"
+    },
+    {
+      "id": 108,
+      "name": "Buffalo Win"
+    },
+    {
+      "id": 110,
+      "name": "Jurassic Kingdom"
+    },
+    {
+      "id": 112,
+      "name": "Oriental Prosperity"
+    },
+    {
+      "id": 113,
+      "name": "Raider Jane's Crypt of Fortune"
+    },
+    {
+      "id": 114,
+      "name": "Emoji Riches"
+    },
+    {
+      "id": 115,
+      "name": "Supermarket Spree"
+    },
+    {
+      "id": 117,
+      "name": "Cocktail Nights"
+    },
+    {
+      "id": 118,
+      "name": "Mask Carnival"
+    },
+    {
+      "id": 119,
+      "name": "Spirited Wonders"
+    },
+    {
+      "id": 120,
+      "name": "The Queen's Banquet"
+    },
+    {
+      "id": 121,
+      "name": "Destiny of Sun & Moon"
+    },
+    {
+      "id": 122,
+      "name": "Garuda Gems"
+    },
+    {
+      "id": 123,
+      "name": "Rooster Rumble"
+    },
+    {
+      "id": 124,
+      "name": "Battleground Royale"
+    },
+    {
+      "id": 125,
+      "name": "Butterfly Blossom"
+    },
+    {
+      "id": 126,
+      "name": "Fortune Tiger"
+    },
+    {
+      "id": 127,
+      "name": "Speed Winner"
+    },
+    {
+      "id": 128,
+      "name": "Legend of Perseus"
+    },
+    {
+      "id": 129,
+      "name": "Win Win Fish Prawn Crab"
+    },
+    {
+      "id": 130,
+      "name": "Lucky Piggy"
+    },
+    {
+      "id": 132,
+      "name": "Wild Coaster"
+    },
+    {
+      "id": 135,
+      "name": "Wild Bounty Showdown"
+    },
+    {
+      "id": 1312883,
+      "name": "Prosperity Fortune Tree"
+    },
+    {
+      "id": 1338274,
+      "name": "Totem Wonders"
+    },
+    {
+      "id": 1340277,
+      "name": "Asgardian Rising"
+    },
+    {
+      "id": 1368367,
+      "name": "Alchemy Gold"
+    },
+    {
+      "id": 1372643,
+      "name": "Diner Delights"
+    },
+    {
+      "id": 1381200,
+      "name": "Hawaiian Tiki"
+    },
+    {
+      "id": 1397455,
+      "name": "Fruity Candy"
+    },
+    {
+      "id": 1402846,
+      "name": "Midas Fortune"
+    },
+    {
+      "id": 1418544,
+      "name": "Bakery Bonanza"
+    },
+    {
+      "id": 1420892,
+      "name": "Rave Party Fever"
+    },
+    {
+      "id": 1432733,
+      "name": "Mystical Spirits"
+    },
+    {
+      "id": 1448762,
+      "name": "Songkran Splash"
+    },
+    {
+      "id": 1451122,
+      "name": "Dragon Hatch2"
+    },
+    {
+      "id": 1473388,
+      "name": "Cruise Royale"
+    },
+    {
+      "id": 1489936,
+      "name": "Ultimate Striker"
+    },
+    {
+      "id": 1492288,
+      "name": "Pinata Wins"
+    },
+    {
+      "id": 1508783,
+      "name": "Wild Ape #3258"
+    },
+    {
+      "id": 1513328,
+      "name": "Super Golf Drive"
+    },
+    {
+      "id": 1529867,
+      "name": "Ninja Raccoon Frenzy"
+    },
+    {
+      "id": 1543462,
+      "name": "Fortune Rabbit"
+    },
+    {
+      "id": 1555350,
+      "name": "Forge of Wealth"
+    },
+    {
+      "id": 1568554,
+      "name": "Wild Heist Cashout"
+    },
+    {
+      "id": 1572362,
+      "name": "Gladiator's Glory"
+    },
+    {
+      "id": 1580541,
+      "name": "Mafia Mayhem"
+    },
+    {
+      "id": 1594259,
+      "name": "Safari Wilds"
+    },
+    {
+      "id": 1601012,
+      "name": "Lucky Clover Riches"
+    },
+    {
+      "id": 1615454,
+      "name": "Werewolf's Hunt"
+    },
+    {
+      "id": 1623475,
+      "name": "Anubis Wrath"
+    },
+    {
+      "id": 1635221,
+      "name": "Zombie Outbreak"
+    },
+    {
+      "id": 1648578,
+      "name": "Shark Bounty"
+    },
+    {
+      "id": 1655268,
+      "name": "Tsar Treasures"
+    },
+    {
+      "id": 1666445,
+      "name": "Chocolate Deluxe"
+    },
+    {
+      "id": 1671262,
+      "name": "Gemstones Gold"
+    },
+    {
+      "id": 1682240,
+      "name": "Cash Mania"
+    },
+    {
+      "id": 1695365,
+      "name": "Fortune Dragon"
+    },
+    {
+      "id": 1702123,
+      "name": "Geisha's Revenge"
+    },
+    {
+      "id": 1717688,
+      "name": "Mystic Potion"
+    },
+    {
+      "id": 1727711,
+      "name": "Three Crazy Piggies"
+    },
+    {
+      "id": 1738001,
+      "name": "Chicky Run"
+    },
+    {
+      "id": 1747549,
+      "name": "Wings of Iguazu"
+    },
+    {
+      "id": 1755623,
+      "name": "Museum Wonders"
+    },
+    {
+      "id": 1760238,
+      "name": "Yakuza Honor"
+    },
+    {
+      "id": 1778752,
+      "name": "Futebol Fever"
+    },
+    {
+      "id": 1786529,
+      "name": "Rio Fantasia"
+    },
+    {
+      "id": 1799745,
+      "name": "Mr. Treasure's Fortune"
+    },
+    {
+      "id": 1804577,
+      "name": "Graffiti Rush"
+    },
+    {
+      "id": 1815268,
+      "name": "Oishi Delights"
+    },
+    {
+      "id": 1827457,
+      "name": "Doomsday Rampage"
+    },
+    {
+      "id": 1834850,
+      "name": "Jack the Giant Hunter"
+    },
+    {
+      "id": 1849515,
+      "name": "Mythical Guardians"
+    },
+    {
+      "id": 1850016,
+      "name": "Incan Wonders"
+    },
+    {
+      "id": 1865521,
+      "name": "Dead Man's Riches"
+    },
+    {
+      "id": 1879752,
+      "name": "Fortune Snake"
+    },
+    {
+      "id": 1881268,
+      "name": "Knockout Riches"
+    },
+    {
+      "id": 1897678,
+      "name": "Dragon's Treasure Quest"
+    },
+    {
+      "id": 1903012,
+      "name": "Grimms' Bounty: Hansel & Gretel"
+    },
+    {
+      "id": 1918451,
+      "name": "Galaxy Miner"
+    },
+    {
+      "id": 1929177,
+      "name": "Kraken Gold Rush"
+    },
+    {
+      "id": 1935269,
+      "name": "Diner Frenzy Spins"
+    },
+    {
+      "id": 1940257,
+      "name": "Alibaba's Cave of Fortune"
+    },
+    {
+      "id": 1950910,
+      "name": "Inferno Mayhem"
+    },
+    {
+      "id": 1964781,
+      "name": "Pharaoh Royals"
+    },
+    {
+      "id": 1971587,
+      "name": "Majestic Empire"
+    },
+    {
+      "id": 1981965,
+      "name": "Forbidden Alchemy"
+    },
+    {
+      "id": 1997301,
+      "name": "Mayan Destiny"
+    },
+    {
+      "id": 2009635,
+      "name": "Poker Kingdom Win"
+    },
+    {
+      "id": 2012025,
+      "name": "Skylight Wonders"
+    },
+    {
+      "id": 2024510,
+      "name": "Perfect Strike"
+    },
+    {
+      "id": 2035783,
+      "name": "Funky Fortunez"
+    },
+    {
+      "id": 2058347,
+      "name": "Reel Royale Showdown"
+    },
+    {
+      "id": 2081892,
+      "name": "Mighty Mania"
+    },
+    {
+      "id": 2100928,
+      "name": "Fortune Horse"
+    }
+  ];
 
 window.Login1 = {
     launchGame: launchGame,

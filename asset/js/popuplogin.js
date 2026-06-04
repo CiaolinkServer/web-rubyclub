@@ -1,4 +1,4 @@
-var POPUP_API_BASE = 'https://rubyclubph.com';
+var POPUP_API_BASE = window.RubyClubConfig != null ? window.RubyClubConfig.API_BASE : 'https://rubyclubph.com';
 var POPUP_AUTH_TOKEN_KEY = 'rubyclub_auth_token';
 var POPUP_AUTH_TOKEN_EXPIRES_KEY = 'rubyclub_auth_token_expires_at';
 var POPUP_AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
