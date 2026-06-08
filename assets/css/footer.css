@@ -1,0 +1,180 @@
+/* ===== Footer nav ===== */
+.login1-footer {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    z-index: 100;
+    width: 100%;
+    max-width: var(--login1-max);
+    transform: translateX(-50%);
+    overflow: visible;
+    padding-left: var(--login1-screen-x);
+    padding-right: var(--login1-screen-x);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.login1-footer__bar {
+    position: relative;
+    height: var(--login1-footer-h);
+    overflow: visible;
+    pointer-events: auto;
+}
+
+.login1-footer__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+}
+
+.login1-footer__nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: var(--login1-footer-h);
+    padding: 0 4px 6px;
+    overflow: visible;
+}
+
+.login1-footer__item {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 0;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+    min-width: 0;
+    padding: 0 2px 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+.login1-footer__item:not(.login1-footer__item--deposit) {
+    z-index: 3;
+    align-self: stretch;
+}
+
+.login1-footer__item:not(.login1-footer__item--deposit):not(:has(.login1-footer__label + .login1-footer__label)) .login1-footer__label {
+    margin-top: calc(var(--login1-footer-label-line) + var(--login1-footer-label-gap));
+}
+
+.login1-footer__icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    overflow: visible;
+}
+
+.login1-footer__icon {
+    display: block;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    max-width: 22px;
+    max-height: 22px;
+    object-fit: contain;
+}
+
+.login1-footer__label {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.login1-footer__item--active .login1-footer__label {
+    color: #63defe;
+}
+
+.login1-footer__deposit-visual {
+    position: absolute;
+    left: 50%;
+    bottom: var(--login1-deposit-labels-h);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--login1-deposit-size);
+    height: var(--login1-deposit-size);
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 8px rgba(92, 225, 255, 0.45));
+    transition: transform 0.15s ease;
+    pointer-events: none;
+}
+
+.login1-footer__deposit-bg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.login1-footer__deposit-icon {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 54%;
+    height: 54%;
+    object-fit: contain;
+}
+
+.login1-footer__item--deposit {
+    z-index: 2;
+    flex: 1.15 1 0;
+    align-self: stretch;
+    justify-content: flex-end;
+    gap: 1px;
+    padding: 0 2px 5px;
+}
+
+.login1-footer__item--deposit .login1-footer__label {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    font-size: 8px;
+    line-height: 1.05;
+}
+
+.login1-footer__item:hover {
+    transform: scale(1.05);
+}
+
+.login1-footer__item--deposit:hover {
+    transform: none;
+}
+
+.login1-footer__item--deposit:hover .login1-footer__deposit-visual {
+    transform: translateX(-50%) scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login1-footer__item {
+        transition: none;
+    }
+}

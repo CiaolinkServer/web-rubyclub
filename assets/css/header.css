@@ -1,0 +1,56 @@
+/* ===== Header ===== */
+.login1-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 6px;
+    min-height: 51px;
+    padding: 6px 8px 4px;
+    background: #000;
+}
+
+.login1-header__menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.login1-header__menu img {
+    display: block;
+    width: 21px;
+    height: auto;
+}
+
+.login1-header__logo {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+}
+
+.login1-header__logo img {
+    display: block;
+    width: min(145px, 42vw);
+    height: auto;
+    object-fit: contain;
+}
+
+.login1-header__domain {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #fff;
+    white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+    .login1-header__domain {
+        font-size: 8px;
+    }
+}

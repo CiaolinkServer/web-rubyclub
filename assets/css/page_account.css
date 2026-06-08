@@ -1,0 +1,227 @@
+.login1-page--account .login1 {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.page-account {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 10px 0 16px;
+}
+
+.page-account__greeting {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #fff;
+}
+
+.page-account__username {
+    color: #f7e15d;
+    font-weight: 700;
+}
+
+.page-account__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 21px 30px;
+    border-radius: 14px;
+    background: #333333;
+
+}
+
+.page-account__balance {
+    margin-top: 15px;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    min-height: 44px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #17181a;
+}
+
+.page-account__balance-info {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 8px 14px;
+}
+
+.page-account__balance-label {
+    flex-shrink: 0;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: #55D8FC80;
+}
+
+.page-account__balance-value {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: #ECF355;
+
+}
+
+.page-account__balance-pill {
+    flex-shrink: 0;
+    width: 72px;
+    background: linear-gradient(180deg, #5EDCFE 0%, #18C3F3 100%);
+    border-radius: 0 24px 24px 0;
+}
+
+.page-account__wallet-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.page-account__wallet-btn {
+    margin-top: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 10px;
+    border: none;
+    border-radius:6px;
+    background: linear-gradient(180deg, #58DAFC 0%, #23C7F4 100%);
+    color: #000;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.page-account__wallet-btn img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.page-account__wallet-btn:hover {
+    filter: brightness(1.05);
+    transform: scale(1.02);
+}
+
+.page-account__features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.page-account__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.page-account__grid--center {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: calc(75% - 7.5px);
+    margin: 0 auto;
+}
+
+.page-account__tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 78px;
+    padding: 10px 6px;
+    border: none;
+    border-radius: 12px;
+    background: #232528;
+    color: #fff;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.page-account__tile img {
+    display: block;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.page-account__tile:hover {
+    transform: scale(1.03);
+    background: #2b2e32;
+}
+
+.page-account__logout {
+    align-self: center;
+    width: min(78%, 300px);
+    min-height: 44px;
+    margin-top: 8px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #58DAFC 0%, #23C7F4 100%);
+    color: #000;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.page-account__logout:hover {
+    filter: brightness(1.05);
+    transform: scale(1.01);
+}
+
+@media (max-width: 380px) {
+    .page-account__wallet-btn {
+        font-size: 11px;
+        gap: 6px;
+    }
+
+    .page-account__tile {
+        min-height: 72px;
+        font-size: 9px;
+    }
+
+    .page-account__tile img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-account__wallet-btn,
+    .page-account__tile,
+    .page-account__logout {
+        transition: none;
+    }
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Account - Ruby Club</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/image/icon/16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/image/icon/32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/image/icon/192x192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/assets/image/icon/192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/image/icon/512x512.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/index.css">
+    <link rel="stylesheet" href="/assets/css/header.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/page_account.css">
+</head>
+<body class="login1-page login1-page--account">
+    <div id="toast-container"></div>
+    <div class="login1" id="login1-app">
+        <div id="header-mount"></div>
+
+        <section class="login1-news" aria-label="Thông báo">
+            <img class="login1-news__bg" src="/assets/image/login1/background_news.png" alt="" aria-hidden="true">
+            <div class="login1-news__inner">
+                <img class="login1-news__icon" src="/assets/image/common/icon_loa.png" alt="">
+                <div class="login1-news__track">
+                    <div class="login1-news__marquee">
+                        <span>Link slots machines Link slots machines Link slots machines&nbsp;&nbsp;&nbsp;</span>
+                        <span aria-hidden="true">Link slots machines Link slots machines Link slots machines&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main class="page-account" id="page-account" aria-label="Tài khoản">
+            <p class="page-account__greeting">
+                Xin Chào, <span class="page-account__username" id="page-account-username">Player</span>
+            </p>
+
+            <section class="page-account__card" aria-label="Số dư">
+                <div class="page-account__balance">
+                    <div class="page-account__balance-info">
+                        <span class="page-account__balance-label">BALANCE</span>
+                        <span class="page-account__balance-value" id="page-account-balance">0</span>
+                    </div>
+                    <div class="page-account__balance-pill" aria-hidden="true"></div>
+                </div>
+
+                <div class="page-account__wallet-actions">
+                    <button type="button" class="page-account__wallet-btn" data-action="topup">
+                        <img src="/assets/image/page_account/icon_topup.png" alt="">
+                        <span>NẠP TIỀN</span>
+                    </button>
+                    <button type="button" class="page-account__wallet-btn" data-action="withdraw">
+                        <img src="/assets/image/page_account/icon_withdraw.png" alt="">
+                        <span>RÚT TIỀN</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="page-account__features" aria-label="Tiện ích tài khoản">
+                <div class="page-account__grid">
+                    <button type="button" class="page-account__tile" data-action="mail">
+                        <img src="/assets/image/common/icon_mail.png" alt="">
+                        <span>Mail</span>
+                    </button>
+                    <button type="button" class="page-account__tile" data-action="changepass">
+                        <img src="/assets/image/page_account/icon_changepass.png" alt="">
+                        <span>Change Pass</span>
+                    </button>
+                    <button type="button" class="page-account__tile" data-action="upgrade">
+                        <img src="/assets/image/page_account/icon_updateacc.png" alt="">
+                        <span>Upgrade ACc</span>
+                    </button>
+                    <button type="button" class="page-account__tile" data-action="payback">
+                        <img src="/assets/image/page_account/icon_payback.png" alt="">
+                        <span>Pay Back</span>
+                    </button>
+                </div>
+
+                <div class="page-account__grid page-account__grid--center">
+                    <button type="button" class="page-account__tile" data-action="vip">
+                        <img src="/assets/image/page_account/icon_vip.png" alt="">
+                        <span>Vip</span>
+                    </button>
+                    <button type="button" class="page-account__tile" data-action="referral">
+                        <img src="/assets/image/page_account/icon_refer.png" alt="">
+                        <span>Referral</span>
+                    </button>
+                    <button type="button" class="page-account__tile" data-action="notification">
+                        <img src="/assets/image/page_account/icon_notification.png" alt="">
+                        <span>Notification</span>
+                    </button>
+                </div>
+            </section>
+
+            <button type="button" class="page-account__logout" id="page-account-logout">LOGOUT</button>
+        </main>
+    </div>
+
+    <div id="footer-mount"></div>
+
+    <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/headler.js"></script>
+    <script src="/assets/js/footer.js"></script>
+    <script src="/assets/js/index.js"></script>
+    <script src="/assets/js/page_account.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.PageAccount) {
+                window.PageAccount.init();
+            }
+        });
+    </script>
+</body>
+</html>

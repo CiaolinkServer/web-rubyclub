@@ -4,37 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Ruby Club</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="asset/image/icon/16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="asset/image/icon/32x32.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="asset/image/icon/192x192.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="asset/image/icon/192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="asset/image/icon/512x512.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/image/icon/16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/image/icon/32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/image/icon/192x192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="assets/image/icon/192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/image/icon/512x512.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="asset/css/index.css">
-    <link rel="stylesheet" href="asset/css/popuplogin.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/popuplogin.css">
+    <link rel="stylesheet" href="assets/css/function/support.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
 </head>
 <body class="login1-page">
+    <div id="toast-container"></div>
     <div class="login1" id="login1-app">
-        <header class="login1-header">
-            <button type="button" class="login1-header__menu" aria-label="Menu">
-                <img src="asset/image/login1/button_menu.png" alt="">
-            </button>
-            <div class="login1-header__logo">
-                <img src="asset/image/login1/logo.png" alt="Ruby Club">
-            </div>
-            <span class="login1-header__domain">h5.rubyclubph.com</span>
-        </header>
+        <div id="header-mount"></div>
 
         <section class="login1-banner" aria-label="Khuyến mãi">
-            <img class="login1-banner__img" src="asset/image/login1/big_banner.png" alt="Daily Lucky Spin">
+            <img class="login1-banner__img" src="assets/image/login1/big_banner.png" alt="Daily Lucky Spin">
         </section>
 
         <section class="login1-news" aria-label="Thông báo">
-            <img class="login1-news__bg" src="asset/image/login1/background_news.png" alt="" aria-hidden="true">
+            <img class="login1-news__bg" src="assets/image/login1/background_news.png" alt="" aria-hidden="true">
             <div class="login1-news__inner">
-                <img class="login1-news__icon" src="asset/image/login1/icon_loa.png" alt="">
+                <img class="login1-news__icon" src="assets/image/common/icon_loa.png" alt="">
                 <div class="login1-news__track">
                     <div class="login1-news__marquee">
                         <span>Link slots machines Link slots machines Link slots machines&nbsp;&nbsp;&nbsp;</span>
@@ -47,11 +43,11 @@
         <section class="login1-actions" id="login1-actions" aria-label="Đăng nhập">
             <div class="login1-actions__auth" id="login1-actions-auth">
                 <button type="button" class="login1-actions__btn login1-actions__btn--login" id="btn-login">
-                    <img class="login1-actions__btn-icon" src="asset/image/login1/icon_login.png" alt="">
+                    <img class="login1-actions__btn-icon" src="assets/image/login1/icon_login.png" alt="">
                     <span class="login1-actions__btn-label">Login</span>
                 </button>
                 <button type="button" class="login1-actions__btn login1-actions__btn--signin" id="btn-signin">
-                    <img class="login1-actions__btn-icon" src="asset/image/login1/icon_signin.png" alt="">
+                    <img class="login1-actions__btn-icon" src="assets/image/login1/icon_signin.png" alt="">
                     <span class="login1-actions__btn-label">Signin</span>
                 </button>
             </div>
@@ -60,29 +56,29 @@
                     <div class="login1-actions__user-top">
                         <span class="login1-actions__balance" id="login1-balance">0</span>
                         <button type="button" class="login1-actions__refresh" id="login1-refresh-balance" aria-label="Làm mới số dư">
-                            <img src="asset/image/login1/icon_refresh.png" alt="">
+                            <img src="assets/image/login1/icon_refresh.png" alt="">
                         </button>
                     </div>
                     <p class="login1-actions__greeting">Hi, <span id="login1-username">Player</span></p>
                 </div>
             </div>
             <div class="login1-actions__quick">
-                <img class="login1-actions__quick-bg" src="asset/image/login1/background_menu_fake.png" alt="" aria-hidden="true">
+                <img class="login1-actions__quick-bg" src="assets/image/login1/background_menu_fake.png" alt="" aria-hidden="true">
                 <nav class="login1-actions__quick-nav" aria-label="Tiện ích">
-                    <button type="button" class="login1-actions__quick-item">
-                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_payback.png" alt="">
+                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Comming soon')">
+                        <img class="login1-actions__quick-icon" src="assets/image/login1/icon_payback.png" alt="">
                         <span class="login1-actions__quick-label">Pay back</span>
                     </button>
-                    <button type="button" class="login1-actions__quick-item">
-                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_vip.png" alt="">
+                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Comming soon')" >
+                        <img class="login1-actions__quick-icon" src="assets/image/login1/icon_vip.png" alt="">
                         <span class="login1-actions__quick-label">VIP</span>
                     </button>
-                    <button type="button" class="login1-actions__quick-item" id="btn-download-apk">
-                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_apk.png" alt="">
+                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Comming soon')">
+                        <img class="login1-actions__quick-icon" src="assets/image/login1/icon_apk.png" alt="">
                         <span class="login1-actions__quick-label">APK</span>
                     </button>
-                    <button type="button" class="login1-actions__quick-item">
-                        <img class="login1-actions__quick-icon" src="asset/image/login1/icon_support.png" alt="">
+                    <button type="button" class="login1-actions__quick-item" id="btn-support">
+                        <img class="login1-actions__quick-icon" src="assets/image/login1/icon_support.png" alt="">
                         <span class="login1-actions__quick-label">Support</span>
                     </button>
                 </nav>
@@ -93,27 +89,27 @@
             <aside class="login1-sidebar" aria-label="Danh mục game">
                 <nav class="login1-sidebar__nav">
                     <button type="button" class="login1-sidebar__item login1-sidebar__item--active">
-                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_gamehot.png" alt="">
+                        <img class="login1-sidebar__icon" src="assets/image/login1/icon_menudoc_gamehot.png" alt="">
                         <span class="login1-sidebar__label">GAME HOT</span>
                     </button>
                     <button type="button" class="login1-sidebar__item">
-                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_slot.png" alt="">
+                        <img class="login1-sidebar__icon" src="assets/image/login1/icon_menudoc_slot.png" alt="">
                         <span class="login1-sidebar__label">SLOTS</span>
                     </button>
                     <button type="button" class="login1-sidebar__item">
-                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_casino.png" alt="">
+                        <img class="login1-sidebar__icon" src="assets/image/login1/icon_menudoc_casino.png" alt="">
                         <span class="login1-sidebar__label">CASINO</span>
                     </button>
                     <button type="button" class="login1-sidebar__item">
-                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_fisshing.png" alt="">
+                        <img class="login1-sidebar__icon" src="assets/image/login1/icon_menudoc_fisshing.png" alt="">
                         <span class="login1-sidebar__label">FISHING</span>
                     </button>
                     <button type="button" class="login1-sidebar__item">
-                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_sport.png" alt="">
+                        <img class="login1-sidebar__icon" src="assets/image/login1/icon_menudoc_sport.png" alt="">
                         <span class="login1-sidebar__label">SPORT</span>
                     </button>
                     <button type="button" class="login1-sidebar__item">
-                        <img class="login1-sidebar__icon" src="asset/image/login1/icon_menudoc_lottery.png" alt="">
+                        <img class="login1-sidebar__icon" src="assets/image/login1/icon_menudoc_lottery.png" alt="">
                         <span class="login1-sidebar__label">LOTTERY</span>
                     </button>
                 </nav>
@@ -125,53 +121,17 @@
         </div>
     </div>
 
-    <footer class="login1-footer" id="login1-footer">
-        <div class="login1-footer__bar">
-            <img class="login1-footer__bg" src="asset/image/login1/background_menu_fake.png" alt="" aria-hidden="true">
-            <nav class="login1-footer__nav" aria-label="Điều hướng chính">
-                <button type="button" class="login1-footer__item login1-footer__item--active" aria-label="Home">
-                    <span class="login1-footer__icon-wrap">
-                        <img class="login1-footer__icon" src="asset/image/login1/footer_icon_home.png" alt="">
-                    </span>
-                    <span class="login1-footer__label">Home</span>
-                </button>
-                <button type="button" class="login1-footer__item" aria-label="Promotion">
-                    <span class="login1-footer__icon-wrap">
-                        <img class="login1-footer__icon" src="asset/image/login1/footer_icon_promotion.png" alt="">
-                    </span>
-                    <span class="login1-footer__label">Promotion</span>
-                </button>
-                <button type="button" class="login1-footer__item login1-footer__item--deposit" aria-label="Deposit Withdrawal">
-                    <span class="login1-footer__deposit-visual">
-                        <img class="login1-footer__deposit-bg" src="asset/image/login1/footer_icon_withdraw_elipse.png" alt="" aria-hidden="true">
-                        <img class="login1-footer__deposit-icon" src="asset/image/login1/footer_icon_withdraw.png" alt="">
-                    </span>
-                    <span class="login1-footer__label">Deposit</span>
-                    <span class="login1-footer__label">Withdrawal</span>
-                </button>
-                <button type="button" class="login1-footer__item" aria-label="Invite Friends">
-                    <span class="login1-footer__icon-wrap">
-                        <img class="login1-footer__icon" src="asset/image/login1/footer_icon_friend.png" alt="">
-                        <span class="login1-footer__badge">199+</span>
-                    </span>
-                    <span class="login1-footer__label">Invite</span>
-                    <span class="login1-footer__label">Friends</span>
-                </button>
-                <button type="button" class="login1-footer__item" aria-label="Account">
-                    <span class="login1-footer__icon-wrap">
-                        <img class="login1-footer__icon" src="asset/image/login1/footer_icon_account.png" alt="">
-                    </span>
-                    <span class="login1-footer__label">Account</span>
-                </button>
-            </nav>
-        </div>
-    </footer>
+    <div id="footer-mount"></div>
 
     <div id="popuplogin-mount"></div>
-    <script src="asset/js/config.js"></script>
+    <div id="support-mount"></div>
+    <script src="assets/js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@4/dist/fp.min.js"></script>
-    <script src="asset/js/popuplogin.js"></script>
-    <script src="asset/js/index.js"></script>
+    <script src="assets/js/popuplogin.js"></script>
+    <script src="assets/js/headler.js"></script>
+    <script src="assets/js/function/support.js"></script>
+    <script src="assets/js/footer.js"></script>
+    <script src="assets/js/index.js"></script>
     <!-- <script>
         function downloadAPK() {
             alert('Tính năng đang phát triển. Vui lòng thử lại sau.');

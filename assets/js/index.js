@@ -2,7 +2,14 @@ var AUTH_TOKEN_KEY = 'rubyclub_auth_token';
 var AUTH_TOKEN_EXPIRES_KEY = 'rubyclub_auth_token_expires_at';
 var AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
 var API_BASE = window.RubyClubConfig != null ? window.RubyClubConfig.API_BASE : 'https://rubyclubph.com';
+var KEY_CHECK_PROXY = window.RubyClubConfig != null ? window.RubyClubConfig.KEY_CHECK_PROXY : '';
+var API_CHECK_PROXY = 'https://proxycheck.io/v3/{ip}?key={key}';
+var API_CHECK_PROXY_IP = 'https://proxycheck.io/v3/${ip}?vpn=1&asn=1';
 var authTokenExpiryTimer = null;
+var GAME_ICON_BASE = 'assets/image/icongame/';
+var GAME_NAME_BG = 'assets/image/icongame/background_name_game.png';
+var GAME_EAGER_LOAD = 12;
+var gameImageObserver = null;
 
 async function launchGame(card) {
     console.log("data card "+card.dataset.gameId);
@@ -287,16 +294,17 @@ function renderLogin1Games() {
     }
 
     grid.innerHTML = games.map(function (game) {
+        var iconSrc = GAME_ICON_BASE + escapeHtml(game.id) + '.png';
         var bgHtml = game.bg
-            ? '<img class="login1-game__bg" src="' + escapeHtml(game.bg) + '" alt="">'
+            ? '<img class="login1-game__bg login1-game__img--lazy" data-src="' + escapeHtml(game.bg) + '" alt="">'
             : '';
 
         return (
             '<li class="login1-game login1-game--stack">' +
                 '<div class="login1-game__card" aria-label="' + escapeHtml(game.name) + '" data-game-id="' + escapeHtml(game.id) + '">' +
                     bgHtml +
-                    '<img class="login1-game__icon" src="' + 'asset/image/icongame/' + escapeHtml(game.id)+'.png' + '" alt="">' +
-                    '<img class="login1-game__name-bg" src="asset/image/icongame/background_name_game.png" alt="">' +
+                    '<img class="login1-game__icon login1-game__img--lazy" data-src="' + iconSrc + '" alt="">' +
+                    '<img class="login1-game__name-bg login1-game__img--lazy" data-src="' + GAME_NAME_BG + '" alt="">' +
                     '<div class="login1-game__name">' +
                         '<div class="login1-game__name-marquee">' +
                             '<span class="login1-game__name-text">' + escapeHtml(game.name) + '</span>' +
@@ -307,7 +315,83 @@ function renderLogin1Games() {
         );
     }).join('');
 
+    initGameImageLazyLoad();
     initGameNameMarquees();
+}
+
+function loadLazyGameImage(img) {
+    if (!img || img.dataset.loaded === '1') {
+        return;
+    }
+
+    var src = img.getAttribute('data-src');
+
+    if (!src) {
+        return;
+    }
+
+    img.src = src;
+    img.removeAttribute('data-src');
+    img.dataset.loaded = '1';
+    img.classList.add('login1-game__img--loaded');
+}
+
+function preloadEagerGameImages(root) {
+    var cards = root.querySelectorAll('.login1-game__card');
+    var limit = Math.min(GAME_EAGER_LOAD, cards.length);
+
+    for (var i = 0; i < limit; i++) {
+        var images = cards[i].querySelectorAll('.login1-game__img--lazy[data-src]');
+
+        for (var j = 0; j < images.length; j++) {
+            loadLazyGameImage(images[j]);
+        }
+    }
+}
+
+function initGameImageLazyLoad() {
+    var root = document.getElementById('login1-games');
+
+    if (!root) {
+        return;
+    }
+
+    if (gameImageObserver) {
+        gameImageObserver.disconnect();
+        gameImageObserver = null;
+    }
+
+    preloadEagerGameImages(root);
+
+    var lazyImages = root.querySelectorAll('.login1-game__img--lazy[data-src]');
+
+    if (!lazyImages.length) {
+        return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+        for (var i = 0; i < lazyImages.length; i++) {
+            loadLazyGameImage(lazyImages[i]);
+        }
+        return;
+    }
+
+    gameImageObserver = new IntersectionObserver(function (entries) {
+        for (var j = 0; j < entries.length; j++) {
+            if (entries[j].isIntersecting) {
+                loadLazyGameImage(entries[j].target);
+                gameImageObserver.unobserve(entries[j].target);
+            }
+        }
+    }, {
+        root: root,
+        rootMargin: '120px 0px',
+        threshold: 0
+    });
+
+    for (var k = 0; k < lazyImages.length; k++) {
+        gameImageObserver.observe(lazyImages[k]);
+    }
 }
 
 function initGameNameMarquees() {
@@ -421,6 +505,24 @@ function initLogin1Games() {
     });
 }
 
+function initSupportButtons() {
+    var mount = document.getElementById('support-mount');
+    var btnSupport = document.getElementById('btn-support');
+
+    if (!window.PopupSupport || !mount) {
+        console.error('Popup support not initialized');
+        return;
+    }
+
+    window.PopupSupport.init({ container: mount }).then(function () {
+        if (btnSupport) {
+            btnSupport.addEventListener('click', function () {
+                window.PopupSupport.open();
+            });
+        }
+    });
+}
+
 function initPopupLoginButtons() {
     var mount = document.getElementById('popuplogin-mount');
     var btnLogin = document.getElementById('btn-login');
@@ -447,9 +549,84 @@ function initPopupLoginButtons() {
     });
 }
 
+async function getClientIp() {
+  try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      return data.ip || null;
+  } catch (err) {
+      console.error('getClientIp failed:', err);
+      return null;
+  }
+}
+
+async function chekcip() {
+  try {
+      const res = await fetch('https://proxycheck.io/v3/113.186.229.217/?key=public-5632b3-j5y391-188460');
+      const data = await res.json();
+      return data
+  } catch (err) {
+      console.error('getClientIp failed:', err);
+      return null;
+  }
+}
+
+async function reDirectIfVietNamIp() {
+    try {
+        var data = await chekcip();
+        console.log("chekcip "+data);
+        var ip = await getClientIp();
+
+        if (!ip) {
+            return false;
+        }
+        if(!KEY_CHECK_PROXY) {
+            return false;
+        }
+
+        // var url = API_CHECK_PROXY_IP.replace('{key}', KEY_CHECK_PROXY);
+        //replace ip
+         var url = API_CHECK_PROXY_IP.replace('{ip}', ip);
+         console.log(url);
+        var res = await fetch(url);
+        if (!res.ok) {
+            return false;
+        }
+
+        var data = await res.json();
+        var proxy = data[ip].detections.proxy;
+        var vpn = data[ip].detections.vpn;
+        var country_code = data[ip].location.country_code;
+
+        if (proxy === true || vpn === true || country_code === 'VN') {
+            window.location.replace('https://www.google.com');
+            return true;
+        }
+    } catch (err) {
+        console.error('reDirectIfVietNamIp failed:', err);
+    }
+
+    return false;
+}
+
+// var login1RedirectCheck = reDirectIfVietNamIp();
+
 document.addEventListener('DOMContentLoaded', async function () {
-    
+    if (document.body.classList.contains('login1-page--account')) {
+        return;
+    }
+
+    // if (await login1RedirectCheck) {
+    //     return;
+    // }
     initPopupLoginButtons();
+    initSupportButtons();
+    if (window.Header) {
+        window.Header.init();
+    }
+    if (window.Footer) {
+        window.Footer.init();
+    }
     document.body.style.overflow = '';
 
     var handledToken = await captureTokenFromUrl();
@@ -1146,6 +1323,36 @@ var games = [
     }
   ];
 
+  function getCountryCode() {
+    // Creates a locale object from the browser's language setting
+    const locale = new Intl.Locale(navigator.language);
+
+    // Extracts the region/country code (e.g., "US")
+    const countryCode = locale.region; 
+
+    console.log(countryCode); 
+    return countryCode;
+
+  }
+
+function showToast(message) {
+    var container = document.getElementById('toast-container');
+    if (!container || !message) {
+        return;
+    }
+
+    var toast = document.createElement('div');
+    toast.className = 'toast-msg';
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    setTimeout(function () {
+        toast.remove();
+    }, 3000);
+}
+
+window.showToast = showToast;
+
 window.Login1 = {
     launchGame: launchGame,
     refreshUserProfile: refreshUserProfile,
@@ -1154,7 +1361,9 @@ window.Login1 = {
     normalizeUser: normalizeUser,
     saveAuthToken: saveAuthToken,
     clearAuthSession: clearAuthSession,
-    getAuthToken: getAuthToken
+    getAuthToken: getAuthToken,
+    captureTokenFromUrl: captureTokenFromUrl,
+    initLogin1Session: initLogin1Session
 };
 
 window.downloadAPK = downloadAPK;

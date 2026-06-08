@@ -258,6 +258,135 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.RegisterQuickPlayResponse'
+    /api/v1/deposit:
+        post:
+            tags:
+                - DepositService
+            operationId: DepositService_CreateDeposit
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/deposit.v1.CreateDepositRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/deposit.v1.CreateDepositResponse'
+    /api/v1/deposit/claim:
+        post:
+            tags:
+                - DepositService
+            operationId: DepositService_ClaimDeposit
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/deposit.v1.ClaimDepositRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/deposit.v1.ClaimDepositResponse'
+    /api/v1/deposit/grant:
+        post:
+            tags:
+                - DepositService
+            operationId: DepositService_GrantDeposit
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/deposit.v1.GrantDepositRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/deposit.v1.GrantDepositResponse'
+    /api/v1/deposit/list:
+        get:
+            tags:
+                - DepositService
+            description: 'Role: admin'
+            operationId: DepositService_ListDeposits
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: claimed
+                  in: query
+                  schema:
+                    type: boolean
+                - name: sender
+                  in: query
+                  schema:
+                    type: string
+                - name: receiver
+                  in: query
+                  schema:
+                    type: string
+                - name: channel
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/deposit.v1.ListDepositsResponse'
+    /api/v1/deposit/notify:
+        post:
+            tags:
+                - DepositService
+            description: public visibility but retricted by whitelist
+            operationId: DepositService_NotifyDeposit
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/deposit.v1.NotifyDepositRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/deposit.v1.NotifyDepositResponse'
+    /api/v1/settings:
+        get:
+            tags:
+                - SettingService
+            operationId: SettingService_GetSettings
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.GetSettingsResponse'
     /api/v1/user/me:
         get:
             tags:
@@ -270,6 +399,174 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/user.v1.GetMyUserResponse'
+    /api/v1/withdraw:
+        post:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_Withdraw
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/withdraw.v1.WithdrawRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.WithdrawResponse'
+    /api/v1/withdraw/approve:
+        post:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_ApproveWithdrawal
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/withdraw.v1.ApproveWithdrawalRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.ApproveWithdrawalResponse'
+    /api/v1/withdraw/job:
+        post:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_GetJob
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/withdraw.v1.GetJobRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.GetJobResponse'
+    /api/v1/withdraw/list:
+        get:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_ListWithdrawals
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.ListWithdrawalsResponse'
+    /api/v1/withdraw/mine:
+        get:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_GetMyWithdrawals
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.GetMyWithdrawalsResponse'
+    /api/v1/withdraw/notify:
+        post:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_NotifyJob
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/withdraw.v1.NotifyJobRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.NotifyJobResponse'
+    /api/v1/withdraw/reject:
+        post:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_RejectWithdrawal
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/withdraw.v1.RejectWithdrawalRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.RejectWithdrawalResponse'
+    /api/v1/withdraw/set-as-completed:
+        post:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_SetAsCompleted
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/withdraw.v1.SetAsCompletedRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.SetAsCompletedResponse'
 components:
     schemas:
         auth.v1.GetLaunchUrlRequest:
@@ -591,6 +888,156 @@ components:
             properties:
                 isSuccess:
                     type: boolean
+        deposit.v1.ClaimDepositRequest:
+            type: object
+            properties:
+                tx:
+                    type: string
+        deposit.v1.ClaimDepositResponse:
+            type: object
+            properties: {}
+        deposit.v1.CreateDepositRequest:
+            type: object
+            properties:
+                tx:
+                    type: string
+                sender:
+                    type: string
+                receiver:
+                    type: string
+                fiatAmount:
+                    type: number
+                    format: double
+                channel:
+                    type: string
+        deposit.v1.CreateDepositResponse:
+            type: object
+            properties:
+                deposit:
+                    $ref: '#/components/schemas/deposit.v1.Deposit'
+        deposit.v1.Deposit:
+            type: object
+            properties:
+                id:
+                    type: string
+                userId:
+                    type: string
+                tx:
+                    type: string
+                sender:
+                    type: string
+                receiver:
+                    type: string
+                fiatAmount:
+                    type: number
+                    format: double
+                amount:
+                    type: number
+                    format: double
+                channel:
+                    type: string
+                claimed:
+                    type: boolean
+                tags:
+                    type: array
+                    items:
+                        type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+        deposit.v1.GrantDepositRequest:
+            type: object
+            properties:
+                depositId:
+                    type: string
+                userId:
+                    type: string
+                email:
+                    type: string
+        deposit.v1.GrantDepositResponse:
+            type: object
+            properties: {}
+        deposit.v1.ListDepositsResponse:
+            type: object
+            properties:
+                deposits:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/deposit.v1.Deposit'
+                pagination:
+                    $ref: '#/components/schemas/deposit.v1.Pagination'
+        deposit.v1.NotifyDepositRequest:
+            type: object
+            properties:
+                tx:
+                    type: string
+                sender:
+                    type: string
+                receiver:
+                    type: string
+                fiatAmount:
+                    type: number
+                    format: double
+                channel:
+                    type: string
+        deposit.v1.NotifyDepositResponse:
+            type: object
+            properties: {}
+        deposit.v1.Pagination:
+            type: object
+            properties:
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int32
+        setting.v1.Accounts:
+            type: object
+            properties:
+                accounts:
+                    type: array
+                    items:
+                        type: string
+        setting.v1.GetSettingsResponse:
+            type: object
+            properties:
+                minBalance:
+                    type: string
+                depositAccounts:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.Accounts'
+                withdrawRate:
+                    type: number
+                    format: double
+                depositRate:
+                    type: number
+                    format: double
+                countryAlpha2Code:
+                    type: string
+                recommendWithdrawAmount:
+                    type: array
+                    items:
+                        type: string
+                recommendDepositAmount:
+                    type: array
+                    items:
+                        type: string
+                minDepositAmount:
+                    type: string
+                maxDepositAmount:
+                    type: string
+                minWithdrawAmount:
+                    type: string
+                maxWithdrawAmount:
+                    type: string
         user.v1.GetMyUserResponse:
             type: object
             properties:
@@ -610,7 +1057,147 @@ components:
                     format: double
                 currency:
                     type: string
+        withdraw.v1.ApproveWithdrawalRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        withdraw.v1.ApproveWithdrawalResponse:
+            type: object
+            properties: {}
+        withdraw.v1.GetJobRequest:
+            type: object
+            properties:
+                channel:
+                    type: string
+                balance:
+                    type: number
+                    format: double
+        withdraw.v1.GetJobResponse:
+            type: object
+            properties:
+                withdrawals:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/withdraw.v1.Withdrawal'
+        withdraw.v1.GetMyWithdrawalsResponse:
+            type: object
+            properties:
+                withdrawals:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/withdraw.v1.Withdrawal'
+                pagination:
+                    $ref: '#/components/schemas/withdraw.v1.Pagination'
+        withdraw.v1.ListWithdrawalsResponse:
+            type: object
+            properties:
+                withdrawals:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/withdraw.v1.Withdrawal'
+                pagination:
+                    $ref: '#/components/schemas/withdraw.v1.Pagination'
+        withdraw.v1.NotifyJobRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                tx:
+                    type: string
+                sender:
+                    type: string
+                success:
+                    type: boolean
+        withdraw.v1.NotifyJobResponse:
+            type: object
+            properties: {}
+        withdraw.v1.Pagination:
+            type: object
+            properties:
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int32
+        withdraw.v1.RejectWithdrawalRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        withdraw.v1.RejectWithdrawalResponse:
+            type: object
+            properties: {}
+        withdraw.v1.SetAsCompletedRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                tx:
+                    type: string
+                sender:
+                    type: string
+        withdraw.v1.SetAsCompletedResponse:
+            type: object
+            properties: {}
+        withdraw.v1.WithdrawRequest:
+            type: object
+            properties:
+                amount:
+                    type: number
+                    format: double
+                receiver:
+                    type: string
+                channel:
+                    type: string
+        withdraw.v1.WithdrawResponse:
+            type: object
+            properties:
+                withdrawal:
+                    $ref: '#/components/schemas/withdraw.v1.Withdrawal'
+        withdraw.v1.Withdrawal:
+            type: object
+            properties:
+                id:
+                    type: string
+                userId:
+                    type: string
+                amount:
+                    type: number
+                    format: double
+                fiatAmount:
+                    type: number
+                    format: double
+                channel:
+                    type: string
+                tx:
+                    type: string
+                sender:
+                    type: string
+                receiver:
+                    type: string
+                tags:
+                    type: array
+                    items:
+                        type: string
+                try:
+                    type: integer
+                    format: int32
+                status:
+                    type: integer
+                    format: enum
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
 tags:
     - name: AuthService
     - name: CashService
+    - name: DepositService
+    - name: SettingService
     - name: UserService
+    - name: WithdrawService

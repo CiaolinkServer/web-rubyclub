@@ -404,6 +404,16 @@ function bindPopupLoginEvents(root) {
             handlePopupFreePlay(freePlayBtn);
         });
     }
+
+    var supportBtn = overlay.querySelector('#popuplogin-support');
+    if (supportBtn) {
+        supportBtn.addEventListener('click', function () {
+            if (window.PopupSupport) {
+                closePopupLogin();
+                window.PopupSupport.open();
+            }
+        });
+    }
 }
 
 function mountPopupLogin(container, html) {

@@ -4,9 +4,10 @@
     var useRelativeApi =
         host === 'localhost' ||
         host === '127.0.0.1' ||
-        host === 'h5.rubyclubph.com';
+        host === 'rubyclubph.com';
 
     window.RubyClubConfig = {
-        API_BASE: useRelativeApi ? '' : 'https://rubyclubph.com'
+        API_BASE: 'https://rubyclubph.com',
+        KEY_CHECK_PROXY: '9x8h95-482132-963284-ja9006'
     };
 })();
