@@ -286,14 +286,54 @@ function escapeHtml(text) {
         .replace(/"/g, '&quot;');
 }
 
-function renderLogin1Games() {
+function filterGamesByIds(ids) {
+    var gameMap = {};
+    var filtered = [];
+    var i;
+    var j;
+    var game;
+
+    for (i = 0; i < games.length; i++) {
+        gameMap[String(games[i].id)] = games[i];
+    }
+
+    for (j = 0; j < ids.length; j++) {
+        game = gameMap[String(ids[j])];
+
+        if (game) {
+            filtered.push(game);
+        }
+    }
+
+    return filtered;
+}
+
+function getGamesForSidebarFilter(filterKey) {
+    var filterMap = {
+        hot: hot_games_ids,
+        hall_of_fame: hall_of_fame_games_ids,
+        new: new_games_ids,
+        bigwin: big_win_games_ids,
+        bonus_rich: bonus_rich_games_ids
+    };
+
+    if (filterKey && filterKey !== 'all' && filterMap[filterKey]) {
+        return filterGamesByIds(filterMap[filterKey]);
+    }
+
+    return games;
+}
+
+function renderLogin1Games(filterKey) {
     var grid = document.querySelector('.login1-games__grid');
 
     if (!grid) {
         return;
     }
 
-    grid.innerHTML = games.map(function (game) {
+    var list = filterKey ? getGamesForSidebarFilter(filterKey) : games;
+
+    grid.innerHTML = list.map(function (game) {
         var iconSrc = GAME_ICON_BASE + escapeHtml(game.id) + '.png';
         var bgHtml = game.bg
             ? '<img class="login1-game__bg login1-game__img--lazy" data-src="' + escapeHtml(game.bg) + '" alt="">'
@@ -505,6 +545,72 @@ function initLogin1Games() {
     });
 }
 
+function setSidebarItemIcon(item, isActive) {
+    if (!item) {
+        return;
+    }
+
+    var icon = item.querySelector('.login1-sidebar__icon');
+
+    if (!icon) {
+        return;
+    }
+
+    var normalSrc = icon.getAttribute('data-icon');
+    var activeSrc = icon.getAttribute('data-icon-active');
+
+    if (isActive && activeSrc) {
+        icon.src = activeSrc;
+        return;
+    }
+
+    if (normalSrc) {
+        icon.src = normalSrc;
+    }
+}
+
+function setActiveSidebarItem(item) {
+    var nav = document.querySelector('.login1-sidebar__nav');
+    var items = nav ? nav.querySelectorAll('.login1-sidebar__item') : [];
+
+    for (var i = 0; i < items.length; i++) {
+        var isActive = items[i] === item;
+        items[i].classList.toggle('login1-sidebar__item--active', isActive);
+        setSidebarItemIcon(items[i], isActive);
+    }
+}
+
+function initLogin1SidebarNav() {
+    var nav = document.querySelector('.login1-sidebar__nav');
+
+    if (!nav || nav.dataset.sidebarNavBound === '1') {
+        return;
+    }
+
+    nav.dataset.sidebarNavBound = '1';
+
+    nav.addEventListener('click', function (e) {
+        var item = e.target.closest('.login1-sidebar__item');
+
+        if (!item || !nav.contains(item)) {
+            return;
+        }
+
+        setActiveSidebarItem(item);
+
+        var filterKey = item.getAttribute('data-game-filter');
+
+        if (filterKey) {
+            renderLogin1Games(filterKey);
+
+            var gamesEl = document.getElementById('login1-games');
+            if (gamesEl) {
+                gamesEl.scrollTop = 0;
+            }
+        }
+    });
+}
+
 function initSupportButtons() {
     var mount = document.getElementById('support-mount');
     var btnSupport = document.getElementById('btn-support');
@@ -635,8 +741,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         await initLogin1Session();
     }
 
-    renderLogin1Games();
+    renderLogin1Games('all');
     initLogin1Games();
+    initLogin1SidebarNav();
 
     if (!window.__login1GameNameResizeBound) {
         window.__login1GameNameResizeBound = true;
@@ -663,7 +770,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     
 });
-
+var hot_games_ids = [65, 74, 89, 75, 87, 54, 57, 68, 71, 103, 112, 127];
+var big_win_games_ids = [1, 42, 48, 60, 62, 69, 71, 73, 74, 75, 79, 80, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 97, 101, 103, 106, 107, 110, 112, 113, 117, 119, 120, 125, 127, 128, 132];
+var new_games_ids = [1827457, 1834850, 1849515, 1850016, 1865521, 1879752, 1881268, 1897678, 1903012, 1918451, 1929177, 1935269, 1940257, 1950910, 1964781, 1971587, 1981965, 1997301, 2009635, 2012025, 2024510, 2035783, 2058347, 2081892, 2100928];
+var hall_of_fame_games_ids = [3, 6, 7, 29, 65, 74, 71, 89, 54, 42, 75, 87, 57, 68];
+var bonus_rich_games_ids = [57, 65, 74, 89, 75, 87, 103, 112, 106, 62, 54, 95, 91, 128, 113];
 var games = [
     {
       "id": 1,
