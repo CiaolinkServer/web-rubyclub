@@ -14,14 +14,27 @@
                 </span>
                 <span class="login1-footer__label">Promotion</span>
             </button>
-            <button type="button" class="login1-footer__item login1-footer__item--deposit" aria-label="Deposit Withdrawal">
-                <span class="login1-footer__deposit-visual">
-                    <img class="login1-footer__deposit-bg" src="/assets/image/footer/footer_icon_withdraw_elipse.png" alt="" aria-hidden="true">
-                    <img class="login1-footer__deposit-icon" src="/assets/image/footer/footer_icon_withdraw.png" data-icon="/assets/image/footer/footer_icon_withdraw.png" data-icon-active="/assets/image/footer/footer_icon_withdraw_select.png" alt="">
-                </span>
-                <span class="login1-footer__label">Deposit</span>
-                <span class="login1-footer__label">Withdrawal</span>
-            </button>
+            <div class="login1-footer__deposit-wrap">
+                <div class="login1-footer__deposit-menu" id="login1-footer-deposit-menu" aria-hidden="true">
+                    <button type="button" class="login1-footer__deposit-action" data-action="withdraw">
+                        <img src="/assets/image/login1/icon_withdraw.png" alt="">
+                        <span>Withdraw</span>
+                    </button>
+                    <span class="login1-footer__deposit-divider" aria-hidden="true"></span>
+                    <button type="button" class="login1-footer__deposit-action" data-action="deposit">
+                        <img src="/assets/image/login1/icon_deposit.png" alt="">
+                        <span>Deposit</span>
+                    </button>
+                </div>
+                <button type="button" class="login1-footer__item login1-footer__item--deposit" aria-label="Deposit Withdrawal" aria-expanded="false" aria-controls="login1-footer-deposit-menu">
+                    <span class="login1-footer__deposit-visual">
+                        <img class="login1-footer__deposit-bg" src="/assets/image/footer/footer_icon_withdraw_elipse.png" alt="" aria-hidden="true">
+                        <img class="login1-footer__deposit-icon" src="/assets/image/footer/footer_icon_withdraw.png" data-icon="/assets/image/footer/footer_icon_withdraw.png" data-icon-active="/assets/image/footer/footer_icon_withdraw_select.png" alt="">
+                    </span>
+                    <span class="login1-footer__label">Deposit</span>
+                    <span class="login1-footer__label">Withdrawal</span>
+                </button>
+            </div>
             <button type="button" class="login1-footer__item" aria-label="Mail">
                 <span class="login1-footer__icon-wrap">
                     <img class="login1-footer__icon" src="/assets/image/common/icon_mail.png" data-icon="/assets/image/common/icon_mail.png" data-icon-active="/assets/image/common/icon_mail_select.png" alt="">
