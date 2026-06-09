@@ -629,6 +629,51 @@ function initSupportButtons() {
     });
 }
 
+function initMailButtons() {
+    var mount = document.getElementById('mail-mount');
+
+    if (!window.PopupMail || !mount) {
+        return;
+    }
+
+    window.PopupMail.init({ container: mount });
+}
+
+function openMailPopupFromEvent(e) {
+    if (!window.PopupMail) {
+        if (typeof window.showToast === 'function') {
+            window.showToast('Comming soon');
+        }
+        return;
+    }
+
+    if (e) {
+        e.preventDefault();
+    }
+
+    if (!getMailAuthTokenSafe()) {
+        if (typeof window.showToast === 'function') {
+            window.showToast('Vui lòng đăng nhập');
+        }
+
+        if (window.PopupLogin) {
+            window.PopupLogin.switchTab('login');
+            window.PopupLogin.open();
+        }
+        return;
+    }
+
+    window.PopupMail.open();
+}
+
+function getMailAuthTokenSafe() {
+    if (window.Login1 && typeof window.Login1.getAuthToken === 'function') {
+        return window.Login1.getAuthToken();
+    }
+
+    return localStorage.getItem('rubyclub_auth_token');
+}
+
 function initPopupLoginButtons() {
     var mount = document.getElementById('popuplogin-mount');
     var btnLogin = document.getElementById('btn-login');
@@ -727,6 +772,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // }
     initPopupLoginButtons();
     initSupportButtons();
+    initMailButtons();
     if (window.Header) {
         window.Header.init();
     }
@@ -1463,6 +1509,8 @@ function showToast(message) {
 }
 
 window.showToast = showToast;
+
+window.openMailPopupFromEvent = openMailPopupFromEvent;
 
 window.Login1 = {
     launchGame: launchGame,

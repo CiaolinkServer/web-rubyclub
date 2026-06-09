@@ -74,6 +74,15 @@ function bindFooterNavEvents(root) {
             return;
         }
 
+        if (label === 'mail' || label === 'invite friends') {
+            if (typeof window.openMailPopupFromEvent === 'function') {
+                window.openMailPopupFromEvent(e);
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Comming soon');
+            }
+            return;
+        }
+
         if (typeof window.showToast === 'function') {
             window.showToast('Comming soon');
         }

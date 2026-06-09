@@ -1,0 +1,28 @@
+<div class="mail-overlay" id="mail-overlay" aria-hidden="true">
+    <div class="mail" role="dialog" aria-modal="true" aria-labelledby="mail-title">
+        <button type="button" class="mail__close" id="mail-close" aria-label="Đóng">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h2 class="mail__heading" id="mail-title">MAIL</h2>
+
+        <div class="mail__panel">
+            <div class="mail__toolbar">
+                <button type="button" class="mail__action" id="mail-select-all">
+                    <span class="mail__action-icon">
+                        <img class="mail__action-icon-base" src="/assets/image/function/mail/icon_checkbox.png" alt="">
+                        <img class="mail__action-icon-check" src="/assets/image/function/mail/icon_check.png" alt="">
+                    </span>
+                    <span>SELECT</span>
+                </button>
+                <button type="button" class="mail__action" id="mail-delete">
+                    <img src="/assets/image/function/mail/icon_delete.png" alt="">
+                    <span>DELETE</span>
+                </button>
+            </div>
+
+            <ul class="mail__list" id="mail-list"></ul>
+            <p class="mail__empty" id="mail-empty" hidden>Không có thư</p>
+        </div>
+    </div>
+</div>

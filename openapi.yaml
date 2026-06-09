@@ -375,6 +375,154 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/deposit.v1.NotifyDepositResponse'
+    /api/v1/mail/claim/{id}:
+        get:
+            tags:
+                - MailService
+            operationId: MailService_ClaimMail
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/mail.v1.ClaimMailResponse'
+    /api/v1/mail/create:
+        post:
+            tags:
+                - MailService
+            operationId: MailService_CreateMail
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/mail.v1.CreateMailRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/mail.v1.CreateMailResponse'
+    /api/v1/mail/delete:
+        post:
+            tags:
+                - MailService
+            operationId: MailService_DeleteMails
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/mail.v1.DeleteMailsRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/mail.v1.DeleteMailsResponse'
+    /api/v1/mail/delete/{id}:
+        get:
+            tags:
+                - MailService
+            operationId: MailService_DeleteMail
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/mail.v1.DeleteMailResponse'
+    /api/v1/mail/list:
+        get:
+            tags:
+                - MailService
+            operationId: MailService_GetMails
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: isClaimed
+                  in: query
+                  schema:
+                    type: boolean
+                - name: isDeleted
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/mail.v1.GetMailsResponse'
+    /api/v1/mail/my:
+        get:
+            tags:
+                - MailService
+            operationId: MailService_GetMyMail
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/mail.v1.GetMyMailResponse'
+    /api/v1/mail/read/{id}:
+        get:
+            tags:
+                - MailService
+            operationId: MailService_ReadMail
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/mail.v1.ReadMailResponse'
     /api/v1/settings:
         get:
             tags:
@@ -571,7 +719,9 @@ components:
     schemas:
         auth.v1.GetLaunchUrlRequest:
             type: object
-            properties: {}
+            properties:
+                gameId:
+                    type: string
         auth.v1.GetLaunchUrlResponse:
             type: object
             properties:
@@ -998,6 +1148,128 @@ components:
                 total:
                     type: integer
                     format: int32
+        mail.v1.ClaimMailResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        mail.v1.CreateMailRequest:
+            type: object
+            properties:
+                userId:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
+                amount:
+                    type: number
+                    format: double
+        mail.v1.CreateMailResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        mail.v1.DeleteMailResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        mail.v1.DeleteMailsRequest:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
+        mail.v1.DeleteMailsResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        mail.v1.GetMailsResponse:
+            type: object
+            properties:
+                mails:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/mail.v1.Mail'
+                pagination:
+                    $ref: '#/components/schemas/mail.v1.Pagination'
+        mail.v1.GetMyMailResponse:
+            type: object
+            properties:
+                mails:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/mail.v1.MailLite'
+                pagination:
+                    $ref: '#/components/schemas/mail.v1.Pagination'
+        mail.v1.Mail:
+            type: object
+            properties:
+                id:
+                    type: string
+                userId:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
+                amount:
+                    type: number
+                    format: double
+                isClaimed:
+                    type: boolean
+                isDeleted:
+                    type: boolean
+                isRead:
+                    type: boolean
+                type:
+                    type: integer
+                    format: enum
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+        mail.v1.MailLite:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
+                amount:
+                    type: number
+                    format: double
+                isClaimed:
+                    type: boolean
+                isRead:
+                    type: boolean
+                createdAt:
+                    type: string
+                    format: date-time
+        mail.v1.Pagination:
+            type: object
+            properties:
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int32
+        mail.v1.ReadMailResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
         setting.v1.Accounts:
             type: object
             properties:
@@ -1038,6 +1310,19 @@ components:
                     type: string
                 maxWithdrawAmount:
                     type: string
+                vips:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/setting.v1.Vip'
+        setting.v1.Vip:
+            type: object
+            properties:
+                level:
+                    type: string
+                totalDeposit:
+                    type: string
+                totalBet:
+                    type: string
         user.v1.GetMyUserResponse:
             type: object
             properties:
@@ -1057,6 +1342,14 @@ components:
                     format: double
                 currency:
                     type: string
+                totalDeposit:
+                    type: number
+                    format: double
+                totalBet:
+                    type: number
+                    format: double
+                official:
+                    type: boolean
         withdraw.v1.ApproveWithdrawalRequest:
             type: object
             properties:
@@ -1198,6 +1491,7 @@ tags:
     - name: AuthService
     - name: CashService
     - name: DepositService
+    - name: MailService
     - name: SettingService
     - name: UserService
     - name: WithdrawService

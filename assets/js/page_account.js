@@ -104,6 +104,13 @@ function bindPageAccountEvents(root) {
             return;
         }
 
+        if (actionBtn.getAttribute('data-action') === 'mail') {
+            if (typeof window.openMailPopupFromEvent === 'function') {
+                window.openMailPopupFromEvent(e);
+            }
+            return;
+        }
+
         if (typeof window.showToast === 'function') {
             window.showToast('Comming soon');
         }
@@ -141,6 +148,10 @@ function initPageAccount(options) {
                 setAccountFooterActive();
             })
         );
+    }
+
+    if (window.PopupMail) {
+        tasks.push(window.PopupMail.init({ container: document.getElementById('mail-mount') }));
     }
 
     return Promise.all(tasks).then(function () {
