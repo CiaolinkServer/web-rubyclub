@@ -639,6 +639,16 @@ function initMailButtons() {
     window.PopupMail.init({ container: mount });
 }
 
+function initDepositButtons() {
+    var mount = document.getElementById('deposit-mount');
+
+    if (!window.PopupDeposit || !mount) {
+        return;
+    }
+
+    window.PopupDeposit.init({ container: mount });
+}
+
 function openMailPopupFromEvent(e) {
     if (!window.PopupMail) {
         if (typeof window.showToast === 'function') {
@@ -773,6 +783,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     initPopupLoginButtons();
     initSupportButtons();
     initMailButtons();
+    initDepositButtons();
     if (window.Header) {
         window.Header.init();
     }

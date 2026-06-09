@@ -229,8 +229,17 @@ function bindFooterDepositMenuEvents(root) {
         var action = actionBtn.getAttribute('data-action');
         closeFooterDepositMenu();
 
+        if (action === 'deposit') {
+            if (window.PopupDeposit && typeof window.PopupDeposit.open === 'function') {
+                window.PopupDeposit.open();
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Deposit comming soon');
+            }
+            return;
+        }
+
         if (typeof window.showToast === 'function') {
-            window.showToast(action === 'deposit' ? 'Deposit comming soon' : 'Withdraw comming soon');
+            window.showToast(action === 'withdraw' ? 'Withdraw comming soon' : 'Comming soon');
         }
     });
 

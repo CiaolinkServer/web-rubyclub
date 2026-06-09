@@ -154,6 +154,10 @@ function initPageAccount(options) {
         tasks.push(window.PopupMail.init({ container: document.getElementById('mail-mount') }));
     }
 
+    if (window.PopupDeposit) {
+        tasks.push(window.PopupDeposit.init({ container: document.getElementById('deposit-mount') }));
+    }
+
     return Promise.all(tasks).then(function () {
         return loadPageAccountProfile();
     });

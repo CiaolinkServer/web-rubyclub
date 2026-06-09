@@ -1270,13 +1270,20 @@ components:
             properties:
                 success:
                     type: boolean
+        setting.v1.Account:
+            type: object
+            properties:
+                name:
+                    type: string
+                number:
+                    type: string
         setting.v1.Accounts:
             type: object
             properties:
                 accounts:
                     type: array
                     items:
-                        type: string
+                        $ref: '#/components/schemas/setting.v1.Account'
         setting.v1.GetSettingsResponse:
             type: object
             properties:
