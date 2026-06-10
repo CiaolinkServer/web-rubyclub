@@ -700,6 +700,19 @@ body {
     will-change: transform, opacity;
 }
 
+.login1-page .toast-error {
+    background: linear-gradient(180deg, #FF0000 0%, #FF0000 100%);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    animation: login1ToastInOut 3s ease forwards;
+    pointer-events: auto;
+    will-change: transform, opacity;
+}
+
 @keyframes login1ToastInOut {
     0% {
         opacity: 0;

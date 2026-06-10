@@ -233,6 +233,9 @@ function showDepositStep1() {
     }
 
     if (step2) {
+        if (typeof window.releaseFocusWithin === 'function') {
+            window.releaseFocusWithin(step2);
+        }
         step2.hidden = true;
     }
 
@@ -367,12 +370,8 @@ function getDepositApiBase() {
     return (window.RubyClubConfig && window.RubyClubConfig.API_BASE) || 'https://rubyclubph.com';
 }
 
-function getDepositAuthToken() {
-    return localStorage.getItem('rubyclub_auth_token');
-}
-
 async function claimDeposit(tx) {
-    var token = getDepositAuthToken();
+    var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
         throw new Error('Chưa đăng nhập');
@@ -418,11 +417,18 @@ async function handleDepositSubmit(refInput, submitBtn) {
 
     if (!refValue) {
         if (typeof window.showToast === 'function') {
-            window.showToast('Nhập reference number');
+            window.showToastError('Nhập reference number');
         }
         return;
     }
-
+    // check if refValue is 6 characters
+    if (refValue.length < 6) {
+        if (typeof window.showToast === 'function') {
+            window.showToastError('Nhập 6 ký tự cuối của reference number ( Ref. no )');
+        }
+        return;
+    }
+    refValue = refInput ? refInput.value.slice(-6) : '';
     if (submitBtn) {
         submitBtn.disabled = true;
     }
@@ -447,7 +453,7 @@ async function handleDepositSubmit(refInput, submitBtn) {
         console.error('Claim deposit thất bại:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToast(err.message || 'Nạp tiền thất bại');
+            window.showToastError(err.message || 'Nạp tiền thất bại');
         }
     } finally {
         if (submitBtn) {
@@ -516,7 +522,7 @@ function openPopupDeposit() {
             console.error('Không tải được settings cho deposit:', err);
 
             if (typeof window.showToast === 'function') {
-                window.showToast('Không tải được cài đặt nạp tiền');
+                window.showToastError('Không tải được cài đặt nạp tiền');
             }
 
             renderDepositView(null);
@@ -531,6 +537,9 @@ function closePopupDeposit() {
     }
 
     showDepositStep1();
+    if (typeof window.releaseFocusWithin === 'function') {
+        window.releaseFocusWithin(overlay);
+    }
     overlay.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
@@ -631,8 +640,10 @@ function bindPopupDepositEvents(root) {
             }
 
             copyDepositText(copyBtn.getAttribute('data-copy')).then(function (ok) {
-                if (typeof window.showToast === 'function') {
-                    window.showToast(ok ? 'Đã sao chép' : 'Không sao chép được');
+                if (ok && typeof window.showToast === 'function') {
+                    window.showToast('Đã sao chép');
+                } else if (!ok && typeof window.showToastError === 'function') {
+                    window.showToastError('Không sao chép được');
                 }
             });
         });

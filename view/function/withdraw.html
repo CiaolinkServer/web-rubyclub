@@ -1,0 +1,69 @@
+<div class="withdraw-overlay" id="withdraw-overlay" aria-hidden="true">
+    <div class="withdraw-stack">
+        <div class="withdraw withdraw--step1" id="withdraw-step1" role="dialog" aria-modal="true" aria-labelledby="withdraw-title">
+            <button type="button" class="withdraw__close" id="withdraw-close" aria-label="Đóng">
+                <img src="/assets/image/common/icon_close.png" alt="">
+            </button>
+
+            <h2 class="withdraw__heading" id="withdraw-title">WITHDRAW</h2>
+
+            <div class="withdraw__mode-tabs" id="withdraw-mode-tabs" role="tablist" aria-label="Withdraw tabs">
+                <button type="button" class="withdraw__mode-tab is-active" id="withdraw-tab-reward" role="tab" aria-selected="true" aria-controls="withdraw-view-reward" data-mode="reward">REWARD</button>
+                <button type="button" class="withdraw__mode-tab" id="withdraw-tab-history" role="tab" aria-selected="false" aria-controls="withdraw-view-history" data-mode="history">HISTORY</button>
+            </div>
+
+            <div class="withdraw__view withdraw__view--reward" id="withdraw-view-reward" role="tabpanel" aria-labelledby="withdraw-tab-reward">
+                <div class="withdraw__channels" id="withdraw-channels" role="tablist" aria-label="Kênh rút tiền"></div>
+
+                <div class="withdraw__panel">
+                    <div class="withdraw__amounts" id="withdraw-amounts" role="list"></div>
+                    <p class="withdraw__empty" id="withdraw-empty" hidden>Không có mệnh giá rút</p>
+                </div>
+            </div>
+
+            <div class="withdraw__view withdraw__view--history" id="withdraw-view-history" role="tabpanel" aria-labelledby="withdraw-tab-history" hidden>
+                <div class="withdraw__channels" id="withdraw-history-channels" role="tablist" aria-label="Kênh lịch sử rút tiền"></div>
+
+                <div class="withdraw__panel">
+                    <div class="withdraw__history-table-wrap" id="withdraw-history-wrap">
+                        <table class="withdraw__history-table" id="withdraw-history-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Pesos</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="withdraw-history"></tbody>
+                        </table>
+                    </div>
+                    <p class="withdraw__empty" id="withdraw-history-empty" hidden>Chưa có lịch sử rút tiền</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="withdraw-stack__dim" id="withdraw-stack-dim" aria-hidden="true"></div>
+
+        <div class="withdraw withdraw--step2" id="withdraw-step2" role="dialog" aria-modal="true" aria-labelledby="withdraw-step2-title" hidden>
+            <button type="button" class="withdraw__close" id="withdraw-step2-close" aria-label="Quay lại">
+                <img src="/assets/image/common/icon_close.png" alt="">
+            </button>
+
+            <h2 class="withdraw__heading" id="withdraw-step2-title">Withdraw <span id="withdraw-step2-amount"></span> peso</h2>
+
+            <div class="withdraw-step2__panel">
+                <label class="withdraw-step2__label" id="withdraw-step2-number-label" for="withdraw-step2-number">Enter your Gcash number</label>
+                <input type="text" class="withdraw-step2__input" id="withdraw-step2-number" inputmode="numeric" autocomplete="off" maxlength="32">
+
+                <label class="withdraw-step2__label" id="withdraw-step2-confirm-label" for="withdraw-step2-confirm">Confirm your Gcash number</label>
+                <input type="text" class="withdraw-step2__input" id="withdraw-step2-confirm" inputmode="numeric" autocomplete="off" maxlength="32">
+            </div>
+
+            <div class="withdraw-step2__actions">
+                <button type="button" class="withdraw-step2__confirm" id="withdraw-step2-confirm-button">Confirm</button>
+                <button type="button" class="withdraw-step2__cancel" id="withdraw-step2-cancel-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

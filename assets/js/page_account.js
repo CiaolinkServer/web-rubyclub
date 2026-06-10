@@ -2,6 +2,28 @@ function getPageAccountRoot() {
     return document.getElementById('page-account');
 }
 
+var PAGE_ACCOUNT_UPGRADE_ICON = '/assets/image/page_account/icon_updateacc.png';
+var PAGE_ACCOUNT_UPGRADE_ICON_DISABLED = '/assets/image/page_account/icon_updateacc_disable.png';
+
+function updatePageAccountUpgradeTile(user) {
+    var upgradeBtn = document.getElementById('page-account-upgrade');
+    var upgradeIcon = document.getElementById('page-account-upgrade-icon');
+    var spanAccUpgrade = document.getElementById('page-account-upgrade-span');
+    var isOfficial = !!(user && user.official);
+
+    if (upgradeIcon) {
+        upgradeIcon.src = isOfficial ? PAGE_ACCOUNT_UPGRADE_ICON_DISABLED : PAGE_ACCOUNT_UPGRADE_ICON;
+    }
+
+    if (upgradeBtn) {
+        upgradeBtn.disabled = isOfficial;
+        upgradeBtn.setAttribute('aria-disabled', isOfficial ? 'true' : 'false');
+    }
+    if (spanAccUpgrade) {
+        spanAccUpgrade.style.color = isOfficial ? '#808080' : '#fff';
+    }
+}
+
 function formatAccountBalance(value) {
     var num = Number(value);
 
@@ -30,6 +52,8 @@ function bindUserToPageAccount(user) {
     if (balanceEl) {
         balanceEl.textContent = formatAccountBalance(user.balance != null ? user.balance : 0);
     }
+
+    updatePageAccountUpgradeTile(user);
 }
 
 async function loadPageAccountProfile() {
@@ -41,12 +65,7 @@ async function loadPageAccountProfile() {
         await window.Login1.initLogin1Session();
     }
 
-    if (!window.Login1 || typeof window.Login1.getAuthToken !== 'function') {
-        bindUserToPageAccount({ name: 'Player', balance: 0 });
-        return;
-    }
-
-    var token = window.Login1.getAuthToken();
+    var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
         bindUserToPageAccount({ name: 'Player', balance: 0 });
@@ -111,6 +130,35 @@ function bindPageAccountEvents(root) {
             return;
         }
 
+        if (actionBtn.getAttribute('data-action') === 'upgrade') {
+            if (actionBtn.disabled) {
+                return;
+            }
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('Comming soon');
+            }
+            return;
+        }
+
+        if (actionBtn.getAttribute('data-action') === 'topup') {
+            if (window.PopupDeposit && typeof window.PopupDeposit.open === 'function') {
+                window.PopupDeposit.open();
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Comming soon');
+            }
+            return;
+        }
+
+        if (actionBtn.getAttribute('data-action') === 'withdraw') {
+            if (window.PopupWithdraw && typeof window.PopupWithdraw.open === 'function') {
+                window.PopupWithdraw.open();
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Comming soon');
+            }
+            return;
+        }
+
         if (typeof window.showToast === 'function') {
             window.showToast('Comming soon');
         }
@@ -156,6 +204,10 @@ function initPageAccount(options) {
 
     if (window.PopupDeposit) {
         tasks.push(window.PopupDeposit.init({ container: document.getElementById('deposit-mount') }));
+    }
+
+    if (window.PopupWithdraw) {
+        tasks.push(window.PopupWithdraw.init({ container: document.getElementById('withdraw-mount') }));
     }
 
     return Promise.all(tasks).then(function () {

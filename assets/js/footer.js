@@ -10,14 +10,6 @@ function getFooterApiBase() {
     return (window.RubyClubConfig && window.RubyClubConfig.API_BASE) || 'https://rubyclubph.com';
 }
 
-function getFooterAuthToken() {
-    if (window.Login1 && typeof window.Login1.getAuthToken === 'function') {
-        return window.Login1.getAuthToken();
-    }
-
-    return localStorage.getItem('rubyclub_auth_token');
-}
-
 function cloneSettingsData(data) {
     try {
         return JSON.parse(JSON.stringify(data));
@@ -65,7 +57,7 @@ function invalidateSettingsCache() {
 }
 
 async function fetchFooterSettings() {
-    var token = getFooterAuthToken();
+    var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
     var headers = {
         Accept: 'application/json'
     };
@@ -108,7 +100,7 @@ async function handleFooterDepositClick() {
         console.error('Không tải được settings:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Không tải được cài đặt');
+            window.showToastError('Không tải được cài đặt');
         }
     }
 
@@ -167,6 +159,9 @@ function closeFooterDepositMenu() {
     }
 
     menu.classList.remove('is-open');
+    if (typeof window.releaseFocusWithin === 'function') {
+        window.releaseFocusWithin(menu);
+    }
     menu.setAttribute('aria-hidden', 'true');
 
     if (depositBtn) {
@@ -238,8 +233,17 @@ function bindFooterDepositMenuEvents(root) {
             return;
         }
 
+        if (action === 'withdraw') {
+            if (window.PopupWithdraw && typeof window.PopupWithdraw.open === 'function') {
+                window.PopupWithdraw.open();
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Withdraw comming soon');
+            }
+            return;
+        }
+
         if (typeof window.showToast === 'function') {
-            window.showToast(action === 'withdraw' ? 'Withdraw comming soon' : 'Comming soon');
+            window.showToast('Comming soon');
         }
     });
 
@@ -281,6 +285,14 @@ function bindFooterNavEvents(root) {
     bindFooterDepositMenuEvents(scope);
 
     nav.addEventListener('click', function (e) {
+
+        if (!window.checkLoggedIn()) {
+            if (typeof window.showToast === 'function') {
+                window.showToastError('Vui lòng đăng nhập');
+            }
+            return;
+        }
+
         var item = e.target.closest('.login1-footer__item');
 
         if (!item || !nav.contains(item)) {
@@ -307,7 +319,7 @@ function bindFooterNavEvents(root) {
             return;
         }
 
-        if (label === 'mail' || label === 'invite friends') {
+        if (label === 'mail') {
             if (typeof window.openMailPopupFromEvent === 'function') {
                 window.openMailPopupFromEvent(e);
             } else if (typeof window.showToast === 'function') {
@@ -379,5 +391,5 @@ window.Footer = {
     closeDepositMenu: closeFooterDepositMenu,
     toggleDepositMenu: toggleFooterDepositMenu,
     getSettings: getFooterSettings,
-    invalidateSettingsCache: invalidateSettingsCache
+    invalidateSettingsCache: invalidateSettingsCache,
 };

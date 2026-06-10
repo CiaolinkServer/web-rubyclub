@@ -1,6 +1,10 @@
 var AUTH_TOKEN_KEY = 'rubyclub_auth_token';
 var AUTH_TOKEN_EXPIRES_KEY = 'rubyclub_auth_token_expires_at';
 var AUTH_TOKEN_TTL_MS = 23 * 60 * 60 * 1000;
+var USER_PROFILE_CACHE_KEY = 'rubyclub_user_profile_cache';
+var USER_PROFILE_CACHE_EXPIRES_KEY = 'rubyclub_user_profile_cache_expires_at';
+var USER_PROFILE_CACHE_TOKEN_KEY = 'rubyclub_user_profile_cache_token';
+var USER_PROFILE_CACHE_TTL_MS = 10 * 60 * 1000;
 var API_BASE = window.RubyClubConfig != null ? window.RubyClubConfig.API_BASE : 'https://rubyclubph.com';
 var KEY_CHECK_PROXY = window.RubyClubConfig != null ? window.RubyClubConfig.KEY_CHECK_PROXY : '';
 var API_CHECK_PROXY = 'https://proxycheck.io/v3/{ip}?key={key}';
@@ -12,22 +16,19 @@ var GAME_EAGER_LOAD = 12;
 var gameImageObserver = null;
 
 async function launchGame(card) {
+    if (!checkLoggedIn()) {
+      if (typeof window.showToastError === 'function') {
+          showToastError('Vui lòng đăng nhập');
+      }
+      return;
+    }
     console.log("data card "+card.dataset.gameId);
     var token = getAuthToken();
-
-    if (!token) {
-        alert('Vui lòng đăng nhập để chơi game.');
-        if (window.PopupLogin) {
-            window.PopupLogin.switchTab('login');
-            window.PopupLogin.open();
-        }
-        return;
-    }
     
     var gameId = card && card.dataset ? card.dataset.gameId : null;
 
     if (!gameId) {
-        alert('Không xác định được game.');
+        showToastError('Không xác định được game.');
         return;
     }
 
@@ -56,7 +57,7 @@ async function launchGame(card) {
 
         var newPage = window.open('', '_blank');
         if (!newPage) {
-            alert('Trình duyệt đã chặn cửa sổ mới. Vui lòng cho phép popup.');
+            showToastError('Trình duyệt đã chặn cửa sổ mới. Vui lòng cho phép popup.');
             return;
         }
 
@@ -65,7 +66,7 @@ async function launchGame(card) {
         newPage.document.close();
     } catch (err) {
         console.error('Launch game failed:', err);
-        alert('Không thể khởi chạy game. Vui lòng thử lại.');
+        showToastError('Không thể khởi chạy game. Vui lòng thử lại.');
     } finally {
         if (card) {
             card.removeAttribute('aria-disabled');
@@ -74,12 +75,19 @@ async function launchGame(card) {
 }
 
 function downloadAPK() {
-    alert('Tính năng đang phát triển. Vui lòng thử lại sau.');
+    if (!checkLoggedIn()) {
+      if (typeof window.showToastError === 'function') {
+          showToastError('Vui lòng đăng nhập');
+      }
+      return;
+    }
+    showToast('Tính năng đang phát triển. Vui lòng thử lại sau.');
 }
 
 function clearAuthToken() {
     localStorage.removeItem(AUTH_TOKEN_KEY);
     localStorage.removeItem(AUTH_TOKEN_EXPIRES_KEY);
+    invalidateUserProfileCache();
 
     if (authTokenExpiryTimer) {
         clearTimeout(authTokenExpiryTimer);
@@ -191,7 +199,17 @@ function setLoggedInState(isLoggedIn) {
     }
 }
 
-async function fetchUserMe(token) {
+async function fetchUserMe(token, options) {
+    options = options || {};
+
+    if (!options.forceRefresh) {
+        var cachedProfile = readUserProfileCache(token);
+
+        if (cachedProfile) {
+            return cachedProfile;
+        }
+    }
+
     var response = await fetch(API_BASE + '/api/v1/user/me', {
         method: 'GET',
         headers: {
@@ -204,7 +222,47 @@ async function fetchUserMe(token) {
         throw new Error('HTTP ' + response.status);
     }
 
-    return response.json();
+    var data = await response.json();
+    saveUserProfileCache(token, data);
+    return data;
+}
+
+function readUserProfileCache(token) {
+    var cachedToken = localStorage.getItem(USER_PROFILE_CACHE_TOKEN_KEY);
+    var expiresAt = localStorage.getItem(USER_PROFILE_CACHE_EXPIRES_KEY);
+    var raw = localStorage.getItem(USER_PROFILE_CACHE_KEY);
+
+    if (!token || cachedToken !== token || !expiresAt || !raw) {
+        return null;
+    }
+
+    if (Date.now() >= Number(expiresAt)) {
+        invalidateUserProfileCache();
+        return null;
+    }
+
+    try {
+        return JSON.parse(raw);
+    } catch (err) {
+        invalidateUserProfileCache();
+        return null;
+    }
+}
+
+function saveUserProfileCache(token, data) {
+    if (!token || !data) {
+        return;
+    }
+
+    localStorage.setItem(USER_PROFILE_CACHE_KEY, JSON.stringify(data));
+    localStorage.setItem(USER_PROFILE_CACHE_EXPIRES_KEY, String(Date.now() + USER_PROFILE_CACHE_TTL_MS));
+    localStorage.setItem(USER_PROFILE_CACHE_TOKEN_KEY, token);
+}
+
+function invalidateUserProfileCache() {
+    localStorage.removeItem(USER_PROFILE_CACHE_KEY);
+    localStorage.removeItem(USER_PROFILE_CACHE_EXPIRES_KEY);
+    localStorage.removeItem(USER_PROFILE_CACHE_TOKEN_KEY);
 }
 
 async function refreshUserProfile() {
@@ -220,12 +278,12 @@ async function refreshUserProfile() {
     }
 
     try {
-        var data = await fetchUserMe(token);
+        var data = await fetchUserMe(token, { forceRefresh: true });
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
     } catch (err) {
         console.error('Làm mới thông tin user thất bại:', err);
-        alert('Không lấy được thông tin tài khoản. Vui lòng thử lại.');
+        showToastError('Không lấy được thông tin tài khoản. Vui lòng thử lại.');
 
         clearAuthToken();
     } finally {
@@ -248,13 +306,13 @@ async function captureTokenFromUrl() {
     window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
 
     try {
-        var data = await fetchUserMe(token);
+        var data = await fetchUserMe(token, { forceRefresh: true });
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
         return true;
     } catch (err) {
         console.error('Lấy thông tin user thất bại:', err);
-        alert('Không lấy được thông tin tài khoản. Vui lòng đăng nhập lại.');
+        showToastError('Không lấy được thông tin tài khoản. Vui lòng đăng nhập lại.');
         clearAuthToken();
         return false;
     }
@@ -649,21 +707,25 @@ function initDepositButtons() {
     window.PopupDeposit.init({ container: mount });
 }
 
-function openMailPopupFromEvent(e) {
-    if (!window.PopupMail) {
-        if (typeof window.showToast === 'function') {
-            window.showToast('Comming soon');
-        }
+function initWithdrawButtons() {
+    var mount = document.getElementById('withdraw-mount');
+
+    if (!window.PopupWithdraw || !mount) {
         return;
     }
+
+    window.PopupWithdraw.init({ container: mount });
+}
+
+function openMailPopupFromEvent(e) {
 
     if (e) {
         e.preventDefault();
     }
 
-    if (!getMailAuthTokenSafe()) {
-        if (typeof window.showToast === 'function') {
-            window.showToast('Vui lòng đăng nhập');
+    if (!getAuthTokenSafe()) {
+        if (typeof window.showToastError === 'function') {
+            window.showToastError('Vui lòng đăng nhập');
         }
 
         if (window.PopupLogin) {
@@ -674,14 +736,6 @@ function openMailPopupFromEvent(e) {
     }
 
     window.PopupMail.open();
-}
-
-function getMailAuthTokenSafe() {
-    if (window.Login1 && typeof window.Login1.getAuthToken === 'function') {
-        return window.Login1.getAuthToken();
-    }
-
-    return localStorage.getItem('rubyclub_auth_token');
 }
 
 function initPopupLoginButtons() {
@@ -784,6 +838,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     initSupportButtons();
     initMailButtons();
     initDepositButtons();
+    initWithdrawButtons();
     if (window.Header) {
         window.Header.init();
     }
@@ -1519,7 +1574,39 @@ function showToast(message) {
     }, 3000);
 }
 
+function showToastError(message) {
+  var container = document.getElementById('toast-container');
+  if (!container || !message) {
+      return;
+  }
+
+  var toast = document.createElement('div');
+  toast.className = 'toast-error';
+  toast.textContent = message;
+  container.appendChild(toast);
+
+  setTimeout(function () {
+      toast.remove();
+  }, 3000);
+}
+
+function getAuthTokenSafe() {
+    return getAuthToken();
+}
+
+function checkLoggedIn() {
+  //check token is valid
+  var token = getAuthToken();
+  if (!token) {
+    return false;
+  }
+  return true;
+}
+window.checkLoggedIn = checkLoggedIn;
+window.getAuthTokenSafe = getAuthTokenSafe;
+
 window.showToast = showToast;
+window.showToastError = showToastError;
 
 window.openMailPopupFromEvent = openMailPopupFromEvent;
 

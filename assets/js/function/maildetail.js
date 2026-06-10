@@ -9,14 +9,6 @@ function getMailDetailApiBase() {
     return (window.RubyClubConfig && window.RubyClubConfig.API_BASE) || 'https://rubyclubph.com';
 }
 
-function getMailDetailAuthToken() {
-    if (window.Login1 && typeof window.Login1.getAuthToken === 'function') {
-        return window.Login1.getAuthToken();
-    }
-
-    return localStorage.getItem('rubyclub_auth_token');
-}
-
 function escapeMailDetailHtml(text) {
     return String(text)
         .replace(/&/g, '&amp;')
@@ -153,7 +145,7 @@ function renderMailDetail(mail) {
 }
 
 async function readMailDetail(id) {
-    var token = getMailDetailAuthToken();
+    var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
         throw new Error('Chưa đăng nhập');
@@ -197,7 +189,7 @@ async function markMailDetailAsRead(mail) {
 }
 
 async function claimMailDetail(id) {
-    var token = getMailDetailAuthToken();
+    var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
         throw new Error('Chưa đăng nhập');
@@ -255,7 +247,7 @@ async function handleMailDetailReceive() {
         }
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Nhận thưởng thất bại');
+            window.showToastError('Nhận thưởng thất bại');
         }
     }
 }
@@ -282,6 +274,9 @@ function closePopupMailDetail() {
     }
 
     overlay.classList.remove('is-open');
+    if (typeof window.releaseFocusWithin === 'function') {
+        window.releaseFocusWithin(overlay);
+    }
     overlay.setAttribute('aria-hidden', 'true');
     mailDetailCurrentMail = null;
 

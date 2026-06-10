@@ -13,14 +13,6 @@ function getMailApiBase() {
     return (window.RubyClubConfig && window.RubyClubConfig.API_BASE) || 'https://rubyclubph.com';
 }
 
-function getMailAuthToken() {
-    if (window.Login1 && typeof window.Login1.getAuthToken === 'function') {
-        return window.Login1.getAuthToken();
-    }
-
-    return localStorage.getItem('rubyclub_auth_token');
-}
-
 function escapeMailHtml(text) {
     return String(text)
         .replace(/&/g, '&amp;')
@@ -94,7 +86,7 @@ async function fetchMyMails(options) {
     options = options || {};
     var page = options.page != null ? options.page : 1;
     var pageSize = options.pageSize != null ? options.pageSize : 20;
-    var token = options.token || getMailAuthToken();
+    var token = options.token || (typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null);
 
     if (!token) {
         throw new Error('Chưa đăng nhập');
@@ -148,7 +140,7 @@ async function getMyMailList(options) {
     options = options || {};
     var page = options.page != null ? options.page : 1;
     var pageSize = options.pageSize != null ? options.pageSize : 20;
-    var token = options.token || getMailAuthToken();
+    var token = options.token || (typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null);
     var cacheKey = getMailListCacheKey(token, page, pageSize);
 
     if (!options.forceRefresh && isMailListCacheValid(cacheKey)) {
@@ -172,7 +164,7 @@ async function getMyMailList(options) {
 }
 
 async function deleteMails(ids) {
-    var token = getMailAuthToken();
+    var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
         throw new Error('Chưa đăng nhập');
@@ -336,7 +328,7 @@ async function loadMailList(options) {
         console.error('Không tải được mail:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToast(err.message || 'Không tải được mail');
+            window.showToastError(err.message || 'Không tải được mail');
         }
     }
 }
@@ -401,7 +393,7 @@ async function deleteSelectedMails() {
 
     if (!ids.length) {
         if (typeof window.showToast === 'function') {
-            window.showToast('Chọn thư cần xóa');
+            window.showToastError('Chọn thư cần xóa');
         }
         return;
     }
@@ -419,7 +411,7 @@ async function deleteSelectedMails() {
         console.error('Xóa mail thất bại:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Xóa thư thất bại');
+            window.showToastError('Xóa thư thất bại');
         }
     }
 }
@@ -446,6 +438,9 @@ function closePopupMail() {
     }
 
     overlay.classList.remove('is-open');
+    if (typeof window.releaseFocusWithin === 'function') {
+        window.releaseFocusWithin(overlay);
+    }
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     resetMailSelection();

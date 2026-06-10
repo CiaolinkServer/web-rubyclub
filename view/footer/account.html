@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/assets/css/function/mail.css">
     <link rel="stylesheet" href="/assets/css/function/maildetail.css">
     <link rel="stylesheet" href="/assets/css/function/deposit.css">
+    <link rel="stylesheet" href="/assets/css/function/withdraw.css">
     <link rel="stylesheet" href="/assets/css/page_account.css">
 </head>
 <body class="login1-page login1-page--account">
@@ -74,9 +75,9 @@
                         <img src="/assets/image/page_account/icon_changepass.png" alt="">
                         <span>Change Pass</span>
                     </button>
-                    <button type="button" class="page-account__tile" data-action="upgrade">
-                        <img src="/assets/image/page_account/icon_updateacc.png" alt="">
-                        <span>Upgrade ACc</span>
+                    <button type="button" class="page-account__tile" data-action="upgrade" id="page-account-upgrade">
+                        <img id="page-account-upgrade-icon" src="/assets/image/page_account/icon_updateacc.png" alt="">
+                        <span id="page-account-upgrade-span">Upgrade Account</span>
                     </button>
                     <button type="button" class="page-account__tile" data-action="payback">
                         <img src="/assets/image/page_account/icon_payback.png" alt="">
@@ -108,6 +109,7 @@
     <div id="mail-mount"></div>
     <div id="maildetail-mount"></div>
     <div id="deposit-mount"></div>
+    <div id="withdraw-mount"></div>
 
     <script src="/assets/js/config.js"></script>
     <script src="/assets/js/headler.js"></script>
@@ -116,6 +118,7 @@
     <script src="/assets/js/function/mail.js"></script>
     <script src="/assets/js/function/maildetail.js"></script>
     <script src="/assets/js/function/deposit.js"></script>
+    <script src="/assets/js/function/withdraw.js"></script>
     <script src="/assets/js/page_account.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

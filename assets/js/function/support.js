@@ -23,6 +23,9 @@ function closePopupSupport() {
         return;
     }
     overlay.classList.remove('is-open');
+    if (typeof window.releaseFocusWithin === 'function') {
+        window.releaseFocusWithin(overlay);
+    }
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 }

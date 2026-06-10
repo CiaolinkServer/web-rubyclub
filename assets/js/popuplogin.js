@@ -44,6 +44,9 @@ function closePopupLogin() {
         return;
     }
     overlay.classList.remove('is-open');
+    if (typeof window.releaseFocusWithin === 'function') {
+        window.releaseFocusWithin(overlay);
+    }
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 }
@@ -66,6 +69,11 @@ function switchPopupTab(tabName) {
 
     formLogin.classList.toggle('popuplogin__form--hidden', !isLogin);
     formSignin.classList.toggle('popuplogin__form--hidden', isLogin);
+
+    if (typeof window.releaseFocusWithin === 'function') {
+        window.releaseFocusWithin(isLogin ? formSignin : formLogin);
+    }
+
     formLogin.setAttribute('aria-hidden', isLogin ? 'false' : 'true');
     formSignin.setAttribute('aria-hidden', isLogin ? 'true' : 'false');
 }
@@ -136,12 +144,12 @@ async function handlePopupLogin(form) {
     var password = passwordInput ? passwordInput.value : '';
 
     if (!userName) {
-        alert('Vui lòng nhập tài khoản.');
+        window.showToastError('Vui lòng nhập tài khoản.');
         return;
     }
 
     if (!password) {
-        alert('Vui lòng nhập mật khẩu.');
+        window.showToastError('Vui lòng nhập mật khẩu.');
         return;
     }
 
@@ -163,15 +171,15 @@ async function handlePopupLogin(form) {
         });
 
         if (!data || !data.token) {
-            throw new Error('Không nhận được token');
+            window.showToastError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
         }
 
         await applyPopupAuthSession(data.token);
         form.reset();
         closePopupLogin();
     } catch (err) {
-        console.error('Login failed:', err);
-        alert(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        // alert(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        window.showToastError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
     } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
@@ -193,17 +201,17 @@ async function handlePopupRegister(form) {
     var confirmPassword = confirmInput ? confirmInput.value : '';
 
     if (!userName) {
-        alert('Vui lòng nhập tài khoản.');
+        window.showToastError('Vui lòng nhập tài khoản.');
         return;
     }
 
     if (!password) {
-        alert('Vui lòng nhập mật khẩu.');
+        window.showToastError('Vui lòng nhập mật khẩu.');
         return;
     }
 
     if (password !== confirmPassword) {
-        alert('Mật khẩu xác nhận không khớp.');
+        window.showToastError('Mật khẩu xác nhận không khớp.');
         return;
     }
 
@@ -233,7 +241,7 @@ async function handlePopupRegister(form) {
         closePopupLogin();
     } catch (err) {
         console.error('Register failed:', err);
-        alert(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+        window.showToastError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
     } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
@@ -275,7 +283,7 @@ async function handlePopupFreePlay(btn) {
         closePopupLogin();
     } catch (err) {
         console.error('Quick play failed:', err);
-        alert(err.message || 'FREE PLAY thất bại. Vui lòng thử lại.');
+        window.showToastError(err.message || 'FREE PLAY thất bại. Vui lòng thử lại.');
     } finally {
         btn.disabled = false;
     }
@@ -302,7 +310,7 @@ async function handlePopupGoogleLogin(btn) {
         throw new Error('Không nhận được redirectUrl');
     } catch (err) {
         console.error('Google login failed:', err);
-        alert('Đăng nhập Google thất bại. Vui lòng thử lại.');
+        window.showToastError('Đăng nhập Google thất bại. Vui lòng thử lại.');
         btn.disabled = false;
     }
 }
