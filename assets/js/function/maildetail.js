@@ -224,6 +224,11 @@ async function handleMailDetailReceive() {
     try {
         await claimMailDetail(String(mailDetailCurrentMail.id));
         mailDetailCurrentMail.isClaimed = true;
+
+        if (window.PopupMail && typeof window.PopupMail.updateSavedMailListItem === 'function') {
+            window.PopupMail.updateSavedMailListItem(String(mailDetailCurrentMail.id), { isClaimed: true });
+        }
+
         renderMailDetail(mailDetailCurrentMail);
 
         if (typeof window.showToast === 'function') {

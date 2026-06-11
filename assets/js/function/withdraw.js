@@ -12,6 +12,10 @@ var WITHDRAW_CHANNEL_META = {
         icon: WITHDRAW_ICON_BASE + 'icon_payment_gcash.png',
         label: 'GCash'
     },
+    paymaya: {
+        icon: WITHDRAW_ICON_BASE + 'icon_payment_maya.png',
+        label: 'Maya'
+    },
     maya: {
         icon: WITHDRAW_ICON_BASE + 'icon_payment_maya.png',
         label: 'Maya'
@@ -49,12 +53,12 @@ function getWithdrawChannelMeta(key) {
 
 function getWithdrawChannels(settings) {
     var channels = [];
-    var accounts = settings && settings.depositAccounts;
+    var channelsMap = settings && settings.withdrawChannels;
     var keys;
     var i;
 
-    if (accounts && typeof accounts === 'object') {
-        keys = Object.keys(accounts);
+    if (channelsMap && typeof channelsMap === 'object') {
+        keys = Object.keys(channelsMap);
 
         for (i = 0; i < keys.length; i++) {
             channels.push(keys[i]);
@@ -66,6 +70,32 @@ function getWithdrawChannels(settings) {
     }
 
     return channels;
+}
+
+function findWithdrawChannelData(settings, channel) {
+    var channelsMap = settings && settings.withdrawChannels;
+    var channelData;
+
+    if (!channelsMap || !channel) {
+        return null;
+    }
+
+    channelData = channelsMap[channel];
+
+    if (channelData) {
+        return channelData;
+    }
+
+    Object.keys(channelsMap).some(function (key) {
+        if (normalizeWithdrawChannelKey(key) === normalizeWithdrawChannelKey(channel)) {
+            channelData = channelsMap[key];
+            return true;
+        }
+
+        return false;
+    });
+
+    return channelData || null;
 }
 
 function formatWithdrawAmountLabel(amount) {
@@ -92,12 +122,11 @@ function getWithdrawStep2AmountDisplay(amount) {
     return value.replace(/p$/i, '');
 }
 
-function getRecommendWithdrawAmounts(settings) {
-    if (!settings || !Array.isArray(settings.recommendWithdrawAmount)) {
-        return [];
-    }
+function getWithdrawAmountsForChannel(settings, channel) {
+    var channelData = findWithdrawChannelData(settings, channel);
+    var amounts = channelData && Array.isArray(channelData.amounts) ? channelData.amounts : [];
 
-    return settings.recommendWithdrawAmount
+    return amounts
         .map(function (amount) {
             return String(amount).trim();
         })
@@ -442,7 +471,7 @@ function renderWithdrawHistory(withdrawals) {
 function renderWithdrawView(settings) {
     withdrawSettings = settings || null;
     renderWithdrawChannels(getWithdrawChannels(withdrawSettings));
-    renderWithdrawAmounts(getRecommendWithdrawAmounts(withdrawSettings));
+    renderWithdrawAmounts(getWithdrawAmountsForChannel(withdrawSettings, withdrawActiveChannel));
 }
 
 function setWithdrawMode(mode) {
@@ -742,6 +771,7 @@ function bindPopupWithdrawEvents(root) {
 
             withdrawActiveChannel = channelBtn.getAttribute('data-channel') || '';
             renderWithdrawChannels(getWithdrawChannels(withdrawSettings));
+            renderWithdrawAmounts(getWithdrawAmountsForChannel(withdrawSettings, withdrawActiveChannel));
         });
     }
 

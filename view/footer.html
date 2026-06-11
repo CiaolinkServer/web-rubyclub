@@ -35,9 +35,13 @@
                     <span class="login1-footer__label">Withdrawal</span>
                 </button>
             </div>
-            <button type="button" class="login1-footer__item" aria-label="Mail">
-                <span class="login1-footer__icon-wrap">
+            <button type="button" class="login1-footer__item" data-footer-nav="mail" aria-label="Mail">
+                <span class="login1-footer__icon-wrap login1-footer__icon-wrap--mail">
                     <img class="login1-footer__icon" src="/assets/image/common/icon_mail.png" data-icon="/assets/image/common/icon_mail.png" data-icon-active="/assets/image/common/icon_mail_select.png" alt="">
+                    <span class="login1-footer__mail-badge" id="login1-footer-mail-badge" aria-hidden="true">
+                        <img class="login1-footer__mail-badge-icon" src="/assets/image/footer/icon_mail_noti.png" alt="">
+                        <span class="login1-footer__mail-badge-count" id="login1-footer-mail-badge-count"></span>
+                    </span>
                 </span>
                 <span class="login1-footer__label">Mail</span>
             </button>

@@ -239,6 +239,8 @@ function updateSavedMailListItem(mailId, updates) {
             }
         }
     }
+
+    syncFooterMailBadgeFromCache();
 }
 
 function markMailAsRead(id) {
@@ -262,6 +264,107 @@ function getMailById(id) {
     return mailListCache[String(id)] || null;
 }
 
+function parseMailBoolean(value, defaultValue) {
+    if (value === true || value === 1 || value === '1' || value === 'true') {
+        return true;
+    }
+
+    if (value === false || value === 0 || value === '0' || value === 'false') {
+        return false;
+    }
+
+    return defaultValue;
+}
+
+function isMailUnclaimed(mail) {
+    var amount = mail && mail.amount != null ? Number(mail.amount) : 0;
+
+    if (Number.isNaN(amount) || amount <= 0) {
+        return false;
+    }
+
+    return !parseMailBoolean(mail.isClaimed, false);
+}
+
+function isMailNotificationPending(mail) {
+    if (!mail) {
+        return false;
+    }
+
+    return !parseMailBoolean(mail.isRead, false) || isMailUnclaimed(mail);
+}
+
+function countMailNotifications(mails) {
+    var count = 0;
+    var i;
+
+    if (!Array.isArray(mails)) {
+        return 0;
+    }
+
+    for (i = 0; i < mails.length; i++) {
+        if (isMailNotificationPending(mails[i])) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+function getCachedMailListItems() {
+    if (mailListResponseCache && mailListResponseCache.data && Array.isArray(mailListResponseCache.data.mails)) {
+        return mailListResponseCache.data.mails;
+    }
+
+    return Object.keys(mailListCache).map(function (key) {
+        return mailListCache[key];
+    });
+}
+
+function updateFooterMailBadge(count) {
+    var badge = document.getElementById('login1-footer-mail-badge');
+    var countEl = document.getElementById('login1-footer-mail-badge-count');
+    var mailBtn = document.querySelector('.login1-footer__item[data-footer-nav="mail"]');
+    var num = Math.max(0, Number(count) || 0);
+    var isVisible = num > 0;
+
+    if (countEl) {
+        countEl.textContent = num > 99 ? '99+' : String(num);
+    }
+
+    if (badge) {
+        badge.classList.toggle('is-visible', isVisible);
+        badge.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+    }
+
+    if (mailBtn) {
+        mailBtn.setAttribute('aria-label', isVisible ? 'Mail (' + num + ' thông báo)' : 'Mail');
+    }
+}
+
+function refreshFooterMailBadge(options) {
+    options = options || {};
+
+    if (typeof window.getAuthTokenSafe !== 'function' || !window.getAuthTokenSafe()) {
+        updateFooterMailBadge(0);
+        return Promise.resolve(0);
+    }
+
+    return getMyMailList(options).then(function (result) {
+        var count = countMailNotifications(result.mails);
+
+        updateFooterMailBadge(count);
+        return count;
+    }).catch(function () {
+        updateFooterMailBadge(0);
+        return 0;
+    });
+}
+
+function syncFooterMailBadgeFromCache() {
+    updateFooterMailBadge(countMailNotifications(getCachedMailListItems()));
+}
+
 function renderMailList(mails) {
     var listEl = document.getElementById('mail-list');
     var emptyEl = document.getElementById('mail-empty');
@@ -274,6 +377,7 @@ function renderMailList(mails) {
         mailListCache = {};
         listEl.innerHTML = '';
         emptyEl.hidden = false;
+        updateFooterMailBadge(0);
         return;
     }
 
@@ -290,11 +394,12 @@ function renderMailList(mails) {
         var preview = escapeMailHtml(formatMailPreview(mail.content));
         var dateParts = formatMailDateTime(mail.createdAt);
         var isRead = !!mail.isRead;
-
+        var isClaimed = parseMailBoolean(mail.isClaimed, false);
+        var isNoti = isReadMail(mail.amount, isClaimed, isRead);
         return (
             '<li class="mail__item'
                 + (isSelected ? ' mail__item--selected' : '')
-                + (isRead ? ' mail__item--read' : '')
+                + (isNoti ? ' mail__item--read' : '')
                 + '" data-mail-id="' + escapeMailHtml(id) + '">' +
                 '<button type="button" class="mail__checkbox" aria-label="Chọn thư" aria-pressed="' + (isSelected ? 'true' : 'false') + '">' +
                     '<img class="mail__checkbox-icon mail__checkbox-icon--off" src="' + MAIL_ICON_BASE + 'icon_checkbox.png" alt="">' +
@@ -311,25 +416,43 @@ function renderMailList(mails) {
             '</li>'
         );
     }).join('');
+
+    syncFooterMailBadgeFromCache();
+}
+
+function isReadMail(amount, isClaimed, isRead){
+    if(amount > 0 && !isClaimed){
+        return false;
+    }
+    return isRead;
 }
 
 async function loadMailList(options) {
     options = options || {};
-    var overlay = getMailOverlay();
-
-    if (!overlay) {
-        return;
-    }
 
     try {
+        if (options.forceRefresh) {
+            invalidateMailListCache();
+        }
+
         var result = await getMyMailList(options);
-        renderMailList(result.mails);
+        var overlay = getMailOverlay();
+
+        if (overlay) {
+            renderMailList(result.mails);
+        } else {
+            updateFooterMailBadge(countMailNotifications(result.mails));
+        }
+
+        return result;
     } catch (err) {
         console.error('Không tải được mail:', err);
 
         if (typeof window.showToast === 'function') {
             window.showToastError(err.message || 'Không tải được mail');
         }
+
+        throw err;
     }
 }
 
@@ -598,10 +721,14 @@ window.PopupMail = {
     getMyMailList: getMyMailList,
     deleteMails: deleteMails,
     reloadList: loadMailList,
+    loadMailList: loadMailList,
     invalidateListCache: invalidateMailListCache,
     getMailById: getMailById,
     markMailAsRead: markMailAsRead,
-    updateSavedMailListItem: updateSavedMailListItem
+    updateSavedMailListItem: updateSavedMailListItem,
+    countMailNotifications: countMailNotifications,
+    updateFooterBadge: updateFooterMailBadge,
+    refreshFooterBadge: refreshFooterMailBadge
 };
 
 window.Mail = window.PopupMail;

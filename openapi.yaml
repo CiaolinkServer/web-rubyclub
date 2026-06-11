@@ -96,6 +96,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.VerifySessionResponse'
+    /api/v1/all-settings:
+        get:
+            tags:
+                - SettingService
+            operationId: SettingService_GetAllSettings
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.GetAllSettingsResponse'
+    /api/v1/auth/admin/google/login:
+        get:
+            tags:
+                - AuthService
+            operationId: AuthService_AdminGoogleLogin
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.GoogleLoginResponse'
     /api/v1/auth/google/callback:
         get:
             tags:
@@ -258,6 +282,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.RegisterQuickPlayResponse'
+    /api/v1/auto-approve-threshold:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetAutoApproveThreshold
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetAutoApproveThresholdRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetAutoApproveThresholdResponse'
+    /api/v1/country-alpha2-code:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetCountryAlpha2Code
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetCountryAlpha2CodeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetCountryAlpha2CodeResponse'
     /api/v1/deposit:
         post:
             tags:
@@ -276,6 +336,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/deposit.v1.CreateDepositResponse'
+    /api/v1/deposit-channels:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetDepositChannels
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetDepositChannelsRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetDepositChannelsResponse'
+    /api/v1/deposit-rate:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetDepositRate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetDepositRateRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetDepositRateResponse'
     /api/v1/deposit/claim:
         post:
             tags:
@@ -345,6 +441,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: tx
+                  in: query
+                  schema:
+                    type: string
                 - name: channel
                   in: query
                   schema:
@@ -375,6 +475,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/deposit.v1.NotifyDepositResponse'
+    /api/v1/first-deposit-bonus:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetFirstDepositBonus
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetFirstDepositBonusRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetFirstDepositBonusResponse'
     /api/v1/mail/claim/{id}:
         get:
             tags:
@@ -523,6 +641,132 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/mail.v1.ReadMailResponse'
+    /api/v1/max-deposit-amount:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetMaxDepositAmount
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetMaxDepositAmountRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetMaxDepositAmountResponse'
+    /api/v1/max-withdraw-amount:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetMaxWithdrawAmount
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetMaxWithdrawAmountRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetMaxWithdrawAmountResponse'
+    /api/v1/max-withdraw-retry:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetMaxWithdrawRetry
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetMaxWithdrawRetryRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetMaxWithdrawRetryResponse'
+    /api/v1/min-balance:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetMinBalance
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetMinBalanceRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetMinBalanceResponse'
+    /api/v1/min-deposit-amount:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetMinDepositAmount
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetMinDepositAmountRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetMinDepositAmountResponse'
+    /api/v1/min-withdraw-amount:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetMinWithdrawAmount
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetMinWithdrawAmountRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetMinWithdrawAmountResponse'
+    /api/v1/new-account-gift:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetNewAccountGift
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetNewAccountGiftRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetNewAccountGiftResponse'
     /api/v1/settings:
         get:
             tags:
@@ -535,6 +779,105 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/setting.v1.GetSettingsResponse'
+    /api/v1/social-links:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetSocialLinks
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetSocialLinksRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetSocialLinksResponse'
+    /api/v1/support-links:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetSupportLinks
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetSupportLinksRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetSupportLinksResponse'
+    /api/v1/user:
+        get:
+            tags:
+                - UserService
+            description: 'Role: admin'
+            operationId: UserService_ListUsers
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: status
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: role
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: orderByBalance
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: orderByDeposit
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: orderByWithdraw
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: orderByBet
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: orderByCreatedAt
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: email
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.ListUsersResponse'
     /api/v1/user/me:
         get:
             tags:
@@ -547,6 +890,192 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/user.v1.GetMyUserResponse'
+    /api/v1/user/u/{id}/ban:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_BanUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.BanUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.BanUserResponse'
+    /api/v1/user/u/{id}/make-admin:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_MakeAdmin
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.MakeAdminRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.MakeAdminResponse'
+    /api/v1/user/u/{id}/make-cs:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_MakeCS
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.MakeCSRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.MakeCSResponse'
+    /api/v1/user/u/{id}/remove-admin:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_RemoveAdmin
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.RemoveAdminRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.RemoveAdminResponse'
+    /api/v1/user/u/{id}/reset-password:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_ResetUserPassword
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.ResetUserPasswordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.ResetUserPasswordResponse'
+    /api/v1/user/u/{id}/suspend:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_SuspendUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.SuspendUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.SuspendUserResponse'
+    /api/v1/user/u/{id}/unban:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_UnbanUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.UnbanUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.UnbanUserResponse'
+    /api/v1/vips:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetVips
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetVipsRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetVipsResponse'
     /api/v1/withdraw:
         post:
             tags:
@@ -565,6 +1094,42 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/withdraw.v1.WithdrawResponse'
+    /api/v1/withdraw-channels:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetWithdrawChannels
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetWithdrawChannelsRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetWithdrawChannelsResponse'
+    /api/v1/withdraw-rate:
+        post:
+            tags:
+                - SettingService
+            operationId: SettingService_SetWithdrawRate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/setting.v1.SetWithdrawRateRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/setting.v1.SetWithdrawRateResponse'
     /api/v1/withdraw/approve:
         post:
             tags:
@@ -1038,6 +1603,18 @@ components:
             properties:
                 isSuccess:
                     type: boolean
+        common.v1.Pagination:
+            type: object
+            properties:
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                total:
+                    type: integer
+                    format: int32
         deposit.v1.ClaimDepositRequest:
             type: object
             properties:
@@ -1103,9 +1680,7 @@ components:
             properties:
                 depositId:
                     type: string
-                userId:
-                    type: string
-                email:
+                sid:
                     type: string
         deposit.v1.GrantDepositResponse:
             type: object
@@ -1150,9 +1725,7 @@ components:
                     format: int32
         mail.v1.ClaimMailResponse:
             type: object
-            properties:
-                success:
-                    type: boolean
+            properties: {}
         mail.v1.CreateMailRequest:
             type: object
             properties:
@@ -1167,14 +1740,10 @@ components:
                     format: double
         mail.v1.CreateMailResponse:
             type: object
-            properties:
-                success:
-                    type: boolean
+            properties: {}
         mail.v1.DeleteMailResponse:
             type: object
-            properties:
-                success:
-                    type: boolean
+            properties: {}
         mail.v1.DeleteMailsRequest:
             type: object
             properties:
@@ -1184,9 +1753,7 @@ components:
                         type: string
         mail.v1.DeleteMailsResponse:
             type: object
-            properties:
-                success:
-                    type: boolean
+            properties: {}
         mail.v1.GetMailsResponse:
             type: object
             properties:
@@ -1267,32 +1834,43 @@ components:
                     format: int32
         mail.v1.ReadMailResponse:
             type: object
-            properties:
-                success:
-                    type: boolean
-        setting.v1.Account:
+            properties: {}
+        setting.v1.DepositAccount:
             type: object
             properties:
                 name:
                     type: string
                 number:
                     type: string
-        setting.v1.Accounts:
+        setting.v1.DepositChannel:
             type: object
             properties:
                 accounts:
                     type: array
                     items:
-                        $ref: '#/components/schemas/setting.v1.Account'
+                        $ref: '#/components/schemas/setting.v1.DepositAccount'
+                amounts:
+                    type: array
+                    items:
+                        type: string
+        setting.v1.GetAllSettingsResponse:
+            type: object
+            properties:
+                settings:
+                    $ref: '#/components/schemas/setting.v1.Settings'
         setting.v1.GetSettingsResponse:
             type: object
             properties:
                 minBalance:
                     type: string
-                depositAccounts:
+                depositChannels:
                     type: object
                     additionalProperties:
-                        $ref: '#/components/schemas/setting.v1.Accounts'
+                        $ref: '#/components/schemas/setting.v1.DepositChannel'
+                withdrawChannels:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.WithdrawChannel'
                 withdrawRate:
                     type: number
                     format: double
@@ -1301,14 +1879,6 @@ components:
                     format: double
                 countryAlpha2Code:
                     type: string
-                recommendWithdrawAmount:
-                    type: array
-                    items:
-                        type: string
-                recommendDepositAmount:
-                    type: array
-                    items:
-                        type: string
                 minDepositAmount:
                     type: string
                 maxDepositAmount:
@@ -1321,6 +1891,264 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/setting.v1.Vip'
+                socialLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+                supportLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+        setting.v1.SetAutoApproveThresholdRequest:
+            type: object
+            properties:
+                autoApproveThreshold:
+                    type: string
+        setting.v1.SetAutoApproveThresholdResponse:
+            type: object
+            properties:
+                autoApproveThreshold:
+                    type: string
+        setting.v1.SetCountryAlpha2CodeRequest:
+            type: object
+            properties:
+                countryAlpha2Code:
+                    type: string
+        setting.v1.SetCountryAlpha2CodeResponse:
+            type: object
+            properties:
+                countryAlpha2Code:
+                    type: string
+        setting.v1.SetDepositChannelsRequest:
+            type: object
+            properties:
+                depositChannels:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.DepositChannel'
+        setting.v1.SetDepositChannelsResponse:
+            type: object
+            properties:
+                depositChannels:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.DepositChannel'
+        setting.v1.SetDepositRateRequest:
+            type: object
+            properties:
+                depositRate:
+                    type: number
+                    format: double
+        setting.v1.SetDepositRateResponse:
+            type: object
+            properties:
+                depositRate:
+                    type: number
+                    format: double
+        setting.v1.SetFirstDepositBonusRequest:
+            type: object
+            properties:
+                firstDepositBonus:
+                    $ref: '#/components/schemas/setting.v1.Settings_FirstDepositBonus'
+        setting.v1.SetFirstDepositBonusResponse:
+            type: object
+            properties:
+                firstDepositBonus:
+                    $ref: '#/components/schemas/setting.v1.Settings_FirstDepositBonus'
+        setting.v1.SetMaxDepositAmountRequest:
+            type: object
+            properties:
+                maxDepositAmount:
+                    type: string
+        setting.v1.SetMaxDepositAmountResponse:
+            type: object
+            properties:
+                maxDepositAmount:
+                    type: string
+        setting.v1.SetMaxWithdrawAmountRequest:
+            type: object
+            properties:
+                maxWithdrawAmount:
+                    type: string
+        setting.v1.SetMaxWithdrawAmountResponse:
+            type: object
+            properties:
+                maxWithdrawAmount:
+                    type: string
+        setting.v1.SetMaxWithdrawRetryRequest:
+            type: object
+            properties:
+                maxWithdrawRetry:
+                    type: string
+        setting.v1.SetMaxWithdrawRetryResponse:
+            type: object
+            properties:
+                maxWithdrawRetry:
+                    type: string
+        setting.v1.SetMinBalanceRequest:
+            type: object
+            properties:
+                minBalance:
+                    type: string
+        setting.v1.SetMinBalanceResponse:
+            type: object
+            properties:
+                minBalance:
+                    type: string
+        setting.v1.SetMinDepositAmountRequest:
+            type: object
+            properties:
+                minDepositAmount:
+                    type: string
+        setting.v1.SetMinDepositAmountResponse:
+            type: object
+            properties:
+                minDepositAmount:
+                    type: string
+        setting.v1.SetMinWithdrawAmountRequest:
+            type: object
+            properties:
+                minWithdrawAmount:
+                    type: string
+        setting.v1.SetMinWithdrawAmountResponse:
+            type: object
+            properties:
+                minWithdrawAmount:
+                    type: string
+        setting.v1.SetNewAccountGiftRequest:
+            type: object
+            properties:
+                newAccountGift:
+                    type: string
+        setting.v1.SetNewAccountGiftResponse:
+            type: object
+            properties:
+                newAccountGift:
+                    type: string
+        setting.v1.SetSocialLinksRequest:
+            type: object
+            properties:
+                socialLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+        setting.v1.SetSocialLinksResponse:
+            type: object
+            properties:
+                socialLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+        setting.v1.SetSupportLinksRequest:
+            type: object
+            properties:
+                supportLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+        setting.v1.SetSupportLinksResponse:
+            type: object
+            properties:
+                supportLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+        setting.v1.SetVipsRequest:
+            type: object
+            properties:
+                vips:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/setting.v1.Vip'
+        setting.v1.SetVipsResponse:
+            type: object
+            properties:
+                vips:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/setting.v1.Vip'
+        setting.v1.SetWithdrawChannelsRequest:
+            type: object
+            properties:
+                withdrawChannels:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.WithdrawChannel'
+        setting.v1.SetWithdrawChannelsResponse:
+            type: object
+            properties:
+                withdrawChannels:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.WithdrawChannel'
+        setting.v1.SetWithdrawRateRequest:
+            type: object
+            properties:
+                withdrawRate:
+                    type: number
+                    format: double
+        setting.v1.SetWithdrawRateResponse:
+            type: object
+            properties:
+                withdrawRate:
+                    type: number
+                    format: double
+        setting.v1.Settings:
+            type: object
+            properties:
+                newAccountGift:
+                    type: string
+                minBalance:
+                    type: string
+                depositChannels:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.DepositChannel'
+                withdrawChannels:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/setting.v1.WithdrawChannel'
+                withdrawRate:
+                    type: number
+                    format: double
+                depositRate:
+                    type: number
+                    format: double
+                countryAlpha2Code:
+                    type: string
+                minDepositAmount:
+                    type: string
+                maxDepositAmount:
+                    type: string
+                minWithdrawAmount:
+                    type: string
+                maxWithdrawAmount:
+                    type: string
+                autoApproveThreshold:
+                    type: string
+                vips:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/setting.v1.Vip'
+                socialLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+                supportLinks:
+                    type: object
+                    additionalProperties:
+                        type: string
+                firstDepositBonus:
+                    $ref: '#/components/schemas/setting.v1.Settings_FirstDepositBonus'
+                maxWithdrawRetry:
+                    type: string
+        setting.v1.Settings_FirstDepositBonus:
+            type: object
+            properties:
+                bps:
+                    type: string
+                cap:
+                    type: string
         setting.v1.Vip:
             type: object
             properties:
@@ -1330,12 +2158,127 @@ components:
                     type: string
                 totalBet:
                     type: string
+        setting.v1.WithdrawChannel:
+            type: object
+            properties:
+                amounts:
+                    type: array
+                    items:
+                        type: string
+        user.v1.BanUserRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        user.v1.BanUserResponse:
+            type: object
+            properties: {}
         user.v1.GetMyUserResponse:
             type: object
             properties:
                 user:
-                    $ref: '#/components/schemas/user.v1.User'
+                    $ref: '#/components/schemas/user.v1.UserProfile'
+        user.v1.ListUsersResponse:
+            type: object
+            properties:
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/user.v1.User'
+                pagination:
+                    $ref: '#/components/schemas/common.v1.Pagination'
+        user.v1.MakeAdminRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        user.v1.MakeAdminResponse:
+            type: object
+            properties: {}
+        user.v1.MakeCSRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        user.v1.MakeCSResponse:
+            type: object
+            properties: {}
+        user.v1.RemoveAdminRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        user.v1.RemoveAdminResponse:
+            type: object
+            properties: {}
+        user.v1.ResetUserPasswordRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        user.v1.ResetUserPasswordResponse:
+            type: object
+            properties:
+                password:
+                    type: string
+        user.v1.SuspendUserRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        user.v1.SuspendUserResponse:
+            type: object
+            properties: {}
+        user.v1.UnbanUserRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        user.v1.UnbanUserResponse:
+            type: object
+            properties: {}
         user.v1.User:
+            type: object
+            properties:
+                id:
+                    type: string
+                sid:
+                    type: string
+                userName:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                balance:
+                    type: number
+                    format: double
+                currency:
+                    type: string
+                deposit:
+                    type: number
+                    format: double
+                withdraw:
+                    type: number
+                    format: double
+                bet:
+                    type: number
+                    format: double
+                official:
+                    type: boolean
+                status:
+                    type: integer
+                    format: enum
+                role:
+                    type: integer
+                    format: enum
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+        user.v1.UserProfile:
             type: object
             properties:
                 sid:

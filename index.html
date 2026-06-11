@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Ruby Club</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <script>
+        window.__deferredInstallPrompt = null;
+        window.addEventListener('beforeinstallprompt', function (e) {
+            e.preventDefault();
+            window.__deferredInstallPrompt = e;
+        });
+        window.addEventListener('appinstalled', function () {
+            window.__deferredInstallPrompt = null;
+            try {
+                localStorage.setItem('rubyclub_pwa_installed', '1');
+            } catch (err) {
+                // ignore
+            }
+        });
+    </script>
     <link rel="icon" type="image/png" sizes="16x16" href="assets/image/icon/16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/image/icon/32x32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/image/icon/192x192.png">
@@ -73,9 +90,9 @@
                         <img class="login1-actions__quick-icon" src="assets/image/login1/icon_payback.png" alt="">
                         <span class="login1-actions__quick-label">Pay back</span>
                     </button>
-                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Comming soon')" >
-                        <img class="login1-actions__quick-icon" src="assets/image/login1/icon_vip.png" alt="">
-                        <span class="login1-actions__quick-label">VIP</span>
+                    <button type="button" class="login1-actions__quick-item" id="btn-shortcut">
+                        <img class="login1-actions__quick-icon" src="assets/image/login1/icon_shortcut.png" alt="">
+                        <span class="login1-actions__quick-label">Shortcut</span>
                     </button>
                     <button type="button" class="login1-actions__quick-item" onclick="showToast('Comming soon')">
                         <img class="login1-actions__quick-icon" src="assets/image/login1/icon_apk.png" alt="">
@@ -144,6 +161,15 @@
     <script src="assets/js/function/withdraw.js"></script>
     <script src="assets/js/footer.js"></script>
     <script src="assets/js/index.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('sw.js').catch(function (err) {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
+    </script>
 
 </body>
 </html>

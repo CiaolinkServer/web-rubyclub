@@ -123,7 +123,6 @@ async function fetchPopupUserMe(token) {
 async function applyPopupAuthSession(token) {
     savePopupAuthToken(token);
     var data = await fetchPopupUserMe(token);
-    console.log('data quick play ', data);
     if (window.Login1) {
         window.Login1.bindUserToLogin1(window.Login1.normalizeUser(data));
         window.Login1.setLoggedInState(true);

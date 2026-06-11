@@ -2,10 +2,6 @@ function getFooterNav() {
     return document.querySelector('.login1-footer__nav');
 }
 
-var SETTINGS_CACHE_KEY = 'rubyclub_settings_cache';
-var SETTINGS_CACHE_EXPIRES_KEY = 'rubyclub_settings_cache_expires_at';
-var SETTINGS_CACHE_TTL_MS = 10 * 60 * 1000;
-
 function getFooterApiBase() {
     return (window.RubyClubConfig && window.RubyClubConfig.API_BASE) || 'https://rubyclubph.com';
 }
@@ -16,44 +12,6 @@ function cloneSettingsData(data) {
     } catch (err) {
         return data;
     }
-}
-
-function readSettingsCache() {
-    var raw = localStorage.getItem(SETTINGS_CACHE_KEY);
-
-    if (!raw) {
-        return null;
-    }
-
-    try {
-        return JSON.parse(raw);
-    } catch (err) {
-        invalidateSettingsCache();
-        return null;
-    }
-}
-
-function saveSettingsCache(data) {
-    var expiresAt = Date.now() + SETTINGS_CACHE_TTL_MS;
-
-    localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(data));
-    localStorage.setItem(SETTINGS_CACHE_EXPIRES_KEY, String(expiresAt));
-}
-
-function isSettingsCacheValid() {
-    var expiresAt = localStorage.getItem(SETTINGS_CACHE_EXPIRES_KEY);
-    var cached = readSettingsCache();
-
-    if (!expiresAt || !cached) {
-        return false;
-    }
-
-    return Date.now() < Number(expiresAt);
-}
-
-function invalidateSettingsCache() {
-    localStorage.removeItem(SETTINGS_CACHE_KEY);
-    localStorage.removeItem(SETTINGS_CACHE_EXPIRES_KEY);
 }
 
 async function fetchFooterSettings() {
@@ -78,19 +36,10 @@ async function fetchFooterSettings() {
     return response.json();
 }
 
-async function getFooterSettings(options) {
-    options = options || {};
-
-    if (!options.forceRefresh && isSettingsCacheValid()) {
-        return cloneSettingsData(readSettingsCache());
-    }
-
+async function getFooterSettings() {
     var data = await fetchFooterSettings();
-    var cachedData = cloneSettingsData(data);
 
-    saveSettingsCache(cachedData);
-
-    return cloneSettingsData(cachedData);
+    return cloneSettingsData(data);
 }
 
 async function handleFooterDepositClick() {
@@ -299,7 +248,8 @@ function bindFooterNavEvents(root) {
             return;
         }
 
-        var label = (item.getAttribute('aria-label') || '').toLowerCase();
+        var navKey = (item.getAttribute('data-footer-nav') || item.getAttribute('aria-label') || '').toLowerCase();
+        var label = navKey;
 
         if (label === 'home') {
             if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
@@ -319,9 +269,11 @@ function bindFooterNavEvents(root) {
             return;
         }
 
-        if (label === 'mail') {
+        if (label === 'mail' || navKey.indexOf('mail') === 0) {
             if (typeof window.openMailPopupFromEvent === 'function') {
                 window.openMailPopupFromEvent(e);
+            } else if (window.PopupMail && typeof window.PopupMail.open === 'function') {
+                window.PopupMail.open();
             } else if (typeof window.showToast === 'function') {
                 window.showToast('Comming soon');
             }
@@ -350,6 +302,7 @@ function mountFooter(container, html) {
     if (html) {
         container.innerHTML = html;
         bindFooterNavEvents(container);
+        refreshFooterMailBadgeIfReady();
         return Promise.resolve(true);
     }
 
@@ -363,6 +316,7 @@ function mountFooter(container, html) {
         .then(function (markup) {
             container.innerHTML = markup;
             bindFooterNavEvents(container);
+            refreshFooterMailBadgeIfReady();
             return true;
         })
         .catch(function (err) {
@@ -371,16 +325,31 @@ function mountFooter(container, html) {
         });
 }
 
+function refreshFooterMailBadgeIfReady() {
+    if (window.PopupMail && typeof window.PopupMail.refreshFooterBadge === 'function') {
+        return window.PopupMail.refreshFooterBadge();
+    }
+
+    return Promise.resolve(0);
+}
+
 function initFooter(options) {
     options = options || {};
     var container = options.container || document.getElementById('footer-mount');
 
     if (getFooterNav()) {
         bindFooterNavEvents();
+        refreshFooterMailBadgeIfReady();
         return Promise.resolve(true);
     }
 
-    return mountFooter(container);
+    return mountFooter(container).then(function (ok) {
+        if (ok) {
+            refreshFooterMailBadgeIfReady();
+        }
+
+        return ok;
+    });
 }
 
 window.Footer = {
@@ -391,5 +360,4 @@ window.Footer = {
     closeDepositMenu: closeFooterDepositMenu,
     toggleDepositMenu: toggleFooterDepositMenu,
     getSettings: getFooterSettings,
-    invalidateSettingsCache: invalidateSettingsCache,
 };

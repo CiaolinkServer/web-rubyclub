@@ -9,6 +9,10 @@ var DEPOSIT_CHANNEL_META = {
         icon: DEPOSIT_ICON_BASE + 'icon_payment_gcash.png',
         label: 'GCash'
     },
+    paymaya: {
+        icon: DEPOSIT_ICON_BASE + 'icon_payment_maya.png',
+        label: 'Paymaya'
+    },
     maya: {
         icon: DEPOSIT_ICON_BASE + 'icon_payment_maya.png',
         label: 'Maya'
@@ -46,12 +50,12 @@ function getDepositChannelMeta(key) {
 
 function getDepositChannels(settings) {
     var channels = [];
-    var accounts = settings && settings.depositAccounts;
+    var channelsMap = settings && settings.depositChannels;
     var keys;
     var i;
 
-    if (accounts && typeof accounts === 'object') {
-        keys = Object.keys(accounts);
+    if (channelsMap && typeof channelsMap === 'object') {
+        keys = Object.keys(channelsMap);
 
         for (i = 0; i < keys.length; i++) {
             channels.push(keys[i]);
@@ -63,6 +67,32 @@ function getDepositChannels(settings) {
     }
 
     return channels;
+}
+
+function findDepositChannelData(settings, channel) {
+    var channelsMap = settings && settings.depositChannels;
+    var channelData;
+
+    if (!channelsMap || !channel) {
+        return null;
+    }
+
+    channelData = channelsMap[channel];
+
+    if (channelData) {
+        return channelData;
+    }
+
+    Object.keys(channelsMap).some(function (key) {
+        if (normalizeDepositChannelKey(key) === normalizeDepositChannelKey(channel)) {
+            channelData = channelsMap[key];
+            return true;
+        }
+
+        return false;
+    });
+
+    return channelData || null;
 }
 
 function formatDepositAmountLabel(amount) {
@@ -79,12 +109,11 @@ function formatDepositAmountLabel(amount) {
     return value + 'P';
 }
 
-function getRecommendDepositAmounts(settings) {
-    if (!settings || !Array.isArray(settings.recommendDepositAmount)) {
-        return [];
-    }
+function getDepositAmountsForChannel(settings, channel) {
+    var channelData = findDepositChannelData(settings, channel);
+    var amounts = channelData && Array.isArray(channelData.amounts) ? channelData.amounts : [];
 
-    return settings.recommendDepositAmount
+    return amounts
         .map(function (amount) {
             return String(amount).trim();
         })
@@ -178,32 +207,13 @@ function parseDepositAccountEntry(entry) {
 }
 
 function getDepositAccountsForChannel(settings, channel) {
-    var accountsData;
-    var channelKey = channel;
+    var channelData = findDepositChannelData(settings, channel);
 
-    if (!settings || !settings.depositAccounts || !channel) {
+    if (!channelData || !Array.isArray(channelData.accounts)) {
         return [];
     }
 
-    accountsData = settings.depositAccounts[channel];
-
-    if (!accountsData && settings.depositAccounts) {
-        Object.keys(settings.depositAccounts).some(function (key) {
-            if (normalizeDepositChannelKey(key) === normalizeDepositChannelKey(channel)) {
-                channelKey = key;
-                accountsData = settings.depositAccounts[key];
-                return true;
-            }
-
-            return false;
-        });
-    }
-
-    if (!accountsData || !Array.isArray(accountsData.accounts)) {
-        return [];
-    }
-
-    return accountsData.accounts
+    return channelData.accounts
         .map(parseDepositAccountEntry)
         .filter(function (account) {
             return !!(account.name || account.number);
@@ -448,6 +458,10 @@ async function handleDepositSubmit(refInput, submitBtn) {
             await window.Login1.refreshUserProfile();
         }
 
+        if (window.PopupMail && typeof window.PopupMail.loadMailList === 'function') {
+            await window.PopupMail.loadMailList({ forceRefresh: true });
+        }
+
         showDepositStep1();
     } catch (err) {
         console.error('Claim deposit thất bại:', err);
@@ -491,7 +505,7 @@ function renderDepositAmounts(amounts) {
 function renderDepositView(settings) {
     depositSettings = settings || null;
     renderDepositTabs(getDepositChannels(depositSettings));
-    renderDepositAmounts(getRecommendDepositAmounts(depositSettings));
+    renderDepositAmounts(getDepositAmountsForChannel(depositSettings, depositActiveChannel));
 }
 
 async function loadDepositSettings() {
@@ -615,6 +629,7 @@ function bindPopupDepositEvents(root) {
 
             depositActiveChannel = tab.getAttribute('data-channel') || '';
             renderDepositTabs(getDepositChannels(depositSettings));
+            renderDepositAmounts(getDepositAmountsForChannel(depositSettings, depositActiveChannel));
         });
     }
 

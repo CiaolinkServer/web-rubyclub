@@ -14,6 +14,55 @@ var GAME_ICON_BASE = 'assets/image/icongame/';
 var GAME_NAME_BG = 'assets/image/icongame/background_name_game.png';
 var GAME_EAGER_LOAD = 12;
 var gameImageObserver = null;
+var PWA_INSTALLED_KEY = 'rubyclub_pwa_installed';
+var deferredInstallPrompt = window.__deferredInstallPrompt || null;
+
+function markPwaInstalled() {
+    try {
+        localStorage.setItem(PWA_INSTALLED_KEY, '1');
+    } catch (err) {
+        // ignore quota / private mode
+    }
+}
+
+function isPwaInstalledLocally() {
+    try {
+        return localStorage.getItem(PWA_INSTALLED_KEY) === '1';
+    } catch (err) {
+        return false;
+    }
+}
+
+async function isPwaAlreadyInstalled() {
+    if (isPwaInstalledLocally()) {
+        return true;
+    }
+
+    if (!navigator.getInstalledRelatedApps) {
+        return false;
+    }
+
+    try {
+        var relatedApps = await navigator.getInstalledRelatedApps();
+
+        return relatedApps.some(function (app) {
+            return app && app.platform === 'webapp';
+        });
+    } catch (err) {
+        return false;
+    }
+}
+
+window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    window.__deferredInstallPrompt = e;
+});
+
+window.addEventListener('appinstalled', function () {
+    clearDeferredInstallPrompt();
+    markPwaInstalled();
+});
 
 async function launchGame(card) {
     if (!checkLoggedIn()) {
@@ -22,7 +71,7 @@ async function launchGame(card) {
       }
       return;
     }
-    console.log("data card "+card.dataset.gameId);
+    // console.log("data card "+card.dataset.gameId);
     var token = getAuthToken();
     
     var gameId = card && card.dataset ? card.dataset.gameId : null;
@@ -71,6 +120,88 @@ async function launchGame(card) {
         if (card) {
             card.removeAttribute('aria-disabled');
         }
+    }
+}
+
+function isAndroidDevice() {
+    return /android/i.test(navigator.userAgent || '');
+}
+
+function isIOSDevice() {
+    return /iphone|ipad|ipod/i.test(navigator.userAgent || '');
+}
+
+function getDeferredInstallPrompt() {
+    return deferredInstallPrompt || window.__deferredInstallPrompt || null;
+}
+
+function clearDeferredInstallPrompt() {
+    deferredInstallPrompt = null;
+    window.__deferredInstallPrompt = null;
+}
+
+function isStandaloneApp() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+}
+
+async function addWebShortcut() {
+    if (!isAndroidDevice()) {
+        if(isIOSDevice()){
+            if (typeof window.showToast === 'function') {
+              window.showToast('Open website in Safari -> click on Share icon -> Add to Home Screen');
+            }
+            return;
+        }
+        if (typeof window.showToastError === 'function') {
+            showToastError('Tính năng chỉ hỗ trợ trên Android');
+        }
+        return;
+    }
+
+    if (isStandaloneApp()) {
+        if (typeof window.showToast === 'function') {
+            showToast('Bạn đang mở từ shortcut trên màn hình chính');
+        }
+        return;
+    }
+
+    if (await isPwaAlreadyInstalled()) {
+        if (typeof window.showToast === 'function') {
+            showToast('Shortcut đã được thêm. Hãy mở Ruby Club từ icon trên màn hình chính');
+        }
+        return;
+    }
+
+    var promptEvent = getDeferredInstallPrompt();
+
+    if (promptEvent) {
+        try {
+            promptEvent.prompt();
+            var choice = await promptEvent.userChoice;
+
+            clearDeferredInstallPrompt();
+
+            if (choice && choice.outcome === 'accepted') {
+                markPwaInstalled();
+
+                if (typeof window.showToast === 'function') {
+                    showToast('Đã thêm shortcut lên màn hình chính');
+                }
+            }
+        } catch (err) {
+            console.error('Install prompt failed:', err);
+
+            if (typeof window.showToastError === 'function') {
+                showToastError('Không thể thêm shortcut. Vui lòng thử lại sau.');
+            }
+        }
+
+        return;
+    }
+
+    if (typeof window.showToast === 'function') {
+        showToast('Chọn menu trình duyệt (⋮) → Cài đặt ứng dụng hoặc Thêm vào màn hình chính');
     }
 }
 
@@ -196,6 +327,14 @@ function setLoggedInState(isLoggedIn) {
 
     if (userPanel) {
         userPanel.hidden = !isLoggedIn;
+    }
+
+    if (window.PopupMail) {
+        if (isLoggedIn && typeof window.PopupMail.refreshFooterBadge === 'function') {
+            window.PopupMail.refreshFooterBadge();
+        } else if (typeof window.PopupMail.updateFooterBadge === 'function') {
+            window.PopupMail.updateFooterBadge(0);
+        }
     }
 }
 
@@ -735,7 +874,9 @@ function openMailPopupFromEvent(e) {
         return;
     }
 
-    window.PopupMail.open();
+    if (window.PopupMail && typeof window.PopupMail.open === 'function') {
+        window.PopupMail.open();
+    }
 }
 
 function initPopupLoginButtons() {
@@ -843,7 +984,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         window.Header.init();
     }
     if (window.Footer) {
-        window.Footer.init();
+        await window.Footer.init();
     }
     document.body.style.overflow = '';
 
@@ -870,6 +1011,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (refreshBtn) {
         refreshBtn.addEventListener('click', function () {
             refreshUserProfile();
+        });
+    }
+
+    var shortcutBtn = document.getElementById('btn-shortcut');
+    if (shortcutBtn) {
+        shortcutBtn.addEventListener('click', function () {
+            addWebShortcut();
         });
     }
 
@@ -1602,6 +1750,7 @@ function checkLoggedIn() {
   }
   return true;
 }
+
 window.checkLoggedIn = checkLoggedIn;
 window.getAuthTokenSafe = getAuthTokenSafe;
 
@@ -1624,3 +1773,4 @@ window.Login1 = {
 };
 
 window.downloadAPK = downloadAPK;
+window.addWebShortcut = addWebShortcut;
