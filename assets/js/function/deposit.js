@@ -314,7 +314,7 @@ function renderDepositStep2Accounts(accounts) {
     }
 
     if (!accounts.length) {
-        accountsEl.innerHTML = '<p class="deposit-step2__empty">Không có tài khoản nạp</p>';
+        accountsEl.innerHTML = '<p class="deposit-step2__empty">No deposit accounts available</p>';
         return;
     }
 
@@ -330,7 +330,7 @@ function renderDepositStep2Accounts(accounts) {
                     (hasName && hasNumber ? '<span class="deposit-step2__account-divider" aria-hidden="true"></span>' : '') +
                     (hasNumber ? '<span class="deposit-step2__account-number">' + escapeDepositHtml(account.number) + '</span>' : '') +
                 '</div>' +
-                '<button type="button" class="deposit-step2__copy" data-copy="' + escapeDepositHtml(copyValue) + '" aria-label="Sao chép">' +
+                '<button type="button" class="deposit-step2__copy" data-copy="' + escapeDepositHtml(copyValue) + '" aria-label="Copy">' +
                     '<img src="' + escapeDepositHtml(DEPOSIT_COPY_ICON) + '" alt="" aria-hidden="true">' +
                 '</button>' +
             '</div>'
@@ -350,7 +350,7 @@ function renderDepositStep2(amount) {
     }
 
     if (descEl) {
-        descEl.textContent = 'Please transfer money to our ' + channelLabel + ' account (choose and transfer to one of the accounts shown below):';
+        descEl.textContent = 'Magpadala ng '+amount+ ' Pesos a isa sa mga account sa itaas gamit ang '+channelLabel+'.';
     }
 
     renderDepositStep2Channel(depositActiveChannel);
@@ -384,7 +384,7 @@ async function claimDeposit(tx) {
     var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
-        throw new Error('Chưa đăng nhập');
+        throw new Error('Not logged in');
     }
 
     var response = await fetch(getDepositApiBase() + '/api/v1/deposit/claim', {
@@ -427,14 +427,14 @@ async function handleDepositSubmit(refInput, submitBtn) {
 
     if (!refValue) {
         if (typeof window.showToast === 'function') {
-            window.showToastError('Nhập reference number');
+            window.showToastError('Enter reference number');
         }
         return;
     }
     // check if refValue is 6 characters
     if (refValue.length < 6) {
         if (typeof window.showToast === 'function') {
-            window.showToastError('Nhập 6 ký tự cuối của reference number ( Ref. no )');
+            window.showToastError('Enter the last 6 characters of the reference number (Ref. no)');
         }
         return;
     }
@@ -451,7 +451,7 @@ async function handleDepositSubmit(refInput, submitBtn) {
         }
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Nạp tiền thành công');
+            window.showToast('Deposit successful');
         }
 
         if (window.Login1 && typeof window.Login1.refreshUserProfile === 'function') {
@@ -464,10 +464,9 @@ async function handleDepositSubmit(refInput, submitBtn) {
 
         showDepositStep1();
     } catch (err) {
-        console.error('Claim deposit thất bại:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToastError(err.message || 'Nạp tiền thất bại');
+            window.showToastError(err.message || 'Deposit failed');
         }
     } finally {
         if (submitBtn) {
@@ -513,7 +512,7 @@ async function loadDepositSettings() {
         return window.Footer.getSettings();
     }
 
-    throw new Error('Không tải được settings');
+    throw new Error('Could not load settings');
 }
 
 function openPopupDeposit() {
@@ -533,10 +532,10 @@ function openPopupDeposit() {
             renderDepositView(settings);
         })
         .catch(function (err) {
-            console.error('Không tải được settings cho deposit:', err);
+            console.error('Could not load settings for deposit:', err);
 
             if (typeof window.showToast === 'function') {
-                window.showToastError('Không tải được cài đặt nạp tiền');
+                window.showToastError('Loading deposit settings failed');
             }
 
             renderDepositView(null);
@@ -656,9 +655,9 @@ function bindPopupDepositEvents(root) {
 
             copyDepositText(copyBtn.getAttribute('data-copy')).then(function (ok) {
                 if (ok && typeof window.showToast === 'function') {
-                    window.showToast('Đã sao chép');
+                    window.showToast('Copied');
                 } else if (!ok && typeof window.showToastError === 'function') {
-                    window.showToastError('Không sao chép được');
+                    window.showToastError('Could not copy');
                 }
             });
         });
@@ -680,7 +679,7 @@ function bindPopupDepositEvents(root) {
             }
 
             if (typeof window.showToast === 'function') {
-                window.showToast('Comming soon');
+                window.showToast('Coming soon');
             }
         });
     }
@@ -711,7 +710,7 @@ function mountPopupDeposit(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup deposit:', err);
+            console.error('Could not load deposit popup:', err);
             return false;
         });
 }

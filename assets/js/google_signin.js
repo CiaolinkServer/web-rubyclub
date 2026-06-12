@@ -33,7 +33,7 @@ function waitForGoogleAccounts(timeoutMs) {
 
             if (Date.now() - startedAt >= timeout) {
                 clearInterval(timer);
-                reject(new Error('Google Sign-In chưa sẵn sàng'));
+                reject(new Error('Google Sign-In is not ready'));
             }
         }, 100);
     });
@@ -77,7 +77,7 @@ function initGoogleSignIn() {
     var clientId = getGoogleClientId();
 
     if (!clientId) {
-        return Promise.reject(new Error('Chưa cấu hình GOOGLE_CLIENT_ID'));
+        return Promise.reject(new Error('GOOGLE_CLIENT_ID is not configured'));
     }
 
     if (googleSignInInitialized) {
@@ -210,6 +210,6 @@ window.GoogleSignIn = {
 window.addEventListener('load', function () {
     initGoogleSignIn().catch(function (err) {
         console.warn('[GoogleSignIn] init skipped:', err.message || err);
-        console.warn('[GoogleSignIn] Thêm origin vào Google Console:', getGoogleSignInOrigin());
+        console.warn('[GoogleSignIn] Add origin to Google Console:', getGoogleSignInOrigin());
     });
 });

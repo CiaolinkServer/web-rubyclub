@@ -10,7 +10,7 @@ function getPopupOverlay() {
 
 async function getBrowserFingerprint() {
     if (typeof FingerprintJS === 'undefined') {
-        throw new Error('FingerprintJS chưa được tải');
+        throw new Error('FingerprintJS is not loaded');
     }
 
     var fp = await FingerprintJS.load();
@@ -143,12 +143,12 @@ async function handlePopupLogin(form) {
     var password = passwordInput ? passwordInput.value : '';
 
     if (!userName) {
-        window.showToastError('Vui lòng nhập tài khoản.');
+        window.showToastError('Please enter your account.');
         return;
     }
 
     if (!password) {
-        window.showToastError('Vui lòng nhập mật khẩu.');
+        window.showToastError('Please enter your password.');
         return;
     }
 
@@ -170,15 +170,15 @@ async function handlePopupLogin(form) {
         });
 
         if (!data || !data.token) {
-            window.showToastError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+            window.showToastError(err.message || 'Login failed. Please try again.');
         }
 
         await applyPopupAuthSession(data.token);
         form.reset();
         closePopupLogin();
     } catch (err) {
-        // alert(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
-        window.showToastError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        // alert(err.message || 'Login failed. Please try again.');
+        window.showToastError(err.message || 'Login failed. Please try again.');
     } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
@@ -200,17 +200,17 @@ async function handlePopupRegister(form) {
     var confirmPassword = confirmInput ? confirmInput.value : '';
 
     if (!userName) {
-        window.showToastError('Vui lòng nhập tài khoản.');
+        window.showToastError('Please enter your account.');
         return;
     }
 
     if (!password) {
-        window.showToastError('Vui lòng nhập mật khẩu.');
+        window.showToastError('Please enter your password.');
         return;
     }
 
     if (password !== confirmPassword) {
-        window.showToastError('Mật khẩu xác nhận không khớp.');
+        window.showToastError('Password confirmation does not match.');
         return;
     }
 
@@ -232,7 +232,7 @@ async function handlePopupRegister(form) {
         });
 
         if (!data || !data.token) {
-            throw new Error('Không nhận được token');
+            throw new Error('No token received');
         }
 
         await applyPopupAuthSession(data.token);
@@ -240,7 +240,7 @@ async function handlePopupRegister(form) {
         closePopupLogin();
     } catch (err) {
         console.error('Register failed:', err);
-        window.showToastError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+        window.showToastError(err.message || 'Sign up failed. Please try again.');
     } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
@@ -259,7 +259,7 @@ async function handlePopupFreePlay(btn) {
         var deviceId = await getQuickPlayDeviceId();
         console.log('deviceId ', deviceId);
         if (!deviceId) {
-            throw new Error('Không lấy được device id');
+            throw new Error('Could not get device id');
         }
         var data = await fetchPopupJson(POPUP_API_BASE + '/api/v1/auth/quick-play', {
             method: 'POST',
@@ -275,14 +275,14 @@ async function handlePopupFreePlay(btn) {
         }
         // console.log('Data:', data);
         if (!data || !data.token) {
-            throw new Error('Không nhận được token');
+            throw new Error('No token received');
         }
 
         await applyPopupAuthSession(data.token);
         closePopupLogin();
     } catch (err) {
         console.error('Quick play failed:', err);
-        window.showToastError(err.message || 'FREE PLAY thất bại. Vui lòng thử lại.');
+        window.showToastError(err.message || 'FREE PLAY failed. Please try again.');
     } finally {
         btn.disabled = false;
     }
@@ -298,7 +298,7 @@ async function completePopupGoogleLogin(googleCredential) {
     );
 
     if (!data || !data.token) {
-        throw new Error('Không nhận được token');
+        throw new Error('No token received');
     }
 
     await applyPopupAuthSession(data.token);
@@ -310,7 +310,7 @@ async function handlePopupGoogleCredential(googleCredential) {
         await completePopupGoogleLogin(googleCredential);
     } catch (err) {
         console.error('Google login failed:', err);
-        window.showToastError(err.message || 'Đăng nhập Google thất bại. Vui lòng thử lại.');
+        window.showToastError(err.message || 'Google login failed. Please try again.');
     }
 }
 
@@ -392,7 +392,7 @@ function bindPopupLoginEvents(root) {
         togglePass.addEventListener('click', function () {
             var isHidden = passwordInput.type === 'password';
             passwordInput.type = isHidden ? 'text' : 'password';
-            togglePass.setAttribute('aria-label', isHidden ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+            togglePass.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
         });
     }
 
@@ -412,7 +412,7 @@ function bindPopupLoginEvents(root) {
 
     if (forgotBtn) {
         forgotBtn.addEventListener('click', function () {
-            console.log('Forgot password - chưa tích hợp');
+            console.log('Forgot password - not integrated yet');
         });
     }
 
@@ -457,7 +457,7 @@ function mountPopupLogin(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup login:', err);
+            console.error('Could not load login popup:', err);
             return false;
         });
 }

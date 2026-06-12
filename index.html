@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -45,11 +45,11 @@
     <div class="login1" id="login1-app">
         <div id="header-mount"></div>
 
-        <section class="login1-banner" aria-label="Khuyến mãi">
+        <section class="login1-banner" aria-label="Promotions">
             <img class="login1-banner__img" src="assets/image/login1/big_banner.png" alt="Daily Lucky Spin">
         </section>
 
-        <section class="login1-news" aria-label="Thông báo">
+        <!-- <section class="login1-news" aria-label="Notifications">
             <img class="login1-news__bg" src="assets/image/login1/background_news.png" alt="" aria-hidden="true">
             <div class="login1-news__inner">
                 <img class="login1-news__icon" src="assets/image/common/icon_loa.png" alt="">
@@ -60,9 +60,9 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
-        <section class="login1-actions" id="login1-actions" aria-label="Đăng nhập">
+        <section class="login1-actions" id="login1-actions" aria-label="Login">
             <div class="login1-actions__auth" id="login1-actions-auth">
                 <button type="button" class="login1-actions__btn login1-actions__btn--login" id="btn-login">
                     <img class="login1-actions__btn-icon" src="assets/image/login1/icon_login.png" alt="">
@@ -77,7 +77,7 @@
                 <div class="login1-actions__user-card">
                     <div class="login1-actions__user-top">
                         <span class="login1-actions__balance" id="login1-balance">0</span>
-                        <button type="button" class="login1-actions__refresh" id="login1-refresh-balance" aria-label="Làm mới số dư">
+                        <button type="button" class="login1-actions__refresh" id="login1-refresh-balance" aria-label="Refresh balance">
                             <img src="assets/image/login1/icon_refresh.png" alt="">
                         </button>
                     </div>
@@ -86,8 +86,8 @@
             </div>
             <div class="login1-actions__quick">
                 <img class="login1-actions__quick-bg" src="assets/image/login1/background_menu_fake.png" alt="" aria-hidden="true">
-                <nav class="login1-actions__quick-nav" aria-label="Tiện ích">
-                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Comming soon')">
+                <nav class="login1-actions__quick-nav" aria-label="Utilities">
+                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Coming soon')">
                         <img class="login1-actions__quick-icon" src="assets/image/login1/icon_payback.png" alt="">
                         <span class="login1-actions__quick-label">Pay back</span>
                     </button>
@@ -95,7 +95,7 @@
                         <img class="login1-actions__quick-icon" src="assets/image/login1/icon_shortcut.png" alt="">
                         <span class="login1-actions__quick-label">Shortcut</span>
                     </button>
-                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Comming soon')">
+                    <button type="button" class="login1-actions__quick-item" onclick="showToast('Coming soon')">
                         <img class="login1-actions__quick-icon" src="assets/image/login1/icon_apk.png" alt="">
                         <span class="login1-actions__quick-label">APK</span>
                     </button>
@@ -108,7 +108,7 @@
         </section>
 
         <div class="login1-body">
-            <aside class="login1-sidebar" aria-label="Danh mục game">
+            <aside class="login1-sidebar" aria-label="Game categories">
                 <nav class="login1-sidebar__nav">
                     <button type="button" class="login1-sidebar__item login1-sidebar__item--active" data-game-filter="all">
                         <img class="login1-sidebar__icon" src="assets/image/login1/icon_menudoc_allgame_selected.png" data-icon="assets/image/login1/icon_menudoc_allgame.png" data-icon-active="assets/image/login1/icon_menudoc_allgame_selected.png" alt="">
@@ -137,7 +137,7 @@
                 </nav>
             </aside>
 
-            <section class="login1-games" id="login1-games" aria-label="Danh sách game">
+            <section class="login1-games" id="login1-games" aria-label="Game list">
                 <ul class="login1-games__grid"></ul>
             </section>
         </div>

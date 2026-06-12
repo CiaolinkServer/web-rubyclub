@@ -87,7 +87,7 @@ async function loadVipUserStats() {
 
         bindVipStats(user);
     } catch (err) {
-        console.error('Không tải được thông tin VIP:', err);
+        console.error('Could not load VIP info:', err);
         bindVipStats(null);
     }
 }
@@ -112,7 +112,7 @@ function closePopupVip() {
         return;
     }
 
-    overlay.classList.remove('is-open');
+    overlay.classList.remove('is-open', 'is-dimmed');
 
     if (typeof window.releaseFocusWithin === 'function') {
         window.releaseFocusWithin(overlay);
@@ -120,6 +120,16 @@ function closePopupVip() {
 
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+}
+
+function setPopupVipDimmed(dimmed) {
+    var overlay = getVipOverlay();
+
+    if (!overlay) {
+        return;
+    }
+
+    overlay.classList.toggle('is-dimmed', !!dimmed);
 }
 
 function handleVipUpgrade() {
@@ -131,35 +141,35 @@ function handleVipUpgrade() {
     }
 
     if (typeof window.showToast === 'function') {
-        window.showToast('Comming soon');
+        window.showToast('Coming soon');
     }
 }
 
-function openSupportFromVip() {
-    var mount = document.getElementById('support-mount');
-    var openSupport = function () {
-        if (window.PopupSupport && typeof window.PopupSupport.open === 'function') {
-            window.PopupSupport.open();
+function openSubVipFromVip() {
+    var mount = document.getElementById('sub-vip-mount');
+    var openSubVip = function () {
+        if (window.PopupSubVip && typeof window.PopupSubVip.open === 'function') {
+            window.PopupSubVip.open({ fromVip: true });
         }
     };
 
-    if (!window.PopupSupport) {
+    if (!window.PopupSubVip) {
         if (typeof window.showToast === 'function') {
-            window.showToast('Comming soon');
+            window.showToast('Could not load VIP rules');
         }
         return;
     }
 
-    if (typeof window.PopupSupport.init === 'function' && mount && !document.getElementById('support-overlay')) {
-        window.PopupSupport.init({ container: mount }).then(function (ok) {
+    if (typeof window.PopupSubVip.init === 'function' && mount && !document.getElementById('sub-vip-overlay')) {
+        window.PopupSubVip.init({ container: mount }).then(function (ok) {
             if (ok) {
-                openSupport();
+                openSubVip();
             }
         });
         return;
     }
 
-    openSupport();
+    openSubVip();
 }
 
 var vipEventsBound = false;
@@ -186,7 +196,7 @@ function bindPopupVipEvents(root) {
     }
 
     if (helpBtn) {
-        helpBtn.addEventListener('click', openSupportFromVip);
+        helpBtn.addEventListener('click', openSubVipFromVip);
     }
 
     if (upgradeBtn) {
@@ -234,7 +244,7 @@ function mountPopupVip(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup VIP:', err);
+            console.error('Could not load VIP popup:', err);
             return false;
         });
 }
@@ -264,5 +274,6 @@ window.PopupVip = {
     open: openPopupVip,
     close: closePopupVip,
     mount: mountPopupVip,
-    bindStats: bindVipStats
+    bindStats: bindVipStats,
+    setDimmed: setPopupVipDimmed
 };

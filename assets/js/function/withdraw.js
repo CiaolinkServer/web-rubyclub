@@ -423,7 +423,7 @@ function renderWithdrawHistoryTable() {
         if (historyWrapEl) {
             historyWrapEl.hidden = true;
         }
-        emptyEl.textContent = 'Chưa có lịch sử rút tiền';
+        emptyEl.textContent = 'No withdraw history yet';
         emptyEl.hidden = false;
         return;
     }
@@ -433,7 +433,7 @@ function renderWithdrawHistoryTable() {
         if (historyWrapEl) {
             historyWrapEl.hidden = true;
         }
-        emptyEl.textContent = 'Chưa có lịch sử cho kênh này';
+        emptyEl.textContent = 'No history for this channel';
         emptyEl.hidden = false;
         return;
     }
@@ -511,7 +511,7 @@ async function loadWithdrawSettings() {
         return window.Footer.getSettings();
     }
 
-    throw new Error('Không tải được settings');
+    throw new Error('Could not load settings');
 }
 
 function getWithdrawApiBase() {
@@ -522,7 +522,7 @@ async function fetchWithdrawHistory() {
     var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
-        throw new Error('Chưa đăng nhập');
+        throw new Error('Not logged in');
     }
 
     var response = await fetch(getWithdrawApiBase() + '/api/v1/withdraw/mine?page=1&pageSize=20', {
@@ -558,7 +558,7 @@ async function loadWithdrawHistory(force) {
     }
 
     if (emptyEl) {
-        emptyEl.textContent = 'Chưa có lịch sử rút tiền';
+        emptyEl.textContent = 'No withdraw history yet';
         emptyEl.hidden = true;
     }
 
@@ -569,11 +569,11 @@ async function loadWithdrawHistory(force) {
         renderWithdrawHistory(withdrawals);
         withdrawHistoryLoaded = true;
     } catch (err) {
-        console.error('Không tải được lịch sử rút tiền:', err);
+        console.error('Could not load withdraw history:', err);
         renderWithdrawHistory([]);
 
         if (typeof window.showToast === 'function') {
-            window.showToastError('Không tải được lịch sử rút tiền');
+            window.showToastError('Could not load withdraw history');
         }
     }
 }
@@ -591,14 +591,14 @@ async function handleWithdrawStep2Confirm() {
 
         if (!numberValue || !confirmValue) {
             if (typeof window.showToast === 'function') {
-                window.showToastError('Nhập đầy đủ số tài khoản ');
+                window.showToastError('Enter full account number');
             }
             return;
         }
 
         if (numberValue !== confirmValue) {
             if (typeof window.showToast === 'function') {
-                window.showToastError('Số tài khoản xác nhận không khớp');
+                window.showToastError('Account number confirmation does not match');
             }
             return;
         }
@@ -606,7 +606,7 @@ async function handleWithdrawStep2Confirm() {
         //channel: gcash, maya
         token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
         if (!token) {
-            window.showToastError('Chưa đăng nhập');
+            window.showToastError('Not logged in');
             return;
         }
         console.log("withdrawSelectedAmount"+parseFloat(withdrawSelectedAmount));
@@ -664,10 +664,10 @@ function openPopupWithdraw() {
             renderWithdrawView(settings);
         })
         .catch(function (err) {
-            console.error('Không tải được settings cho withdraw:', err);
+            console.error('Could not load settings for withdraw:', err);
 
             if (typeof window.showToast === 'function') {
-                window.showToastError('Không tải được cài đặt rút tiền');
+                window.showToastError('Could not load withdraw settings');
             }
 
             renderWithdrawView(null);
@@ -838,7 +838,7 @@ function mountPopupWithdraw(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup withdraw:', err);
+            console.error('Could not load withdraw popup:', err);
             return false;
         });
 }

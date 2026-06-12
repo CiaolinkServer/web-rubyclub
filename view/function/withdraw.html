@@ -1,7 +1,7 @@
 <div class="withdraw-overlay" id="withdraw-overlay" aria-hidden="true">
     <div class="withdraw-stack">
         <div class="withdraw withdraw--step1" id="withdraw-step1" role="dialog" aria-modal="true" aria-labelledby="withdraw-title">
-            <button type="button" class="withdraw__close" id="withdraw-close" aria-label="Đóng">
+            <button type="button" class="withdraw__close" id="withdraw-close" aria-label="Close">
                 <img src="/assets/image/common/icon_close.png" alt="">
             </button>
 
@@ -13,16 +13,16 @@
             </div>
 
             <div class="withdraw__view withdraw__view--reward" id="withdraw-view-reward" role="tabpanel" aria-labelledby="withdraw-tab-reward">
-                <div class="withdraw__channels" id="withdraw-channels" role="tablist" aria-label="Kênh rút tiền"></div>
+                <div class="withdraw__channels" id="withdraw-channels" role="tablist" aria-label="Withdraw channels"></div>
 
                 <div class="withdraw__panel">
                     <div class="withdraw__amounts" id="withdraw-amounts" role="list"></div>
-                    <p class="withdraw__empty" id="withdraw-empty" hidden>Không có mệnh giá rút</p>
+                    <p class="withdraw__empty" id="withdraw-empty" hidden>No withdraw amounts available</p>
                 </div>
             </div>
 
             <div class="withdraw__view withdraw__view--history" id="withdraw-view-history" role="tabpanel" aria-labelledby="withdraw-tab-history" hidden>
-                <div class="withdraw__channels" id="withdraw-history-channels" role="tablist" aria-label="Kênh lịch sử rút tiền"></div>
+                <div class="withdraw__channels" id="withdraw-history-channels" role="tablist" aria-label="Withdraw history channels"></div>
 
                 <div class="withdraw__panel">
                     <div class="withdraw__history-table-wrap" id="withdraw-history-wrap">
@@ -38,7 +38,7 @@
                             <tbody id="withdraw-history"></tbody>
                         </table>
                     </div>
-                    <p class="withdraw__empty" id="withdraw-history-empty" hidden>Chưa có lịch sử rút tiền</p>
+                    <p class="withdraw__empty" id="withdraw-history-empty" hidden>No withdraw history yet</p>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
         <div class="withdraw-stack__dim" id="withdraw-stack-dim" aria-hidden="true"></div>
 
         <div class="withdraw withdraw--step2" id="withdraw-step2" role="dialog" aria-modal="true" aria-labelledby="withdraw-step2-title" hidden>
-            <button type="button" class="withdraw__close" id="withdraw-step2-close" aria-label="Quay lại">
+            <button type="button" class="withdraw__close" id="withdraw-step2-close" aria-label="Back">
                 <img src="/assets/image/common/icon_close.png" alt="">
             </button>
 

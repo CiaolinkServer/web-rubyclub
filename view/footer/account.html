@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -24,13 +24,14 @@
     <link rel="stylesheet" href="/assets/css/popup_upgrade.css">
     <link rel="stylesheet" href="/assets/css/function/support.css">
     <link rel="stylesheet" href="/assets/css/function/vip.css">
+    <link rel="stylesheet" href="/assets/css/function/sub_vip.css">
 </head>
 <body class="login1-page login1-page--account">
     <div id="toast-container"></div>
     <div class="login1" id="login1-app">
         <div id="header-mount"></div>
 
-        <section class="login1-news" aria-label="Thông báo">
+        <!-- <section class="login1-news" aria-label="Notifications">
             <img class="login1-news__bg" src="/assets/image/login1/background_news.png" alt="" aria-hidden="true">
             <div class="login1-news__inner">
                 <img class="login1-news__icon" src="/assets/image/common/icon_loa.png" alt="">
@@ -41,9 +42,9 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
-        <main class="page-account" id="page-account" aria-label="Tài khoản">
+        <main class="page-account" id="page-account" aria-label="Account">
             <p class="page-account__greeting">
                 Hi, <span class="page-account__username" id="page-account-username">Player</span><br>
                 PlayerID: <span class="page-account__id" id="page-account-playerid">0</span> 
@@ -52,7 +53,7 @@
                 </button>
             </p>
 
-            <section class="page-account__card" aria-label="Số dư">
+            <section class="page-account__card" aria-label="Balance">
                 <div class="page-account__balance">
                     <div class="page-account__balance-info">
                         <span class="page-account__balance-label">BALANCE</span>
@@ -64,16 +65,16 @@
                 <div class="page-account__wallet-actions">
                     <button type="button" class="page-account__wallet-btn" data-action="topup">
                         <img src="/assets/image/page_account/icon_topup.png" alt="">
-                        <span>NẠP TIỀN</span>
+                        <span>Deposit</span>
                     </button>
                     <button type="button" class="page-account__wallet-btn" data-action="withdraw">
                         <img src="/assets/image/page_account/icon_withdraw.png" alt="">
-                        <span>RÚT TIỀN</span>
+                        <span>Withdraw</span>
                     </button>
                 </div>
             </section>
 
-            <section class="page-account__features" aria-label="Tiện ích tài khoản">
+            <section class="page-account__features" aria-label="Account utilities">
                 <div class="page-account__grid">
                     <button type="button" class="page-account__tile" data-action="changepass">
                         <img src="/assets/image/page_account/icon_changepass.png" alt="">
@@ -117,6 +118,7 @@
     <div id="popupupgrade-mount"></div>
     <div id="support-mount"></div>
     <div id="vip-mount"></div>
+    <div id="sub-vip-mount"></div>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="/assets/js/config.js"></script>
@@ -131,6 +133,7 @@
     <script src="/assets/js/popup_upgrade.js"></script>
     <script src="/assets/js/function/support.js"></script>
     <script src="/assets/js/function/vip.js"></script>
+    <script src="/assets/js/function/sub_vip.js"></script>
     <script src="/assets/js/page_account.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

@@ -124,7 +124,7 @@ function mountPopupSupport(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup support:', err);
+            console.error('Could not load support popup:', err);
             return false;
         });
 }

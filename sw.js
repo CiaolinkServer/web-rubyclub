@@ -7,5 +7,5 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('fetch', function () {
-    // Cần có fetch handler để Chrome coi site là PWA có thể cài đặt
+    // Fetch handler required for Chrome to treat the site as an installable PWA
 });

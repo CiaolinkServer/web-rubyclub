@@ -89,7 +89,7 @@ async function fetchMyMails(options) {
     var token = options.token || (typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null);
 
     if (!token) {
-        throw new Error('Chưa đăng nhập');
+        throw new Error('Not logged in');
     }
 
     var url = getMailApiBase()
@@ -167,7 +167,7 @@ async function deleteMails(ids) {
     var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
-        throw new Error('Chưa đăng nhập');
+        throw new Error('Not logged in');
     }
 
     if (!ids || !ids.length) {
@@ -338,7 +338,7 @@ function updateFooterMailBadge(count) {
     }
 
     if (mailBtn) {
-        mailBtn.setAttribute('aria-label', isVisible ? 'Mail (' + num + ' thông báo)' : 'Mail');
+        mailBtn.setAttribute('aria-label', isVisible ? 'Mail (' + num + ' notifications)' : 'Mail');
     }
 }
 
@@ -401,7 +401,7 @@ function renderMailList(mails) {
                 + (isSelected ? ' mail__item--selected' : '')
                 + (isNoti ? ' mail__item--read' : '')
                 + '" data-mail-id="' + escapeMailHtml(id) + '">' +
-                '<button type="button" class="mail__checkbox" aria-label="Chọn thư" aria-pressed="' + (isSelected ? 'true' : 'false') + '">' +
+                '<button type="button" class="mail__checkbox" aria-label="Select mail" aria-pressed="' + (isSelected ? 'true' : 'false') + '">' +
                     '<img class="mail__checkbox-icon mail__checkbox-icon--off" src="' + MAIL_ICON_BASE + 'icon_checkbox.png" alt="">' +
                     '<img class="mail__checkbox-icon mail__checkbox-icon--on" src="' + MAIL_ICON_BASE + 'icon_check.png" alt="">' +
                 '</button>' +
@@ -446,10 +446,10 @@ async function loadMailList(options) {
 
         return result;
     } catch (err) {
-        console.error('Không tải được mail:', err);
+        console.error('Could not load mail:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToastError(err.message || 'Không tải được mail');
+            window.showToastError(err.message || 'Could not load mail');
         }
 
         throw err;
@@ -516,7 +516,7 @@ async function deleteSelectedMails() {
 
     if (!ids.length) {
         if (typeof window.showToast === 'function') {
-            window.showToastError('Chọn thư cần xóa');
+            window.showToastError('Select mail to delete');
         }
         return;
     }
@@ -528,13 +528,13 @@ async function deleteSelectedMails() {
         await loadMailList({ forceRefresh: true });
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Đã xóa thư');
+            window.showToast('Mail deleted');
         }
     } catch (err) {
-        console.error('Xóa mail thất bại:', err);
+        console.error('Failed to delete mail:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToastError('Xóa thư thất bại');
+            window.showToastError('Failed to delete mail');
         }
     }
 }
@@ -667,7 +667,7 @@ function mountPopupMail(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup mail:', err);
+            console.error('Could not load mail popup:', err);
             return false;
         });
 }

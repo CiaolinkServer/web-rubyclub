@@ -148,7 +148,7 @@ async function readMailDetail(id) {
     var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
-        throw new Error('Chưa đăng nhập');
+        throw new Error('Not logged in');
     }
 
     var response = await fetch(getMailDetailApiBase() + '/api/v1/mail/read/' + encodeURIComponent(id), {
@@ -186,7 +186,7 @@ async function markMailDetailAsRead(mail) {
             window.PopupMail.markMailAsRead(String(mail.id));
         }
     } catch (err) {
-        console.error('Đánh dấu đã đọc mail thất bại:', err);
+        console.error('Failed to mark mail as read:', err);
     }
 }
 
@@ -194,7 +194,7 @@ async function claimMailDetail(id) {
     var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
 
     if (!token) {
-        throw new Error('Chưa đăng nhập');
+        throw new Error('Not logged in');
     }
 
     var response = await fetch(getMailDetailApiBase() + '/api/v1/mail/claim/' + encodeURIComponent(id), {
@@ -234,7 +234,7 @@ async function handleMailDetailReceive() {
         renderMailDetail(mailDetailCurrentMail);
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Nhận thưởng thành công');
+            window.showToast('Reward claimed successfully');
         }
 
         if (window.PopupMail && typeof window.PopupMail.reloadList === 'function') {
@@ -251,14 +251,14 @@ async function handleMailDetailReceive() {
 
         closePopupMailDetail();
     } catch (err) {
-        console.error('Nhận thưởng thất bại:', err);
+        console.error('Failed to claim reward:', err);
 
         if (receiveBtn) {
             receiveBtn.disabled = false;
         }
 
         if (typeof window.showToast === 'function') {
-            window.showToastError('Nhận thưởng thất bại');
+            window.showToastError('Failed to claim reward');
         }
     }
 }
@@ -366,7 +366,7 @@ function mountPopupMailDetail(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup mail detail:', err);
+            console.error('Could not load mail detail popup:', err);
             return false;
         });
 }

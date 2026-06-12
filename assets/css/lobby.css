@@ -303,7 +303,7 @@ body {
     image-rendering: -webkit-optimize-contrast;
 }
 
-/* Hàng 1 — cùng chiều cao poster_game1 (215px @ 370px width) */
+/* Row 1 — same height as poster_game1 (215px @ 370px width) */
 .lobby-games__list--row1 .lobby-game-card {
     width: auto;
     max-width: none;

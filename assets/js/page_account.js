@@ -122,9 +122,9 @@ function bindPageAccountCopyButton(root) {
     copyEl.addEventListener('click', function () {
         copyPlayerId(copyEl.getAttribute('data-copy')).then(function (ok) {
             if (ok && typeof window.showToast === 'function') {
-                window.showToast('Đã sao chép');
+                window.showToast('Copied');
             } else if (!ok && typeof window.showToastError === 'function') {
-                window.showToastError('Không sao chép được');
+                window.showToastError('Could not copy');
             }
         });
     });
@@ -164,7 +164,7 @@ async function loadPageAccountProfile() {
         var user = window.Login1.normalizeUser ? window.Login1.normalizeUser(data) : (data.user || data);
         bindUserToPageAccount(user);
     } catch (err) {
-        console.error('Không tải được profile account page:', err);
+        console.error('Could not load account page profile:', err);
     }
 }
 
@@ -214,7 +214,7 @@ function bindPageAccountEvents(root) {
             if (window.PopupUpgrade && typeof window.PopupUpgrade.open === 'function') {
                 window.PopupUpgrade.open();
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Không tải được popup nâng cấp');
+                window.showToast('Could not load upgrade popup');
             }
             return;
         }
@@ -223,7 +223,7 @@ function bindPageAccountEvents(root) {
             if (window.PopupDeposit && typeof window.PopupDeposit.open === 'function') {
                 window.PopupDeposit.open();
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Comming soon');
+                window.showToast('Coming soon');
             }
             return;
         }
@@ -232,7 +232,7 @@ function bindPageAccountEvents(root) {
             if (window.PopupWithdraw && typeof window.PopupWithdraw.open === 'function') {
                 window.PopupWithdraw.open();
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Comming soon');
+                window.showToast('Coming soon');
             }
             return;
         }
@@ -241,13 +241,13 @@ function bindPageAccountEvents(root) {
             if (window.PopupVip && typeof window.PopupVip.open === 'function') {
                 window.PopupVip.open();
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Không tải được popup VIP');
+                window.showToast('Could not load VIP popup');
             }
             return;
         }
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Comming soon');
+            window.showToast('Coming soon');
         }
     });
 
@@ -308,6 +308,11 @@ function initPageAccount(options) {
     if (window.PopupVip) {
         tasks.push(window.PopupVip.init({ container: document.getElementById('vip-mount') }));
     }
+
+    if (window.PopupSubVip) {
+        tasks.push(window.PopupSubVip.init({ container: document.getElementById('sub-vip-mount') }));
+    }
+
     return Promise.all(tasks).then(function () {
         return loadPageAccountProfile();
     });

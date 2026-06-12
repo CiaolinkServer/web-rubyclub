@@ -1,0 +1,103 @@
+/* ===== Popup Sub VIP (MGA PATAKARAN) ===== */
+#sub-vip-mount {
+    position: static;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.sub-vip-overlay {
+    --sub-vip-max-width: 339px;
+    --sub-vip-radius: 10px;
+
+    position: fixed;
+    inset: 0;
+    z-index: 1002;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+    background: rgba(8, 24, 56, 0.72);
+    pointer-events: auto;
+}
+
+.sub-vip-overlay.is-open {
+    display: flex;
+}
+
+.sub-vip {
+    position: relative;
+    width: 100%;
+    max-width: var(--sub-vip-max-width);
+    padding: 42px 16px 24px;
+    border-radius: var(--sub-vip-radius);
+    background: linear-gradient(180deg, #4185e6 0%, #4955c5 100%);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+.sub-vip__close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #1e3a78;
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.sub-vip__close:hover {
+    opacity: 0.85;
+}
+
+.sub-vip__title {
+    margin: 0 0 16px;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.sub-vip__panel {
+    padding: 18px 14px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #2f5abc 0%, #2b388f 100%);
+}
+
+.sub-vip__rule {
+    margin: 0 0 14px;
+    font-size: 12px;
+    font-weight: 100;
+    line-height: 1.45;
+    color: #fff;
+}
+
+.sub-vip__rule:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 360px) {
+    .sub-vip {
+        max-width: min(92vw, var(--sub-vip-max-width));
+    }
+
+    .sub-vip__rule {
+        font-size: 12px;
+    }
+}

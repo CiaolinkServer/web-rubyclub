@@ -17,7 +17,7 @@ function bindHeaderEvents(root) {
     if (menuBtn) {
         menuBtn.addEventListener('click', function () {
             if (typeof window.showToast === 'function') {
-                window.showToast('Comming soon');
+                window.showToast('Coming soon');
             }
         });
     }
@@ -47,7 +47,7 @@ function mountHeader(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được header:', err);
+            console.error('Could not load header:', err);
             return false;
         });
 }

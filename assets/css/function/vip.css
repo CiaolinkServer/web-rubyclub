@@ -34,6 +34,15 @@
     grid-template-columns: min(100%, var(--vip-max-width));
 }
 
+.vip-overlay.is-open.is-dimmed {
+    background: rgba(4, 12, 28, 0.88);
+}
+
+.vip-overlay.is-dimmed .vip {
+    filter: brightness(0.45);
+    pointer-events: none;
+}
+
 .vip-overlay .vip {
     grid-area: 1 / 1;
     width: 100%;

@@ -46,10 +46,10 @@ async function handleFooterDepositClick() {
     try {
         await getFooterSettings();
     } catch (err) {
-        console.error('Không tải được settings:', err);
+        console.error('Could not load settings:', err);
 
         if (typeof window.showToast === 'function') {
-            window.showToastError('Không tải được cài đặt');
+            window.showToastError('Could not load settings');
         }
     }
 
@@ -177,7 +177,7 @@ function bindFooterDepositMenuEvents(root) {
             if (window.PopupDeposit && typeof window.PopupDeposit.open === 'function') {
                 window.PopupDeposit.open();
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Deposit comming soon');
+                window.showToast('Deposit coming soon');
             }
             return;
         }
@@ -186,13 +186,13 @@ function bindFooterDepositMenuEvents(root) {
             if (window.PopupWithdraw && typeof window.PopupWithdraw.open === 'function') {
                 window.PopupWithdraw.open();
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Withdraw comming soon');
+                window.showToast('Withdraw coming soon');
             }
             return;
         }
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Comming soon');
+            window.showToast('Coming soon');
         }
     });
 
@@ -237,7 +237,7 @@ function bindFooterNavEvents(root) {
 
         if (!window.checkLoggedIn()) {
             if (typeof window.showToast === 'function') {
-                window.showToastError('Vui lòng đăng nhập');
+                window.showToastError('Please log in');
             }
             return;
         }
@@ -275,7 +275,7 @@ function bindFooterNavEvents(root) {
             } else if (window.PopupMail && typeof window.PopupMail.open === 'function') {
                 window.PopupMail.open();
             } else if (typeof window.showToast === 'function') {
-                window.showToast('Comming soon');
+                window.showToast('Coming soon');
             }
             return;
         }
@@ -289,7 +289,7 @@ function bindFooterNavEvents(root) {
         closeFooterDepositMenu();
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Comming soon');
+            window.showToast('Coming soon');
         }
     });
 }
@@ -320,7 +320,7 @@ function mountFooter(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được footer:', err);
+            console.error('Could not load footer:', err);
             return false;
         });
 }

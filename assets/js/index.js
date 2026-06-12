@@ -67,7 +67,7 @@ window.addEventListener('appinstalled', function () {
 async function launchGame(card) {
     if (!checkLoggedIn()) {
       if (typeof window.showToastError === 'function') {
-          showToastError('Vui lòng đăng nhập');
+          showToastError('Please log in');
       }
       return;
     }
@@ -77,7 +77,7 @@ async function launchGame(card) {
     var gameId = card && card.dataset ? card.dataset.gameId : null;
 
     if (!gameId) {
-        showToastError('Không xác định được game.');
+        showToastError('Could not identify game.');
         return;
     }
 
@@ -106,7 +106,7 @@ async function launchGame(card) {
 
         var newPage = window.open('', '_blank');
         if (!newPage) {
-            showToastError('Trình duyệt đã chặn cửa sổ mới. Vui lòng cho phép popup.');
+            showToastError('Browser blocked the new window. Please allow popups.');
             return;
         }
 
@@ -115,7 +115,7 @@ async function launchGame(card) {
         newPage.document.close();
     } catch (err) {
         console.error('Launch game failed:', err);
-        showToastError('Không thể khởi chạy game. Vui lòng thử lại.');
+        showToastError('Could not launch game. Please try again.');
     } finally {
         if (card) {
             card.removeAttribute('aria-disabled');
@@ -154,21 +154,21 @@ async function addWebShortcut() {
             return;
         }
         if (typeof window.showToastError === 'function') {
-            showToastError('Tính năng chỉ hỗ trợ trên Android');
+            showToastError('Feature only supported on Android');
         }
         return;
     }
 
     if (isStandaloneApp()) {
         if (typeof window.showToast === 'function') {
-            showToast('Bạn đang mở từ shortcut trên màn hình chính');
+            showToast('You are opening from a home screen shortcut');
         }
         return;
     }
 
     if (await isPwaAlreadyInstalled()) {
         if (typeof window.showToast === 'function') {
-            showToast('Shortcut đã được thêm. Hãy mở Ruby Club từ icon trên màn hình chính');
+            showToast('Shortcut added. Open Ruby Club from the home screen icon');
         }
         return;
     }
@@ -186,14 +186,14 @@ async function addWebShortcut() {
                 markPwaInstalled();
 
                 if (typeof window.showToast === 'function') {
-                    showToast('Đã thêm shortcut lên màn hình chính');
+                    showToast('Added shortcut to home screen');
                 }
             }
         } catch (err) {
             console.error('Install prompt failed:', err);
 
             if (typeof window.showToastError === 'function') {
-                showToastError('Không thể thêm shortcut. Vui lòng thử lại sau.');
+                showToastError('Could not add shortcut. Please try again later.');
             }
         }
 
@@ -201,18 +201,18 @@ async function addWebShortcut() {
     }
 
     if (typeof window.showToast === 'function') {
-        showToast('Chọn menu trình duyệt (⋮) → Cài đặt ứng dụng hoặc Thêm vào màn hình chính');
+        showToast('Open browser menu (⋮) → Install app or Add to home screen');
     }
 }
 
 function downloadAPK() {
     if (!checkLoggedIn()) {
       if (typeof window.showToastError === 'function') {
-          showToastError('Vui lòng đăng nhập');
+          showToastError('Please log in');
       }
       return;
     }
-    showToast('Tính năng đang phát triển. Vui lòng thử lại sau.');
+    showToast('Feature in development. Please try again later.');
 }
 
 function clearAuthToken() {
@@ -318,7 +318,7 @@ function setLoggedInState(isLoggedIn) {
 
     if (actions) {
         actions.classList.toggle('login1-actions--logged-in', isLoggedIn);
-        actions.setAttribute('aria-label', isLoggedIn ? 'Tài khoản' : 'Đăng nhập');
+        actions.setAttribute('aria-label', isLoggedIn ? 'Account' : 'Login');
     }
 
     if (auth) {
@@ -421,8 +421,8 @@ async function refreshUserProfile() {
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
     } catch (err) {
-        console.error('Làm mới thông tin user thất bại:', err);
-        showToastError('Không lấy được thông tin tài khoản. Vui lòng thử lại.');
+        console.error('Failed to refresh user info:', err);
+        showToastError('Could not load account info. Please try again.');
 
         clearAuthToken();
     } finally {
@@ -450,8 +450,8 @@ async function captureTokenFromUrl() {
         setLoggedInState(true);
         return true;
     } catch (err) {
-        console.error('Lấy thông tin user thất bại:', err);
-        showToastError('Không lấy được thông tin tài khoản. Vui lòng đăng nhập lại.');
+        console.error('Failed to load user info:', err);
+        showToastError('Could not load account info. Please log in again.');
         clearAuthToken();
         return false;
     }
@@ -470,7 +470,7 @@ async function initLogin1Session() {
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
     } catch (err) {
-        console.error('Không tải được profile:', err);
+        console.error('Could not load profile:', err);
         clearAuthSession();
     }
 }
@@ -864,7 +864,7 @@ function openMailPopupFromEvent(e) {
 
     if (!getAuthTokenSafe()) {
         if (typeof window.showToastError === 'function') {
-            window.showToastError('Vui lòng đăng nhập');
+            window.showToastError('Please log in');
         }
 
         if (window.PopupLogin) {

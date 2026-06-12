@@ -134,7 +134,7 @@ body {
     filter: brightness(0.95);
 }
 
-/* Landscape — thu nút theo chiều cao màn hình (phone xoay ngang width thường > 768px) */
+/* Landscape — shrink buttons by screen height (landscape phone width often > 768px) */
 @media (orientation: landscape) {
     .login-page {
         --login-btn-gap: clamp(4px, 1vh, 8px);
@@ -206,7 +206,7 @@ body {
     }
 }
 
-/* Tablet / desktop — chỉ portrait hoặc màn lớn */
+/* Tablet / desktop — portrait only or large screens */
 @media (min-width: 769px) and (orientation: portrait) {
     .login-page {
         --login-logo-width: min(65vw, 720px);

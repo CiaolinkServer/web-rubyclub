@@ -190,7 +190,7 @@
     color: var(--popup-text-active);
 }
 
-/* ===== Form fields (stacked — giữ chiều cao popup khi đổi tab) ===== */
+/* ===== Form fields (stacked — keep popup height when switching tabs) ===== */
 .popuplogin__forms {
     display: grid;
     grid-template-areas: 'stack';

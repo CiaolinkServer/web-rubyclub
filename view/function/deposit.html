@@ -1,34 +1,34 @@
 <div class="deposit-overlay" id="deposit-overlay" aria-hidden="true">
     <div class="deposit deposit--step1" id="deposit-step1" role="dialog" aria-modal="true" aria-labelledby="deposit-title">
-        <button type="button" class="deposit__close" id="deposit-close" aria-label="Đóng">
+        <button type="button" class="deposit__close" id="deposit-close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
 
         <h2 class="deposit__heading" id="deposit-title">DEPOSIT</h2>
 
-        <div class="deposit__tabs" id="deposit-tabs" role="tablist" aria-label="Kênh nạp tiền"></div>
+        <div class="deposit__tabs" id="deposit-tabs" role="tablist" aria-label="Payment Methods"></div>
 
         <div class="deposit__panel">
             <div class="deposit__amounts" id="deposit-amounts" role="list"></div>
-            <p class="deposit__empty" id="deposit-empty" hidden>Không có mệnh giá nạp</p>
+            <p class="deposit__empty" id="deposit-empty" hidden>No Payment Methods Available</p>
         </div>
     </div>
 
     <div class="deposit deposit--step2" id="deposit-step2" role="dialog" aria-modal="true" aria-labelledby="deposit-step2-title" hidden>
-        <button type="button" class="deposit__close" id="deposit-step2-close" aria-label="Đóng">
+        <button type="button" class="deposit__close" id="deposit-step2-close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
 
         <h2 class="deposit__heading" id="deposit-step2-title">DEPOSIT</h2>
 
         <p class="deposit-step2__summary">
-            YOU ARE DEPOSITING <strong id="deposit-step2-amount">0</strong> PESOS
+            Ikaw ay magde-deposito ng <strong id="deposit-step2-amount">0</strong> PESOS
         </p>
 
         <div class="deposit-step2__channel" id="deposit-step2-channel"></div>
 
         <div class="deposit-step2__section">
-            <h3 class="deposit-step2__label">STEP 1</h3>
+            <h3 class="deposit-step2__label">Hakbang 1</h3>
             <div class="deposit-step2__section-panel">
                 <p class="deposit-step2__desc" id="deposit-step2-step1-desc"></p>
                 <div class="deposit-step2__accounts" id="deposit-step2-accounts"></div>
@@ -36,25 +36,28 @@
         </div>
 
         <div class="deposit-step2__section">
-            <h3 class="deposit-step2__label">STEP 2</h3>
+            <h3 class="deposit-step2__label">Hakbang 2</h3>
             <div class="deposit-step2__section-panel">
                 <p class="deposit-step2__desc">
-                    After the money transfer is successful, enter the last 6 characters of the reference number ( Ref. no ) to complete the transaction.
+                    - Ilagay ang huling 6 na character ng iyong Transaction ID (Reference ID) at i-click ang "Submit".
+                </p>
+                <p class="deposit-step2__desc">
+                    - Pagkatapos makumpleto, pumunta sa seksyong "Mail" upang i-claim ang pondo papunta sa iyong game account.
                 </p>
                 <div class="deposit-step2__submit-row">
-                    <input type="text" class="deposit-step2__input" id="deposit-step2-ref" placeholder="enter the last 6 characters of the reference number ( Ref. no )" maxlength="32" autocomplete="off">
+                    <input type="text" class="deposit-step2__input" id="deposit-step2-ref" placeholder="Ilagay ang Reference Number (Ref. No.)" maxlength="32" autocomplete="off">
                     <button type="button" class="deposit-step2__submit" id="deposit-step2-submit">SUBMIT</button>
                 </div>
             </div>
         </div>
 
         <div class="deposit-step2__section deposit-step2__note">
-            <h3 class="deposit-step2__label">NOTE</h3>
+            <h3 class="deposit-step2__label">Tandaan</h3>
             <div class="deposit-step2__section-panel">
                 <ul class="deposit-step2__note-list">
-                    <li>After completing your top-up transaction, please go to the "Mail" section to claim the funds to your game account.</li>
-                    <li>Do not send transaction messages or Ref.no to anyone</li>
-                    <li>If you have completed all the steps and still have not received your chips, please contact us so we can support you</li>
+                    <li>Minimum na deposito: 10P. Ang mga depositong mas mababa sa 10P ay hindi maikakredito at hindi mare-refund.</li>
+                    <li>Huwag ibahagi o ipadala ang iyong transaction message o Ref. No. sa kahit kanino.</li>
+                    <li>Kung nasunod mo na ang lahat ng hakbang ngunit hindi mo pa rin natatanggap ang iyong, mangyaring makipag-ugnayan sa amin upang matulungan ka namin.</li>
                 </ul>
                 <button type="button" class="deposit-step2__support" id="deposit-step2-support">SUPPORT</button>
             </div>

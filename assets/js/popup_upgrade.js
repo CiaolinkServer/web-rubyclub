@@ -55,7 +55,7 @@ function openSupportFromUpgrade() {
 
     if (!window.PopupSupport) {
         if (typeof window.showToast === 'function') {
-            window.showToast('Comming soon');
+            window.showToast('Coming soon');
         }
         return;
     }
@@ -65,7 +65,7 @@ function openSupportFromUpgrade() {
             if (ok) {
                 openSupport();
             } else if (typeof window.showToastError === 'function') {
-                window.showToastError('Không tải được popup support');
+                window.showToastError('Could not load support popup');
             }
         });
         return;
@@ -111,7 +111,7 @@ function bindUpgradePasswordToggle(toggleBtn, input) {
     toggleBtn.addEventListener('click', function () {
         var isHidden = input.type === 'password';
         input.type = isHidden ? 'text' : 'password';
-        toggleBtn.setAttribute('aria-label', isHidden ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+        toggleBtn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
     });
 }
 
@@ -141,7 +141,7 @@ async function refreshAccountAfterUpgrade() {
 
             window.PageAccount.bindUser(user);
         } catch (err) {
-            console.error('Không refresh profile sau upgrade:', err);
+            console.error('Could not refresh profile after upgrade:', err);
         }
     }
 }
@@ -155,7 +155,7 @@ async function handlePopupUpgradeSubmit(form) {
 
     if (!token) {
         if (typeof window.showToastError === 'function') {
-            window.showToastError('Vui lòng đăng nhập');
+            window.showToastError('Please log in');
         }
         return;
     }
@@ -170,21 +170,21 @@ async function handlePopupUpgradeSubmit(form) {
 
     if (!userName) {
         if (typeof window.showToastError === 'function') {
-            window.showToastError('Vui lòng nhập username');
+            window.showToastError('Please enter username');
         }
         return;
     }
 
     if (!password) {
         if (typeof window.showToastError === 'function') {
-            window.showToastError('Vui lòng nhập mật khẩu');
+            window.showToastError('Please enter password');
         }
         return;
     }
 
     if (password !== confirmPassword) {
         if (typeof window.showToastError === 'function') {
-            window.showToastError('Mật khẩu xác nhận không khớp');
+            window.showToastError('Password confirmation does not match');
         }
         return;
     }
@@ -210,7 +210,7 @@ async function handlePopupUpgradeSubmit(form) {
         form.reset();
 
         if (typeof window.showToast === 'function') {
-            window.showToast('Nâng cấp tài khoản thành công');
+            window.showToast('Account upgraded successfully');
         }
 
         await refreshAccountAfterUpgrade();
@@ -219,7 +219,7 @@ async function handlePopupUpgradeSubmit(form) {
         console.error('Upgrade account failed:', err);
 
         if (typeof window.showToastError === 'function') {
-            window.showToastError(err.message || 'Nâng cấp tài khoản thất bại');
+            window.showToastError(err.message || 'Account upgrade failed');
         }
     } finally {
         if (submitBtn) {
@@ -232,7 +232,7 @@ async function completePopupUpgradeGoogleLink(googleCredential) {
     var authToken = getUpgradeAuthToken();
 
     if (!authToken) {
-        throw new Error('Vui lòng đăng nhập');
+        throw new Error('Please log in');
     }
 
     await fetchUpgradeJson(UPGRADE_API_BASE + '/api/v1/auth/link-google', {
@@ -248,7 +248,7 @@ async function completePopupUpgradeGoogleLink(googleCredential) {
     });
 
     if (typeof window.showToast === 'function') {
-        window.showToast('Liên kết Google thành công');
+        window.showToast('Google account linked successfully');
     }
 
     await refreshAccountAfterUpgrade();
@@ -262,7 +262,7 @@ async function handlePopupUpgradeGoogleCredential(googleCredential) {
         console.error('Link Google failed:', err);
 
         if (typeof window.showToastError === 'function') {
-            window.showToastError(err.message || 'Liên kết Google thất bại');
+            window.showToastError(err.message || 'Google link failed');
         }
     }
 }
@@ -372,7 +372,7 @@ function mountPopupUpgrade(container, html) {
             return true;
         })
         .catch(function (err) {
-            console.error('Không tải được popup upgrade:', err);
+            console.error('Could not load upgrade popup:', err);
             return false;
         });
 }
