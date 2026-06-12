@@ -1,5 +1,5 @@
-/* ===== Popup Login (Ruby Club) ===== */
-#popuplogin-mount {
+/* ===== Popup Upgrade — kích thước đồng bộ với popuplogin ===== */
+#popupupgrade-mount {
     position: static;
     width: 0;
     height: 0;
@@ -7,7 +7,7 @@
     pointer-events: none;
 }
 
-.popuplogin-overlay {
+.popupupgrade-overlay {
     --popup-max: 300px;
     --popup-pad-x: 10px;
     --popup-pad-y: 6px;
@@ -17,9 +17,7 @@
     --popup-blue: #4a8fd4;
     --popup-blue-dark: #1a3d8f;
     --popup-text: #b8d4f5;
-    --popup-text-active: #0a1a4a;
     --popup-white: #fff;
-    --popup-green-text: #0a1a10;
 
     position: fixed;
     inset: 0;
@@ -32,11 +30,11 @@
     pointer-events: auto;
 }
 
-.popuplogin-overlay.is-open {
+.popupupgrade-overlay.is-open {
     display: flex;
 }
 
-.popuplogin {
+.popupupgrade {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -54,7 +52,16 @@
     color: var(--popup-white);
 }
 
-.popuplogin__close {
+.popupupgrade-overlay.is-open.is-dimmed {
+    background: rgba(4, 12, 28, 0.88);
+}
+
+.popupupgrade-overlay.is-dimmed .popupupgrade {
+    filter: brightness(0.45);
+    pointer-events: none;
+}
+
+.popupupgrade__close {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -71,15 +78,14 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-.popuplogin__close img {
+.popupupgrade__close img {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 12px;
+    height: auto;
     object-fit: contain;
 }
 
-/* ===== Header ===== */
-.popuplogin__header {
+.popupupgrade__header {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -88,52 +94,53 @@
     text-align: center;
 }
 
-.popuplogin__logo {
+.popupupgrade__logo {
     display: block;
-    width: min(78%, 220px);
+    width: min(60%, 220px);
     height: auto;
     object-fit: contain;
 }
 
-.popuplogin__domain {
+.popupupgrade__domain {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     margin-top: 4px;
-    min-height: 28px;
+    margin-bottom: 31px;
+    min-height: 18px;
     padding: 0 14px;
 }
 
-.popuplogin__domain-bg {
+.popupupgrade__domain-bg {
     position: absolute;
     inset: 0;
-    background: url('../image/popuplogin/boder_line.png') center / 100% 100% no-repeat;
+    background: url('../image/common/bg_domain.png') center / 100% 100% no-repeat;
     pointer-events: none;
+    border-radius: 3px;
 }
 
-.popuplogin__domain-text {
+.popupupgrade__domain-text {
     position: relative;
     z-index: 1;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 600;
     color: var(--popup-white);
     white-space: nowrap;
 }
 
-.popuplogin__domain-text strong {
+.popupupgrade__domain-text strong {
     color: #ffea09;
     font-weight: 700;
 }
 
-/* ===== Form panel ===== */
-.popuplogin__panel {
+.popupupgrade__panel {
     position: relative;
     width: 100%;
     margin-bottom: var(--popup-gap);
 }
 
-.popuplogin__panel-bg {
+.popupupgrade__panel-bg {
     position: absolute;
     inset: 0;
     background: url('../image/popuplogin/background_input_area.png') center top / 100% 100% no-repeat;
@@ -141,93 +148,29 @@
     pointer-events: none;
 }
 
-.popuplogin__panel-inner {
+.popupupgrade__panel-inner {
     position: relative;
     z-index: 1;
     padding: 10px 11px 12px;
 }
 
-.popuplogin__tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 10px;
+.popupupgrade__heading {
+    margin: 8px 0 0;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-align: center;
+    color: var(--popup-white);
 }
 
-.popuplogin__tab {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 34px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.popuplogin__tab-bg {
-    position: absolute;
-    inset: 0;
-    background: url('../image/popuplogin/background_button_unselect.png') center / 100% 100% no-repeat;
-    pointer-events: none;
-}
-
-.popuplogin__tab--active .popuplogin__tab-bg {
-    background-image: url('../image/popuplogin/background_button_selected.png');
-}
-
-.popuplogin__tab-label {
-    position: relative;
-    z-index: 1;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--popup-text);
-}
-
-.popuplogin__tab--active .popuplogin__tab-label {
-    color: var(--popup-text-active);
-}
-
-/* ===== Form fields (stacked — giữ chiều cao popup khi đổi tab) ===== */
-.popuplogin__forms {
-    display: grid;
-    grid-template-areas: 'stack';
-    align-items: stretch;
-}
-
-.popuplogin__forms > .popuplogin__form {
-    grid-area: stack;
-    align-self: stretch;
-    width: 100%;
-    min-height: 100%;
+.popupupgrade__form {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 15px;
 }
 
-.popuplogin__form {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.popuplogin__form--hidden {
-    visibility: hidden;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 0;
-}
-
-.popuplogin__form:not(.popuplogin__form--hidden) {
-    visibility: visible;
-    pointer-events: auto;
-    opacity: 1;
-    z-index: 1;
-}
-
-.popuplogin__field {
+.popupupgrade__field {
     position: relative;
     display: flex;
     align-items: center;
@@ -235,7 +178,7 @@
     padding: 0 8px 0 8px;
 }
 
-.popuplogin__field-bg {
+.popupupgrade__field-bg {
     position: absolute;
     inset: 0;
     background: url('../image/popuplogin/background_input.png') center / 100% 100% no-repeat;
@@ -243,7 +186,7 @@
     pointer-events: none;
 }
 
-.popuplogin__field-icon {
+.popupupgrade__field-icon {
     position: relative;
     z-index: 1;
     flex-shrink: 0;
@@ -252,7 +195,7 @@
     object-fit: contain;
 }
 
-.popuplogin__input {
+.popupupgrade__input {
     position: relative;
     z-index: 1;
     flex: 1;
@@ -266,12 +209,12 @@
     outline: none;
 }
 
-.popuplogin__input::placeholder {
+.popupupgrade__input::placeholder {
     color: rgba(184, 212, 245, 0.85);
     font-weight: 600;
 }
 
-.popuplogin__toggle-pass {
+.popupupgrade__toggle-pass {
     position: relative;
     z-index: 1;
     flex-shrink: 0;
@@ -287,27 +230,64 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-.popuplogin__toggle-pass img {
+.popupupgrade__toggle-pass img {
     width: 20px;
     height: 20px;
     object-fit: contain;
 }
 
-.popuplogin__forgot {
-    align-self: flex-end;
-    margin: -2px 4px 4px 0;
-    padding: 0;
-    border: none;
-    background: transparent;
-    font-size: 10px;
-    font-style: italic;
-    font-weight: 600;
-    color: #7ec8ff;
-    text-decoration: underline;
-    cursor: pointer;
+.popupupgrade__google-mount {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 40px;
+    margin-top: 2px;
 }
 
-.popuplogin__submit {
+.popupupgrade__google-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.popupupgrade__google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 82%;
+    min-height: 29px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    background: #374FC5;
+    font-size: 10px;
+    /* font-weight: 700; */
+    color: var(--popup-white);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.popupupgrade__google:disabled,
+.popupupgrade__submit:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.popupupgrade__google-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+}
+
+.popupupgrade__submit {
     position: relative;
     display: block;
     width: fit-content;
@@ -325,7 +305,7 @@
     transition: transform 0.12s ease, filter 0.12s ease;
 }
 
-.popuplogin__submit-bg {
+.popupupgrade__submit-bg {
     display: block;
     width: auto;
     height: 30px;
@@ -335,7 +315,7 @@
     user-select: none;
 }
 
-.popuplogin__submit-label {
+.popupupgrade__submit-label {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -349,123 +329,31 @@
     pointer-events: none;
 }
 
-.popuplogin__submit:active {
+.popupupgrade__submit:active {
     transform: scale(0.98);
     filter: brightness(0.95);
 }
 
-/* ===== Footer actions ===== */
-.popuplogin__footer {
+.popupupgrade__footer {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--popup-gap);
     width: 100%;
 }
 
-.popuplogin__google-mount {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 40px;
-}
-
-.popuplogin__google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    min-height: 38px;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 10px;
-    background: var(--popup-white);
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--popup-blue-dark);
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    -webkit-tap-highlight-color: transparent;
-}
-
-.popuplogin__google:disabled {
-    opacity: 0.65;
-    cursor: wait;
-}
-
-.popuplogin__google-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-}
-
-.popuplogin__stores {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-}
-
-.popuplogin__store {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 38px;
-    padding: 5px 7px;
-    border-radius: 10px;
-    background: var(--popup-white);
-    color: #111;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.popuplogin__store-icon {
-    flex-shrink: 0;
-    width: 26px;
-    height: 26px;
-    object-fit: contain;
-}
-
-.popuplogin__store-icon--play {
-    width: 20px;
-    height: 20px;
-}
-
-.popuplogin__store-text {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    line-height: 1.15;
-}
-
-.popuplogin__store-text small {
-    font-size: 7px;
-    font-weight: 600;
-    color: #333;
-}
-
-.popuplogin__store-text strong {
-    font-size: 10px;
-    font-weight: 800;
-    color: #111;
-}
-
-.popuplogin__utils {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-}
-
-.popuplogin__util {
+.popupupgrade__util {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
+    width: 40%;
     min-height: 36px;
     padding: 4px 6px;
     border: 2px solid #8ec8ff;
-    border-radius: 10px;
-    background: linear-gradient(180deg, #2d5cb8 0%, #1e4499 100%);
+    border-radius: 8px;
+    background: linear-gradient(180deg, #4185E6 0%, #4955C5 100%);
+
     font-size: 9px;
     font-weight: 800;
     color: var(--popup-white);
@@ -474,30 +362,22 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-.popuplogin__util img {
+.popupupgrade__util img {
     width: 22px;
     height: 22px;
     object-fit: contain;
 }
 
 @media (max-width: 360px) {
-    .popuplogin-overlay {
+    .popupupgrade-overlay {
         --popup-max: 280px;
     }
 
-    .popuplogin__store-text small {
-        font-size: 6px;
-    }
-
-    .popuplogin__store-text strong {
-        font-size: 9px;
-    }
-
-    .popuplogin__util {
+    .popupupgrade__util {
         font-size: 8px;
     }
 
-    .popuplogin__util img {
+    .popupupgrade__util img {
         width: 20px;
         height: 20px;
     }

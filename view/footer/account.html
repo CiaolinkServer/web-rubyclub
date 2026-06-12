@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <title>Account - Ruby Club</title>
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/image/icon/16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/image/icon/32x32.png">
@@ -20,6 +21,9 @@
     <link rel="stylesheet" href="/assets/css/function/deposit.css">
     <link rel="stylesheet" href="/assets/css/function/withdraw.css">
     <link rel="stylesheet" href="/assets/css/page_account.css">
+    <link rel="stylesheet" href="/assets/css/popup_upgrade.css">
+    <link rel="stylesheet" href="/assets/css/function/support.css">
+    <link rel="stylesheet" href="/assets/css/function/vip.css">
 </head>
 <body class="login1-page login1-page--account">
     <div id="toast-container"></div>
@@ -41,7 +45,11 @@
 
         <main class="page-account" id="page-account" aria-label="Tài khoản">
             <p class="page-account__greeting">
-                Xin Chào, <span class="page-account__username" id="page-account-username">Player</span>
+                Hi, <span class="page-account__username" id="page-account-username">Player</span><br>
+                PlayerID: <span class="page-account__id" id="page-account-playerid">0</span> 
+                <button type="button" class="page-account__copy" id="page-account-copy">
+                    <img src="/assets/image/function/deposit/icon_copy.png" alt="">
+                </button>
             </p>
 
             <section class="page-account__card" aria-label="Số dư">
@@ -106,8 +114,13 @@
     <div id="maildetail-mount"></div>
     <div id="deposit-mount"></div>
     <div id="withdraw-mount"></div>
+    <div id="popupupgrade-mount"></div>
+    <div id="support-mount"></div>
+    <div id="vip-mount"></div>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/google_signin.js"></script>
     <script src="/assets/js/headler.js"></script>
     <script src="/assets/js/footer.js"></script>
     <script src="/assets/js/index.js"></script>
@@ -115,6 +128,9 @@
     <script src="/assets/js/function/maildetail.js"></script>
     <script src="/assets/js/function/deposit.js"></script>
     <script src="/assets/js/function/withdraw.js"></script>
+    <script src="/assets/js/popup_upgrade.js"></script>
+    <script src="/assets/js/function/support.js"></script>
+    <script src="/assets/js/function/vip.js"></script>
     <script src="/assets/js/page_account.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

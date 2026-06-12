@@ -108,44 +108,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/setting.v1.GetAllSettingsResponse'
-    /api/v1/auth/admin/google/login:
-        get:
-            tags:
-                - AuthService
-            operationId: AuthService_AdminGoogleLogin
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/auth.v1.GoogleLoginResponse'
-    /api/v1/auth/google/callback:
-        get:
-            tags:
-                - AuthService
-            operationId: AuthService_GoogleCallback
-            parameters:
-                - name: code
-                  in: query
-                  schema:
-                    type: string
-                - name: state
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/auth.v1.GoogleCallbackResponse'
     /api/v1/auth/google/login:
         get:
             tags:
                 - AuthService
             operationId: AuthService_GoogleLogin
+            parameters:
+                - name: token
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -189,27 +161,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.LinkGoogleResponse'
-    /api/v1/auth/link-google/callback:
-        get:
-            tags:
-                - AuthService
-            operationId: AuthService_LinkGoogleCallback
-            parameters:
-                - name: code
-                  in: query
-                  schema:
-                    type: string
-                - name: state
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/auth.v1.LinkGoogleCallbackResponse'
     /api/v1/auth/login:
         post:
             tags:
@@ -1280,6 +1231,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/withdraw.v1.SetAsCompletedResponse'
+    /api/v1/withdraw/set-as-failed:
+        post:
+            tags:
+                - WithdrawService
+            operationId: WithdrawService_SetAsFailed
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/withdraw.v1.SetAsFailedRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/withdraw.v1.SetAsFailedResponse'
 components:
     schemas:
         auth.v1.GetLaunchUrlRequest:
@@ -1292,7 +1261,7 @@ components:
             properties:
                 content:
                     type: string
-        auth.v1.GoogleCallbackResponse:
+        auth.v1.GoogleLoginResponse:
             type: object
             properties:
                 token:
@@ -1300,26 +1269,14 @@ components:
                 expiresAt:
                     type: string
                     format: date-time
-                redirectUrl:
-                    type: string
-        auth.v1.GoogleLoginResponse:
-            type: object
-            properties:
-                redirectUrl:
-                    type: string
-        auth.v1.LinkGoogleCallbackResponse:
-            type: object
-            properties:
-                redirectUrl:
-                    type: string
         auth.v1.LinkGoogleRequest:
             type: object
-            properties: {}
+            properties:
+                token:
+                    type: string
         auth.v1.LinkGoogleResponse:
             type: object
-            properties:
-                redirectUrl:
-                    type: string
+            properties: {}
         auth.v1.LoginRequest:
             type: object
             properties:
@@ -2329,7 +2286,7 @@ components:
                 withdrawals:
                     type: array
                     items:
-                        $ref: '#/components/schemas/withdraw.v1.Withdrawal'
+                        $ref: '#/components/schemas/withdraw.v1.WithdrawalLite'
                 pagination:
                     $ref: '#/components/schemas/withdraw.v1.Pagination'
         withdraw.v1.ListWithdrawalsResponse:
@@ -2387,6 +2344,14 @@ components:
         withdraw.v1.SetAsCompletedResponse:
             type: object
             properties: {}
+        withdraw.v1.SetAsFailedRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+        withdraw.v1.SetAsFailedResponse:
+            type: object
+            properties: {}
         withdraw.v1.WithdrawRequest:
             type: object
             properties:
@@ -2436,6 +2401,26 @@ components:
                 createdAt:
                     type: string
                 updatedAt:
+                    type: string
+        withdraw.v1.WithdrawalLite:
+            type: object
+            properties:
+                amount:
+                    type: number
+                    format: double
+                fiatAmount:
+                    type: number
+                    format: double
+                channel:
+                    type: string
+                tx:
+                    type: string
+                receiver:
+                    type: string
+                status:
+                    type: integer
+                    format: enum
+                createdAt:
                     type: string
 tags:
     - name: AuthService

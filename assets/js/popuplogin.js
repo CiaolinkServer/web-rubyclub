@@ -257,7 +257,7 @@ async function handlePopupFreePlay(btn) {
 
     try {
         var deviceId = await getQuickPlayDeviceId();
-
+        console.log('deviceId ', deviceId);
         if (!deviceId) {
             throw new Error('Không lấy được device id');
         }
@@ -288,30 +288,45 @@ async function handlePopupFreePlay(btn) {
     }
 }
 
-async function handlePopupGoogleLogin(btn) {
-    if (!btn || btn.disabled) {
+async function completePopupGoogleLogin(googleCredential) {
+    var data = await fetchPopupJson(
+        POPUP_API_BASE + '/api/v1/auth/google/login?token=' + encodeURIComponent(googleCredential),
+        {
+            method: 'GET',
+            headers: { Accept: 'application/json' }
+        }
+    );
+
+    if (!data || !data.token) {
+        throw new Error('Không nhận được token');
+    }
+
+    await applyPopupAuthSession(data.token);
+    closePopupLogin();
+}
+
+async function handlePopupGoogleCredential(googleCredential) {
+    try {
+        await completePopupGoogleLogin(googleCredential);
+    } catch (err) {
+        console.error('Google login failed:', err);
+        window.showToastError(err.message || 'Đăng nhập Google thất bại. Vui lòng thử lại.');
+    }
+}
+
+function setupPopupGoogleSignIn(overlay) {
+    var mount = overlay ? overlay.querySelector('#popuplogin-google-mount') : document.getElementById('popuplogin-google-mount');
+
+    if (!mount || !window.GoogleSignIn) {
         return;
     }
 
-    btn.disabled = true;
-
-    try {
-        var data = await fetchPopupJson(POPUP_API_BASE + '/api/v1/auth/google/login', {
-            method: 'GET',
-            headers: { Accept: 'application/json' }
-        });
-
-        if (data && data.redirectUrl) {
-            window.location.href = data.redirectUrl;
-            return;
-        }
-
-        throw new Error('Không nhận được redirectUrl');
-    } catch (err) {
-        console.error('Google login failed:', err);
-        window.showToastError('Đăng nhập Google thất bại. Vui lòng thử lại.');
-        btn.disabled = false;
-    }
+    window.GoogleSignIn.registerHandler('login', handlePopupGoogleCredential);
+    window.GoogleSignIn.mountButton(mount, {
+        theme: 'outline',
+        text: 'signin_with',
+        width: 260
+    });
 }
 
 var popupLoginEventsBound = false;
@@ -336,9 +351,10 @@ function bindPopupLoginEvents(root) {
     var formSignin = overlay.querySelector('#popuplogin-form-signin');
     var togglePass = overlay.querySelector('#popuplogin-toggle-pass');
     var passwordInput = overlay.querySelector('#popuplogin-password');
-    var googleBtn = overlay.querySelector('#popuplogin-google');
     var forgotBtn = overlay.querySelector('#popuplogin-forgot');
     var freePlayBtn = overlay.querySelector('#popuplogin-free-play');
+
+    setupPopupGoogleSignIn(overlay);
 
     if (closeBtn) {
         closeBtn.addEventListener('click', closePopupLogin);
@@ -391,12 +407,6 @@ function bindPopupLoginEvents(root) {
         formSignin.addEventListener('submit', function (e) {
             e.preventDefault();
             handlePopupRegister(formSignin);
-        });
-    }
-
-    if (googleBtn) {
-        googleBtn.addEventListener('click', function () {
-            handlePopupGoogleLogin(googleBtn);
         });
     }
 

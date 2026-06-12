@@ -38,7 +38,7 @@ function formatMailTitle(mail) {
     var amount = mail.amount != null ? Number(mail.amount) : 0;
 
     if (amount > 0) {
-        return formatMailAmount(amount) + ' chips';
+        return formatMailAmount(amount) + '₱';
     }
 
     if (mail.title) {

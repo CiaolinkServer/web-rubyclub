@@ -7,26 +7,48 @@ function getSupportOverlay() {
     return document.getElementById('support-overlay');
 }
 
-function openPopupSupport() {
+function openPopupSupport(options) {
+    options = options || {};
     var overlay = getSupportOverlay();
+
     if (!overlay) {
         return;
     }
+
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+
+    if (options.fromUpgrade && window.PopupUpgrade && typeof window.PopupUpgrade.setDimmed === 'function') {
+        window.PopupUpgrade.setDimmed(true);
+    }
 }
 
 function closePopupSupport() {
     var overlay = getSupportOverlay();
+    var upgradeOverlay = document.getElementById('popupupgrade-overlay');
+
     if (!overlay) {
         return;
     }
+
     overlay.classList.remove('is-open');
+
     if (typeof window.releaseFocusWithin === 'function') {
         window.releaseFocusWithin(overlay);
     }
+
     overlay.setAttribute('aria-hidden', 'true');
+
+    if (upgradeOverlay && upgradeOverlay.classList.contains('is-open')) {
+        if (window.PopupUpgrade && typeof window.PopupUpgrade.setDimmed === 'function') {
+            window.PopupUpgrade.setDimmed(false);
+        }
+
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+
     document.body.style.overflow = '';
 }
 
@@ -89,7 +111,7 @@ function mountPopupSupport(container, html) {
         return Promise.resolve(true);
     }
 
-    return fetch('view/function/support.html')
+    return fetch('/view/function/support.html')
         .then(function (res) {
             if (!res.ok) {
                 throw new Error('HTTP ' + res.status);

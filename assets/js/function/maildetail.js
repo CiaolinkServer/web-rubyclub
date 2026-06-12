@@ -173,7 +173,9 @@ async function markMailDetailAsRead(mail) {
 
     try {
         await readMailDetail(String(mail.id));
-
+        if(!mail.isClaimed){
+            return;
+        }
         mail.isRead = true;
 
         if (mailDetailCurrentMail && String(mailDetailCurrentMail.id) === String(mail.id)) {
@@ -241,6 +243,10 @@ async function handleMailDetailReceive() {
             }
 
             await window.PopupMail.reloadList({ forceRefresh: true });
+        }
+        if(window.Login1 && typeof window.Login1.refreshUserProfile === 'function'){
+            await window.Login1.refreshUserProfile();
+            
         }
 
         closePopupMailDetail();

@@ -1,0 +1,106 @@
+<div class="vip-overlay" id="vip-overlay" aria-hidden="true">
+    <div class="vip" role="dialog" aria-modal="true" aria-labelledby="vip-title">
+        <button type="button" class="vip__help" id="vip-help" aria-label="Trợ giúp">
+            <span aria-hidden="true">?</span>
+        </button>
+        <button type="button" class="vip__close" id="vip-close" aria-label="Đóng">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h2 class="vip__title" id="vip-title">VIP</h2>
+
+        <div class="vip__stats">
+            <p class="vip__stat">
+                <span class="vip__stat-label">Kabuuang halaga ng deposito:</span>
+                <strong class="vip__stat-value" id="vip-total-deposit">0</strong>
+            </p>
+            <p class="vip__stat">
+                <span class="vip__stat-label">Kabuuang halaga ng taya:</span>
+                <strong class="vip__stat-value" id="vip-total-bet">0</strong>
+            </p>
+        </div>
+
+        <div class="vip__table-wrap">
+            <table class="vip__table">
+                <thead>
+                    <tr>
+                        <th scope="col">VIP Level</th>
+                        <th scope="col">Deposito VIP</th>
+                        <th scope="col">Kabuuang Taya</th>
+                        <th scope="col">Payback (upto)</th>
+                        <th scope="col">Promotion</th>
+                        <th scope="col">Cashout</th>
+                    </tr>
+                </thead>
+                <tbody id="vip-table-body">
+                    <tr>
+                        <td>0,1</td>
+                        <td class="vip__amount">0</td>
+                        <td class="vip__amount"></td>
+                        <td>1%</td>
+                        <td>Isang beses</td>
+                        <td><span class="vip__no" aria-label="Không">×</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="vip__amount">20</td>
+                        <td class="vip__amount">0</td>
+                        <td>9%</td>
+                        <td rowspan="9">Araw-araw</td>
+                        <td rowspan="9">Walang limitasyon</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="vip__amount">200</td>
+                        <td class="vip__amount">800</td>
+                        <td>9.5%</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="vip__amount">500</td>
+                        <td class="vip__amount">2.000</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="vip__amount">1.500</td>
+                        <td class="vip__amount">6.000</td>
+                        <td>11%</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="vip__amount">5.000</td>
+                        <td class="vip__amount">20.000</td>
+                        <td>11%</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="vip__amount">20.000</td>
+                        <td class="vip__amount">80.000</td>
+                        <td>12%</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="vip__amount">100.000</td>
+                        <td class="vip__amount">400.000</td>
+                        <td>13%</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="vip__amount">250.000</td>
+                        <td class="vip__amount">1M</td>
+                        <td>13%</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="vip__amount">800.000</td>
+                        <td class="vip__amount">4M</td>
+                        <td>14%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button type="button" class="vip__upgrade" id="vip-upgrade">UPGRADE VIP</button>
+    </div>
+</div>

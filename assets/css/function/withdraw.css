@@ -339,23 +339,23 @@
     word-break: break-word;
 }
 
-.withdraw__history-pesos {
-    color: #ecf355;
+.withdraw__history-table tbody td.withdraw__history-pesos {
+    color: #FFEA00;
     font-weight: 800;
 }
 
-.withdraw__history-status.is-canceled,
-.withdraw__history-status.is-failed {
+.withdraw__history-table tbody td.withdraw__history-status.is-canceled,
+.withdraw__history-table tbody td.withdraw__history-status.is-failed {
     color: #ff8f6b;
     font-weight: 700;
 }
 
-.withdraw__history-status.is-completed {
+.withdraw__history-table tbody td.withdraw__history-status.is-completed {
     color: #7cff4f;
     font-weight: 700;
 }
 
-.withdraw__history-status.is-done {
+.withdraw__history-table tbody td.withdraw__history-status.is-done {
     color: #fff;
     font-weight: 700;
 }

@@ -40,6 +40,7 @@ function formatAccountBalance(value) {
 function bindUserToPageAccount(user) {
     var nameEl = document.getElementById('page-account-username');
     var balanceEl = document.getElementById('page-account-balance');
+    var playerIdEl = document.getElementById('page-account-playerid');
 
     if (!user) {
         return;
@@ -53,7 +54,80 @@ function bindUserToPageAccount(user) {
         balanceEl.textContent = formatAccountBalance(user.balance != null ? user.balance : 0);
     }
 
+    if (playerIdEl) {
+        playerIdEl.textContent = user.sid || '0';
+    }
+
+    var copyEl = document.getElementById('page-account-copy');
+
+    if (copyEl) {
+        copyEl.setAttribute('data-copy', user.sid || (playerIdEl && playerIdEl.textContent) || '0');
+    }
+
     updatePageAccountUpgradeTile(user);
+}
+
+async function copyPlayerId(text) {
+    var value = String(text || '').trim();
+
+    if (!value) {
+        var playerIdEl = document.getElementById('page-account-playerid');
+
+        if (playerIdEl) {
+            value = String(playerIdEl.textContent || '').trim();
+        }
+    }
+
+    if (!value) {
+        return false;
+    }
+
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(value);
+            return true;
+        }
+    } catch (err) {
+        console.error('Copy failed:', err);
+    }
+
+    try {
+        var textarea = document.createElement('textarea');
+        textarea.value = value;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return ok;
+    } catch (err) {
+        console.error('Copy fallback failed:', err);
+    }
+
+    return false;
+}
+
+function bindPageAccountCopyButton(root) {
+    var scope = root || document;
+    var copyEl = scope.querySelector ? scope.querySelector('#page-account-copy') : document.getElementById('page-account-copy');
+
+    if (!copyEl || copyEl.dataset.copyBound === '1') {
+        return;
+    }
+
+    copyEl.dataset.copyBound = '1';
+
+    copyEl.addEventListener('click', function () {
+        copyPlayerId(copyEl.getAttribute('data-copy')).then(function (ok) {
+            if (ok && typeof window.showToast === 'function') {
+                window.showToast('Đã sao chép');
+            } else if (!ok && typeof window.showToastError === 'function') {
+                window.showToastError('Không sao chép được');
+            }
+        });
+    });
 }
 
 async function loadPageAccountProfile() {
@@ -116,6 +190,8 @@ function bindPageAccountEvents(root) {
 
     pageRoot.dataset.accountBound = '1';
 
+    bindPageAccountCopyButton(pageRoot);
+
     pageRoot.addEventListener('click', function (e) {
         var actionBtn = e.target.closest('[data-action]');
 
@@ -135,8 +211,10 @@ function bindPageAccountEvents(root) {
                 return;
             }
 
-            if (typeof window.showToast === 'function') {
-                window.showToast('Comming soon');
+            if (window.PopupUpgrade && typeof window.PopupUpgrade.open === 'function') {
+                window.PopupUpgrade.open();
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Không tải được popup nâng cấp');
             }
             return;
         }
@@ -155,6 +233,15 @@ function bindPageAccountEvents(root) {
                 window.PopupWithdraw.open();
             } else if (typeof window.showToast === 'function') {
                 window.showToast('Comming soon');
+            }
+            return;
+        }
+
+        if (actionBtn.getAttribute('data-action') === 'vip') {
+            if (window.PopupVip && typeof window.PopupVip.open === 'function') {
+                window.PopupVip.open();
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('Không tải được popup VIP');
             }
             return;
         }
@@ -210,6 +297,17 @@ function initPageAccount(options) {
         tasks.push(window.PopupWithdraw.init({ container: document.getElementById('withdraw-mount') }));
     }
 
+    if (window.PopupUpgrade) {
+        tasks.push(window.PopupUpgrade.init({ container: document.getElementById('popupupgrade-mount') }));
+    }
+
+    if (window.PopupSupport) {
+        tasks.push(window.PopupSupport.init({ container: document.getElementById('support-mount') }));
+    }
+
+    if (window.PopupVip) {
+        tasks.push(window.PopupVip.init({ container: document.getElementById('vip-mount') }));
+    }
     return Promise.all(tasks).then(function () {
         return loadPageAccountProfile();
     });

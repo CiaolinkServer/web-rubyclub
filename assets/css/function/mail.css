@@ -273,10 +273,11 @@
     letter-spacing: 0;
     text-align: left;
     text-transform: lowercase;
+    color: #B3C9F2;
 }
 
 .mail__item--read .mail__title-text {
-    color: #fff;
+    color: #B3C9F2;
 }
 
 .mail__item--read .mail__content {
