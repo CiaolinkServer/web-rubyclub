@@ -118,12 +118,12 @@
 
 }
 
-.page-account__balance-pill {
+/* .page-account__balance-pill {
     flex-shrink: 0;
     width: 72px;
     background: linear-gradient(180deg, #5EDCFE 0%, #18C3F3 100%);
     border-radius: 0 24px 24px 0;
-}
+} */
 
 .page-account__wallet-actions {
     display: grid;

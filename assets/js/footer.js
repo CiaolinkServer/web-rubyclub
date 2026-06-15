@@ -42,17 +42,7 @@ async function getFooterSettings() {
     return cloneSettingsData(data);
 }
 
-async function handleFooterDepositClick() {
-    try {
-        await getFooterSettings();
-    } catch (err) {
-        console.error('Could not load settings:', err);
-
-        if (typeof window.showToast === 'function') {
-            window.showToastError('Could not load settings');
-        }
-    }
-
+function handleFooterDepositClick() {
     toggleFooterDepositMenu();
 }
 

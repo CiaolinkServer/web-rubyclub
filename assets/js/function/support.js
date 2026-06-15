@@ -129,7 +129,15 @@ function mountPopupSupport(container, html) {
         });
 }
 
-function initPopupSupport(options) {
+ async function initPopupSupport(options) {
+    //load link từ settings
+    var settings = await window.Footer.getSettings();
+    var supportLinks = settings.supportLinks;
+    if (supportLinks) {
+        SUPPORT_LINKS.messenger = supportLinks.facebook;
+        SUPPORT_LINKS.telegram = supportLinks.telegram;
+    }
+    console.log("SUPPORT_LINKS" ,SUPPORT_LINKS);
     options = options || {};
     var container = options.container || document.getElementById('support-mount');
 
@@ -150,11 +158,11 @@ function initPopupSupport(options) {
 }
 
 function openFacebookSupport() {
-    window.open('https://www.facebook.com/support', '_blank');
+    window.open(SUPPORT_LINKS.messenger, '_blank');
 }
 
 function openTelegramSupport() {
-    window.open('https://t.me/support', '_blank');
+    window.open(SUPPORT_LINKS.telegram, '_blank');
 }
 
 window.PopupSupport = {

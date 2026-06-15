@@ -404,6 +404,14 @@ function invalidateUserProfileCache() {
     localStorage.removeItem(USER_PROFILE_CACHE_TOKEN_KEY);
 }
 
+function bindUserProfileToViews(user) {
+    bindUserToLogin1(user);
+
+    if (window.PageAccount && typeof window.PageAccount.bindUser === 'function') {
+        window.PageAccount.bindUser(user);
+    }
+}
+
 async function refreshUserProfile() {
     var token = getAuthToken();
     var refreshBtn = document.getElementById('login1-refresh-balance');
@@ -418,7 +426,7 @@ async function refreshUserProfile() {
 
     try {
         var data = await fetchUserMe(token, { forceRefresh: true });
-        bindUserToLogin1(normalizeUser(data));
+        bindUserProfileToViews(normalizeUser(data));
         setLoggedInState(true);
     } catch (err) {
         console.error('Failed to refresh user info:', err);
