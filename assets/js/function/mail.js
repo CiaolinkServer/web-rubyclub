@@ -550,7 +550,7 @@ function openPopupMail() {
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     resetMailSelection();
-    loadMailList();
+    loadMailList({ forceRefresh: true });
 }
 
 function closePopupMail() {
