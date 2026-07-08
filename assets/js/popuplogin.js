@@ -246,7 +246,12 @@ async function handlePopupRegister(form) {
         if (!data || !data.token) {
             throw new Error('No token received');
         }
-
+        if (typeof window.showToast === 'function') {
+            window.showToast('Sign up successfully.');
+        }
+        if (typeof fbq === 'function') {
+            fbq('track', 'CompleteRegistration');
+        }
         await finishPopupAuthAndClose(data.token, form);
     } catch (err) {
         console.error('Register failed:', err);
