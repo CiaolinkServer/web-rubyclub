@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="assets/css/function/maildetail.css">
     <link rel="stylesheet" href="assets/css/function/deposit.css">
     <link rel="stylesheet" href="assets/css/function/withdraw.css">
+    <link rel="stylesheet" href="assets/css/function/bannerpopup.css?v=20260707">
     <link rel="stylesheet" href="assets/css/footer.css">
 </head>
 <body class="login1-page">
@@ -46,7 +47,10 @@
         <div id="header-mount"></div>
 
         <section class="login1-banner" aria-label="Promotions">
-            <img class="login1-banner__img" src="assets/image/login1/big_banner.png" alt="Daily Lucky Spin">
+            <div class="login1-banner__frame">
+                <img class="login1-banner__img" id="login1-banner-img" src="assets/image/banner/banner_ngang/welcome_ngang.png" alt="Promotion">
+                <div class="login1-banner__dots" id="login1-banner-dots" role="tablist" aria-label="Promotion slides"></div>
+            </div>
         </section>
 
         <!-- <section class="login1-news" aria-label="Notifications">
@@ -151,6 +155,18 @@
     <div id="maildetail-mount"></div>
     <div id="deposit-mount"></div>
     <div id="withdraw-mount"></div>
+    <div id="bannerpopup-mount">
+        <div class="bannerpopup-overlay" id="bannerpopup-overlay" aria-hidden="true">
+            <div class="bannerpopup" role="dialog" aria-modal="true" aria-label="Promotions">
+                <div class="bannerpopup__frame">
+                    <button type="button" class="bannerpopup__close" id="bannerpopup-close" aria-label="Close promotion">
+                        <img src="assets/image/banner/close.png" alt="">
+                    </button>
+                    <img class="bannerpopup__img" id="bannerpopup-img" src="" alt="Promotion">
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="assets/js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@4/dist/fp.min.js"></script>
@@ -162,6 +178,7 @@
     <script src="assets/js/function/maildetail.js"></script>
     <script src="assets/js/function/deposit.js"></script>
     <script src="assets/js/function/withdraw.js"></script>
+    <script src="assets/js/function/bannerpopup.js"></script>
     <script src="assets/js/footer.js"></script>
     <script src="assets/js/index.js"></script>
     <script>

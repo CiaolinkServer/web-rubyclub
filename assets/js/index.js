@@ -17,6 +17,46 @@ var gameImageObserver = null;
 var PWA_INSTALLED_KEY = 'rubyclub_pwa_installed';
 var deferredInstallPrompt = window.__deferredInstallPrompt || null;
 
+var login1BannerTimer = null;
+var LOGIN1_BANNER_INTERVAL_MS = 5000;
+var list_banner_game = {
+    ngang:[
+       'assets/image/banner/banner_ngang/welcome_ngang.png',
+       'assets/image/banner/banner_ngang/nap_ngang.jpg'
+    ],
+    lobby:[
+       'assets/image/banner/lobby/welcome_doc.png',
+       'assets/image/banner/lobby/nap_doc.png'
+    ],
+    topup:[
+       'assets/image/banner/topup/nap_doc.png',
+    ],
+    deposit: [
+       'assets/image/banner/banner_ngang/nap_ngang.jpg',
+       'assets/image/banner/lobby/nap_doc.png'
+    ]
+};
+window.list_banner_game = list_banner_game;
+
+function isDepositBanner(src) {
+    var depositBanners = list_banner_game.deposit || [];
+
+    return depositBanners.indexOf(src) !== -1;
+}
+
+function openDepositFromBanner() {
+    if (!checkLoggedIn()) {
+        showToastError('Please log in');
+        return false;
+    }
+
+    if (window.PopupDeposit && typeof window.PopupDeposit.open === 'function') {
+        window.PopupDeposit.open();
+        return true;
+    }
+
+    return false;
+}
 function markPwaInstalled() {
     try {
         localStorage.setItem(PWA_INSTALLED_KEY, '1');
@@ -456,6 +496,7 @@ async function captureTokenFromUrl() {
         var data = await fetchUserMe(token, { forceRefresh: true });
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
+        await openLobbyBannerPopup();
         return true;
     } catch (err) {
         console.error('Failed to load user info:', err);
@@ -477,6 +518,7 @@ async function initLogin1Session() {
         var data = await fetchUserMe(token);
         bindUserToLogin1(normalizeUser(data));
         setLoggedInState(true);
+        await openLobbyBannerPopup();
     } catch (err) {
         console.error('Could not load profile:', err);
         clearAuthSession();
@@ -785,6 +827,92 @@ function setActiveSidebarItem(item) {
     }
 }
 
+function initLogin1Banner() {
+    var img = document.getElementById('login1-banner-img');
+    var dotsWrap = document.getElementById('login1-banner-dots');
+    var banners = list_banner_game.ngang;
+
+    if (!img || !banners || !banners.length) {
+        return;
+    }
+
+    var currentIndex = 0;
+
+    function updateDots() {
+        if (!dotsWrap) {
+            return;
+        }
+
+        var dots = dotsWrap.querySelectorAll('.login1-banner__dot');
+
+        for (var i = 0; i < dots.length; i++) {
+            dots[i].classList.toggle('is-active', i === currentIndex);
+            dots[i].setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
+        }
+    }
+
+    function showBanner(index) {
+        currentIndex = (index + banners.length) % banners.length;
+        img.src = banners[currentIndex];
+        img.style.cursor = isDepositBanner(banners[currentIndex]) ? 'pointer' : '';
+        img.dataset.depositBanner = isDepositBanner(banners[currentIndex]) ? '1' : '0';
+        updateDots();
+    }
+
+    function startBannerTimer() {
+        if (login1BannerTimer) {
+            clearInterval(login1BannerTimer);
+            login1BannerTimer = null;
+        }
+
+        if (banners.length <= 1) {
+            return;
+        }
+
+        login1BannerTimer = setInterval(function () {
+            showBanner(currentIndex + 1);
+        }, LOGIN1_BANNER_INTERVAL_MS);
+    }
+
+    function goToBanner(index) {
+        showBanner(index);
+        startBannerTimer();
+    }
+
+    if (dotsWrap) {
+        dotsWrap.innerHTML = '';
+
+        for (var d = 0; d < banners.length; d++) {
+            (function (dotIndex) {
+                var dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'login1-banner__dot';
+                dot.setAttribute('role', 'tab');
+                dot.setAttribute('aria-label', 'Promotion ' + (dotIndex + 1));
+                dot.setAttribute('aria-selected', dotIndex === 0 ? 'true' : 'false');
+                dot.addEventListener('click', function () {
+                    goToBanner(dotIndex);
+                });
+                dotsWrap.appendChild(dot);
+            })(d);
+        }
+
+        dotsWrap.classList.toggle('is-hidden', banners.length <= 1);
+    }
+
+    if (img.dataset.depositClickBound !== '1') {
+        img.dataset.depositClickBound = '1';
+        img.addEventListener('click', function () {
+            if (img.dataset.depositBanner === '1') {
+                openDepositFromBanner();
+            }
+        });
+    }
+
+    showBanner(0);
+    startBannerTimer();
+}
+
 function initLogin1SidebarNav() {
     var nav = document.querySelector('.login1-sidebar__nav');
 
@@ -1004,6 +1132,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     renderLogin1Games('all');
     initLogin1Games();
+    initLogin1Banner();
     initLogin1SidebarNav();
 
     if (!window.__login1GameNameResizeBound) {
@@ -1766,6 +1895,27 @@ window.showToast = showToast;
 window.showToastError = showToastError;
 
 window.openMailPopupFromEvent = openMailPopupFromEvent;
+window.openDepositFromBanner = openDepositFromBanner;
+window.isDepositBanner = isDepositBanner;
+
+function getLobbyBanners() {
+    return list_banner_game.lobby || [];
+}
+
+function openLobbyBannerPopup() {
+    var banners = getLobbyBanners();
+
+    if (!getAuthToken() || !banners.length || !window.PopupBanner) {
+        return Promise.resolve(false);
+    }
+
+    return window.PopupBanner.init().then(function (ok) {
+        if (ok) {
+            window.PopupBanner.open();
+        }
+        return ok;
+    });
+}
 
 window.Login1 = {
     launchGame: launchGame,
@@ -1777,7 +1927,9 @@ window.Login1 = {
     clearAuthSession: clearAuthSession,
     getAuthToken: getAuthToken,
     captureTokenFromUrl: captureTokenFromUrl,
-    initLogin1Session: initLogin1Session
+    initLogin1Session: initLogin1Session,
+    getLobbyBanners: getLobbyBanners,
+    openLobbyBannerPopup: openLobbyBannerPopup
 };
 
 window.downloadAPK = downloadAPK;

@@ -55,10 +55,56 @@ body {
     line-height: 0;
 }
 
+.login1-banner__frame {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+}
+
 .login1-banner__img {
     display: block;
     width: 100%;
     height: auto;
+}
+
+.login1-banner__dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    line-height: 0;
+    pointer-events: none;
+}
+
+.login1-banner__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.login1-banner__dot.is-active {
+    background: rgba(255, 255, 255, 0.9);
+    transform: scale(1.15);
+}
+
+.login1-banner__dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.login1-banner__dots.is-hidden {
+    display: none;
 }
 
 /* ===== News ticker ===== */

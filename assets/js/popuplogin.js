@@ -131,6 +131,20 @@ async function applyPopupAuthSession(token) {
     return data;
 }
 
+async function finishPopupAuthAndClose(token, form) {
+    await applyPopupAuthSession(token);
+
+    if (form) {
+        form.reset();
+    }
+
+    closePopupLogin();
+
+    if (window.Login1 && typeof window.Login1.openLobbyBannerPopup === 'function') {
+        window.Login1.openLobbyBannerPopup();
+    }
+}
+
 async function handlePopupLogin(form) {
     if (!form) {
         return;
@@ -173,9 +187,7 @@ async function handlePopupLogin(form) {
             window.showToastError(err.message || 'Login failed. Please try again.');
         }
 
-        await applyPopupAuthSession(data.token);
-        form.reset();
-        closePopupLogin();
+        await finishPopupAuthAndClose(data.token, form);
     } catch (err) {
         // alert(err.message || 'Login failed. Please try again.');
         window.showToastError(err.message || 'Login failed. Please try again.');
@@ -235,9 +247,7 @@ async function handlePopupRegister(form) {
             throw new Error('No token received');
         }
 
-        await applyPopupAuthSession(data.token);
-        form.reset();
-        closePopupLogin();
+        await finishPopupAuthAndClose(data.token, form);
     } catch (err) {
         console.error('Register failed:', err);
         window.showToastError(err.message || 'Sign up failed. Please try again.');
@@ -278,8 +288,7 @@ async function handlePopupFreePlay(btn) {
             throw new Error('No token received');
         }
 
-        await applyPopupAuthSession(data.token);
-        closePopupLogin();
+        await finishPopupAuthAndClose(data.token);
     } catch (err) {
         console.error('Quick play failed:', err);
         window.showToastError(err.message || 'FREE PLAY failed. Please try again.');
@@ -301,8 +310,7 @@ async function completePopupGoogleLogin(googleCredential) {
         throw new Error('No token received');
     }
 
-    await applyPopupAuthSession(data.token);
-    closePopupLogin();
+    await finishPopupAuthAndClose(data.token);
 }
 
 async function handlePopupGoogleCredential(googleCredential) {

@@ -26,7 +26,7 @@ function formatMailDetailAmount(amount) {
 
     return num.toLocaleString('en-US', {
         minimumFractionDigits: 0,
-        maximumFractionDigits: 0
+        maximumFractionDigits: 2
     });
 }
 

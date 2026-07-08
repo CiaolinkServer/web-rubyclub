@@ -11,10 +11,6 @@ var DEPOSIT_CHANNEL_META = {
     },
     paymaya: {
         icon: DEPOSIT_ICON_BASE + 'icon_payment_maya.png',
-        label: 'Paymaya'
-    },
-    maya: {
-        icon: DEPOSIT_ICON_BASE + 'icon_payment_maya.png',
         label: 'Maya'
     }
 };
@@ -63,7 +59,7 @@ function getDepositChannels(settings) {
     }
 
     if (!channels.length) {
-        channels = ['gcash', 'maya'];
+        channels = ['gcash', 'paymaya'];
     }
 
     return channels;

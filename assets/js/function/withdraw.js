@@ -66,7 +66,7 @@ function getWithdrawChannels(settings) {
     }
 
     if (!channels.length) {
-        channels = ['gcash', 'maya'];
+        channels = ['gcash', 'paymaya'];
     }
 
     return channels;

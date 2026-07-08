@@ -1,0 +1,94 @@
+/* ===== Popup Banner (lobby) ===== */
+#bannerpopup-mount {
+    position: static;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.bannerpopup-overlay {
+    --bannerpopup-max-width: 300px;
+
+    position: fixed;
+    inset: 0;
+    z-index: 1002;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+    background: rgba(8, 24, 56, 0.72);
+    pointer-events: auto;
+}
+
+.bannerpopup-overlay.is-open {
+    display: flex;
+}
+
+.bannerpopup {
+    position: relative;
+    width: 100%;
+    max-width: var(--bannerpopup-max-width);
+    max-height: calc(100dvh - 24px);
+    line-height: 0;
+}
+
+.bannerpopup__frame {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.bannerpopup__close {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bannerpopup__close img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45));
+}
+
+.bannerpopup__close:active {
+    transform: scale(0.92);
+}
+
+.bannerpopup__img {
+    display: block;
+    width: 100%;
+    max-height: calc(100dvh - 24px);
+    height: auto;
+    object-fit: contain;
+    background: #000;
+}
+
+@media (max-width: 360px) {
+    .bannerpopup-overlay {
+        --bannerpopup-max-width: 280px;
+    }
+
+    .bannerpopup__close {
+        top: 6px;
+        right: 6px;
+        width: 28px;
+        height: 28px;
+    }
+}
