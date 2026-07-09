@@ -1052,54 +1052,51 @@ async function getClientIp() {
   }
 }
 
-async function chekcip() {
-  try {
-      const res = await fetch('https://proxycheck.io/v3/113.186.229.217/?key=public-5632b3-j5y391-188460');
-      const data = await res.json();
-      return data
-  } catch (err) {
-      console.error('getClientIp failed:', err);
-      return null;
-  }
-}
+// async function chekcip() {
+//   try {
+//       const res = await fetch('https://proxycheck.io/v3/113.186.229.217/?key=public-5632b3-j5y391-188460');
+//       const data = await res.json();
+//       return data
+//   } catch (err) {
+//       console.error('getClientIp failed:', err);
+//       return null;
+//   }
+// }
 
-async function reDirectIfVietNamIp() {
-    try {
-        var data = await chekcip();
-        console.log("chekcip "+data);
-        var ip = await getClientIp();
+// async function reDirectIfVietNamIp() {
+//     try {
+//         var data = await chekcip();
+//         console.log("chekcip "+data);
+//         var ip = await getClientIp();
 
-        if (!ip) {
-            return false;
-        }
-        if(!KEY_CHECK_PROXY) {
-            return false;
-        }
+//         if (!ip) {
+//             return false;
+//         }
+//         if(!KEY_CHECK_PROXY) {
+//             return false;
+//         }
+//          var url = API_CHECK_PROXY_IP.replace('{ip}', ip);
+//          console.log(url);
+//         var res = await fetch(url);
+//         if (!res.ok) {
+//             return false;
+//         }
 
-        // var url = API_CHECK_PROXY_IP.replace('{key}', KEY_CHECK_PROXY);
-        //replace ip
-         var url = API_CHECK_PROXY_IP.replace('{ip}', ip);
-         console.log(url);
-        var res = await fetch(url);
-        if (!res.ok) {
-            return false;
-        }
+//         var data = await res.json();
+//         var proxy = data[ip].detections.proxy;
+//         var vpn = data[ip].detections.vpn;
+//         var country_code = data[ip].location.country_code;
 
-        var data = await res.json();
-        var proxy = data[ip].detections.proxy;
-        var vpn = data[ip].detections.vpn;
-        var country_code = data[ip].location.country_code;
+//         if (proxy === true || vpn === true || country_code === 'VN') {
+//             window.location.replace('https://www.google.com');
+//             return true;
+//         }
+//     } catch (err) {
+//         console.error('reDirectIfVietNamIp failed:', err);
+//     }
 
-        if (proxy === true || vpn === true || country_code === 'VN') {
-            window.location.replace('https://www.google.com');
-            return true;
-        }
-    } catch (err) {
-        console.error('reDirectIfVietNamIp failed:', err);
-    }
-
-    return false;
-}
+//     return false;
+// }
 
 // var login1RedirectCheck = reDirectIfVietNamIp();
 
