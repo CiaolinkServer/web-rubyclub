@@ -576,6 +576,18 @@ function bindPopupDepositEvents(root) {
     var refInput = overlay.querySelector('#deposit-step2-ref');
 
     overlay.addEventListener('click', function (e) {
+        if (e.target.closest('#deposit-guide')) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (window.PopupDepositGuide && typeof window.PopupDepositGuide.open === 'function') {
+                window.PopupDepositGuide.open();
+            } else {
+                console.warn('PopupDepositGuide is not loaded');
+            }
+            return;
+        }
+
         if (e.target.closest('#deposit-step2-close')) {
             e.preventDefault();
             e.stopPropagation();
@@ -692,7 +704,7 @@ function mountPopupDeposit(container, html) {
         return Promise.resolve(true);
     }
 
-    return fetch('/view/function/deposit.html')
+    return fetch('/view/function/deposit.html?v=20260717')
         .then(function (res) {
             if (!res.ok) {
                 throw new Error('HTTP ' + res.status);

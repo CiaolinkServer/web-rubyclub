@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5TLWDH72');</script>
+    <!-- End Google Tag Manager -->
     <!-- Meta Pixel Code -->
     <script>
         !function(f,b,e,v,n,t,s)
@@ -14,7 +21,6 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1034929185708460');
         fbq('init', '1041299715026464');
         fbq('track', 'PageView');
     </script>
@@ -51,21 +57,20 @@
     <link rel="stylesheet" href="assets/css/function/support.css">
     <link rel="stylesheet" href="assets/css/function/mail.css">
     <link rel="stylesheet" href="assets/css/function/maildetail.css">
-    <link rel="stylesheet" href="assets/css/function/deposit.css">
+    <link rel="stylesheet" href="assets/css/function/deposit.css?v=20260717">
     <link rel="stylesheet" href="assets/css/function/withdraw.css">
     <link rel="stylesheet" href="assets/css/function/bannerpopup.css?v=20260707">
     <link rel="stylesheet" href="assets/css/footer.css">
 </head>
 <body class="login1-page">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5TLWDH72"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <!-- Meta Pixel Code (noscript) -->
-    <noscript>
-        <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=1034929185708460&ev=PageView&noscript=1"
-            alt="">
-        <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=1041299715026464&ev=PageView&noscript=1"
-            alt="">
-    </noscript>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=1041299715026464&ev=PageView&noscript=1"
+        alt=""></noscript>
     <!-- End Meta Pixel Code (noscript) -->
     <div id="toast-container"></div>
     <div class="login1" id="login1-app">
@@ -179,7 +184,9 @@
     <div id="mail-mount"></div>
     <div id="maildetail-mount"></div>
     <div id="deposit-mount"></div>
+    <div id="deposit-guide-mount"></div>
     <div id="withdraw-mount"></div>
+    <div id="withdraw-guide-mount"></div>
     <div id="bannerpopup-mount">
         <div class="bannerpopup-overlay" id="bannerpopup-overlay" aria-hidden="true">
             <div class="bannerpopup" role="dialog" aria-modal="true" aria-label="Promotions">
@@ -201,7 +208,9 @@
     <script src="assets/js/function/support.js"></script>
     <script src="assets/js/function/mail.js"></script>
     <script src="assets/js/function/maildetail.js"></script>
+    <script src="assets/js/function/deposit_guide.js"></script>
     <script src="assets/js/function/deposit.js"></script>
+    <script src="assets/js/function/withdraw_guide.js"></script>
     <script src="assets/js/function/withdraw.js"></script>
     <script src="assets/js/function/bannerpopup.js"></script>
     <script src="assets/js/footer.js"></script>

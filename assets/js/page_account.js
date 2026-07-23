@@ -293,8 +293,16 @@ function initPageAccount(options) {
         tasks.push(window.PopupDeposit.init({ container: document.getElementById('deposit-mount') }));
     }
 
+    if (window.PopupDepositGuide) {
+        tasks.push(window.PopupDepositGuide.init({ container: document.body }));
+    }
+
     if (window.PopupWithdraw) {
         tasks.push(window.PopupWithdraw.init({ container: document.getElementById('withdraw-mount') }));
+    }
+
+    if (window.PopupWithdrawGuide) {
+        tasks.push(window.PopupWithdrawGuide.init({ container: document.getElementById('withdraw-guide-mount') }));
     }
 
     if (window.PopupUpgrade) {

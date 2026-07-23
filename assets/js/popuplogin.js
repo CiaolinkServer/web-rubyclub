@@ -249,9 +249,11 @@ async function handlePopupRegister(form) {
         if (typeof window.showToast === 'function') {
             window.showToast('Sign up successfully.');
         }
-        if (typeof fbq === 'function') {
-            fbq('track', 'CompleteRegistration');
-        }
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'CompleteRegistration' });
+        // if (typeof window.fbq === 'function') {
+        //     window.fbq('track', 'CompleteRegistration');
+        // }
         await finishPopupAuthAndClose(data.token, form);
     } catch (err) {
         console.error('Register failed:', err);

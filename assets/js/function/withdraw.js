@@ -646,6 +646,106 @@ async function handleWithdrawStep2Confirm() {
     }
 }
 
+function formatWithdrawBetValue(value) {
+    var num = Number(value);
+
+    if (Number.isNaN(num)) {
+        return '0';
+    }
+
+    return num.toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
+}
+
+function bindWithdrawBetInfo(user) {
+    var requiredEl = document.getElementById('withdraw-required-bet');
+    var totalEl = document.getElementById('withdraw-total-bet');
+    var requiredBet = user && user.requiredBet != null ? user.requiredBet : 0;
+    var totalBet = user && user.totalBet != null ? user.totalBet : 0;
+
+    if (requiredEl) {
+        requiredEl.textContent = formatWithdrawBetValue(requiredBet);
+    }
+
+    if (totalEl) {
+        totalEl.textContent = formatWithdrawBetValue(totalBet);
+    }
+}
+
+function readCachedWithdrawUserProfile(token) {
+    var cachedToken;
+    var expiresAt;
+    var raw;
+    var data;
+
+    if (!token) {
+        return null;
+    }
+
+    try {
+        cachedToken = localStorage.getItem('rubyclub_user_profile_cache_token');
+        expiresAt = localStorage.getItem('rubyclub_user_profile_cache_expires_at');
+        raw = localStorage.getItem('rubyclub_user_profile_cache');
+
+        if (!raw || cachedToken !== token || !expiresAt || Date.now() >= Number(expiresAt)) {
+            return null;
+        }
+
+        data = JSON.parse(raw);
+        return window.Login1 && typeof window.Login1.normalizeUser === 'function'
+            ? window.Login1.normalizeUser(data)
+            : (data && data.user ? data.user : data);
+    } catch (err) {
+        return null;
+    }
+}
+
+async function loadWithdrawBetInfo() {
+    var token = typeof window.getAuthTokenSafe === 'function' ? window.getAuthTokenSafe() : null;
+    var cachedUser;
+    var response;
+    var data;
+    var user;
+
+    if (!token) {
+        bindWithdrawBetInfo(null);
+        return;
+    }
+
+    cachedUser = readCachedWithdrawUserProfile(token);
+
+    if (cachedUser) {
+        bindWithdrawBetInfo(cachedUser);
+        return;
+    }
+
+    try {
+        response = await fetch(getWithdrawApiBase() + '/api/v1/user/me', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                Authorization: 'Bearer ' + token
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status);
+        }
+
+        data = await response.json();
+        user = window.Login1 && typeof window.Login1.normalizeUser === 'function'
+            ? window.Login1.normalizeUser(data)
+            : (data && data.user ? data.user : data);
+
+        bindWithdrawBetInfo(user);
+    } catch (err) {
+        console.error('Could not load withdraw bet info:', err);
+        bindWithdrawBetInfo(null);
+    }
+}
+
 function openPopupWithdraw() {
     var overlay = getWithdrawOverlay();
 
@@ -658,6 +758,7 @@ function openPopupWithdraw() {
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    loadWithdrawBetInfo();
 
     loadWithdrawSettings()
         .then(function (settings) {
@@ -710,6 +811,18 @@ function bindPopupWithdrawEvents(root) {
     var amountsEl = overlay.querySelector('#withdraw-amounts');
 
     overlay.addEventListener('click', function (e) {
+        if (e.target.closest('#withdraw-guide')) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (window.PopupWithdrawGuide && typeof window.PopupWithdrawGuide.open === 'function') {
+                window.PopupWithdrawGuide.open();
+            } else {
+                console.warn('PopupWithdrawGuide is not loaded');
+            }
+            return;
+        }
+
         if (e.target.closest('#withdraw-step2-close')) {
             e.preventDefault();
             e.stopPropagation();

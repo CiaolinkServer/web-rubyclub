@@ -22,7 +22,8 @@ var LOGIN1_BANNER_INTERVAL_MS = 5000;
 var list_banner_game = {
     ngang:[
        'assets/image/banner/banner_ngang/welcome_ngang.png',
-       'assets/image/banner/banner_ngang/nap_ngang.jpg'
+       'assets/image/banner/banner_ngang/nap_ngang.jpg',
+       'assets/image/banner/banner_ngang/withdraw.png',
     ],
     lobby:[
        'assets/image/banner/lobby/welcome_doc.png',
@@ -975,6 +976,10 @@ function initMailButtons() {
 function initDepositButtons() {
     var mount = document.getElementById('deposit-mount');
 
+    if (window.PopupDepositGuide) {
+        window.PopupDepositGuide.init({ container: document.body });
+    }
+
     if (!window.PopupDeposit || !mount) {
         return;
     }
@@ -984,6 +989,11 @@ function initDepositButtons() {
 
 function initWithdrawButtons() {
     var mount = document.getElementById('withdraw-mount');
+    var guideMount = document.getElementById('withdraw-guide-mount');
+
+    if (window.PopupWithdrawGuide && guideMount) {
+        window.PopupWithdrawGuide.init({ container: guideMount });
+    }
 
     if (!window.PopupWithdraw || !mount) {
         return;

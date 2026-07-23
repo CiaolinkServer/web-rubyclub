@@ -6,6 +6,14 @@
     pointer-events: none;
 }
 
+#deposit-guide-mount {
+    position: static;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
 .deposit-overlay {
     --deposit-max-width: 339px;
     --deposit-popup-max-height: min(88vh, 640px);
@@ -58,28 +66,49 @@
     overflow: hidden;
 }
 
+.deposit__guide,
 .deposit__close {
     position: absolute;
     top: 8px;
-    right: 10px;
     z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
     padding: 0;
     border: none;
     background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.deposit__guide {
+    left: 10px;
+    width: 28px;
+    height: 28px;
+    z-index: 5;
+}
+
+.deposit__close {
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    z-index: 5;
     color: #000;
     font-size: 28px;
     font-weight: 300;
     line-height: 1;
-    cursor: pointer;
 }
 
+.deposit__guide:hover,
 .deposit__close:hover {
     opacity: 0.85;
+}
+
+.deposit__guide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .deposit__heading {
@@ -484,3 +513,132 @@
         transition: none;
     }
 }
+
+.deposit-guide-overlay {
+    --deposit-max-width: 339px;
+    --deposit-popup-max-height: min(88vh, 640px);
+
+    position: fixed;
+    inset: 0;
+    z-index: 1400;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+    background: rgba(8, 24, 56, 0.72);
+    pointer-events: auto;
+}
+
+.deposit-guide-overlay[hidden],
+.deposit-guide-overlay:not(.is-open) {
+    display: none !important;
+}
+
+.deposit-guide-overlay.is-open {
+    display: grid !important;
+    place-items: center;
+    grid-template-columns: min(100%, var(--deposit-max-width));
+}
+
+.deposit-guide {
+    grid-area: 1 / 1;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: var(--deposit-max-width);
+    max-height: var(--deposit-popup-max-height);
+    min-height: var(--deposit-popup-max-height);
+    overflow: hidden;
+    padding: 18px 14px 16px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #4185e6 0%, #4955c5 100%);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+.deposit-guide__content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.deposit-guide__content::-webkit-scrollbar {
+    display: none;
+}
+
+.deposit-guide__close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.deposit-guide__close img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.deposit-guide__title {
+    margin: 0 28px 14px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ecf355;
+}
+
+.deposit-guide__card {
+    margin-bottom: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #3047b3;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.deposit-guide__card:last-child {
+    margin-bottom: 0;
+}
+
+.deposit-guide__card-title {
+    margin: 0;
+    padding: 10px 10px 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: linear-gradient(180deg, rgba(90, 130, 237, 0.72) 0%, rgba(55, 80, 185, 0.66) 100%);
+}
+
+.deposit-guide__card-body {
+    padding: 10px;
+}
+
+.deposit-guide__video {
+    display: block;
+    width: 100%;
+    border-radius: 6px;
+    background: #000;
+}
+

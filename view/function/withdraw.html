@@ -1,6 +1,9 @@
 <div class="withdraw-overlay" id="withdraw-overlay" aria-hidden="true">
     <div class="withdraw-stack">
         <div class="withdraw withdraw--step1" id="withdraw-step1" role="dialog" aria-modal="true" aria-labelledby="withdraw-title">
+            <button type="button" class="withdraw__guide" id="withdraw-guide" aria-label="Guide">
+                <img src="/assets/image/common/icon_guide.png" alt="">
+            </button>
             <button type="button" class="withdraw__close" id="withdraw-close" aria-label="Close">
                 <img src="/assets/image/common/icon_close.png" alt="">
             </button>
@@ -18,6 +21,22 @@
                 <div class="withdraw__panel">
                     <div class="withdraw__amounts" id="withdraw-amounts" role="list"></div>
                     <p class="withdraw__empty" id="withdraw-empty" hidden>No withdraw amounts available</p>
+                </div>
+
+                <div class="withdraw__bet-info" id="withdraw-bet-info">
+                    <div class="withdraw__bet-row">
+                        <span class="withdraw__bet-label">REQUIRED EFFECTIVE BET AMOUNT</span>
+                        <span class="withdraw__bet-value" id="withdraw-required-bet">0</span>
+                    </div>
+                    <div class="withdraw__bet-row">
+                        <span class="withdraw__bet-label">EFFECTIVE WAGERING AMOUNT</span>
+                        <span class="withdraw__bet-value" id="withdraw-total-bet">0</span>
+                    </div>
+                </div>
+
+                <div class="withdraw__note" id="withdraw-note">
+                    <img class="withdraw__note-icon" src="/assets/image/common/icon_info.png" alt="" aria-hidden="true">
+                    <p class="withdraw__note-text">You can withdraw once your effective wagering amount reaches the required withdrawal threshold.</p>
                 </div>
             </div>
 
